@@ -69,13 +69,13 @@ void mergeSort(int arr[], int l, int r)
 
 int main()
 {
-    int len = 50;
+    int len = 50000;
     int *arr = getRandArray(len, 1, len);
-    printArray(arr, len);
+    // printArray(arr, len);
 
     // 排序
     mergeSort(arr, 0, len-1);
-    printArray(arr, len);
+    // printArray(arr, len);
 
     free(arr);
     return 0;

@@ -42,9 +42,9 @@ void q_sort(int *arr, int left, int right)
 
 int main()
 {
-    int len = 20;
+    int len = 50000;
     int *arr = getRandArray(len, 1, len);
-    printArray(arr, len);
+    // printArray(arr, len);
 
     // 排序
     q_sort(arr, 0, len-1);
