@@ -40,15 +40,21 @@ void q_sort(int *arr, int left, int right)
     q_sort(arr, last+1, right);
 }
 
+int compare(const void *a, const void *b)
+{
+    return *(int*)a - *(int*)b;
+}
+
 int main()
 {
-    int len = 50000;
+    int len = 50;
     int *arr = getRandArray(len, 1, len);
     // printArray(arr, len);
 
     // 排序
-    q_sort(arr, 0, len-1);
-    // printArray(arr, len);
+    // q_sort(arr, 0, len-1);
+    qsort(arr, len, sizeof(int), compare);
+    printArray(arr, len);
 
     free(arr);
     return 0;
