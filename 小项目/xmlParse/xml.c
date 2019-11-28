@@ -1,22 +1,19 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "xml.h"
 
 
-typedef struct xmltreeNode {
-    struct xmltreeNode *next;
-    struct xmltreeNode *prev;
-    struct xmltreeNode *parent;
-    struct xmltreeNode *child;
-    struct xmltreeNode *lastChild;
-    char *nodeName;
-    char *nodeValue;
-    char *attrName;     // 属性名
-    char *attrValue;    // 属性值
-    void *userData;     // 指向用户数据
-} xmltreeNode;
-
-
+/**
+ * 新建一个xml节点
+ * 
+ * 注意：初始情况下所有都指向空，所以需要定义好后自己赋值
+ * 因为后续要释放该节点，所以给指针赋值的时候，指向的地方
+ * 必须是堆，不能是常量空间或者函数栈。
+ * 
+ * 例如对于字符串的赋值，可以用 
+ * node->nodeName = strdup("string");
+ */
 xmltreeNode *xmlNewNode()
 {
     xmltreeNode *node = malloc(sizeof(xmltreeNode));
@@ -33,10 +30,21 @@ xmltreeNode *xmlNewNode()
 }
 
 
-
+/**
+ * 加载xml文件并解析成xml树
+ * 
+ * 示例：
+ * xmltreeNode *root = mxmlLoadFile("file.xml");
+ * 这时候我们便拿到一个xml树的根，可以通过该root对xml树进行操作
+ */ 
 xmltreeNode *mxmlLoadFile(const char *filename)
 {
     FILE *fp = fopen(filename, "r");
+    if(fp == NULL) {
+        printf("error: 打开文件失败\n");
+        return NULL;
+    }
+        
     int stack[100];
     int top = -1;
 
@@ -179,65 +187,99 @@ xmltreeNode *mxmlLoadFile(const char *filename)
     return retRoot;
 }
 
-void printXmlNodeNoend(xmltreeNode *node)
+
+
+/**
+ * 打印的辅助函数, 非外部调用
+ * 
+ * 按格式打印xml树的指定节点，不包含结尾</>
+ * 
+ * 例如:
+ *      打印 <node>good</node>
+ *      则输出 <node>good
+ *      打印 <node attr="big">good</node>
+ *      则输出 <node attr="big">good
+ */ 
+static void printXmlNodeNoEnd(xmltreeNode *node, FILE *fp)
 {
     if(node != NULL) {
         if(node->nodeName != NULL)
-            printf("<%s",node->nodeName);
+            fprintf(fp, "<%s",node->nodeName);
         if(node->attrName != NULL)
-            printf(" %s=",node->attrName);
+            fprintf(fp, " %s=",node->attrName);
         if(node->attrValue != NULL)
-            printf("\"%s\"",node->attrValue);
-        printf(">");
+            fprintf(fp, "\"%s\"",node->attrValue);
+        fprintf(fp, ">");
         if(node->nodeValue != NULL)
-            printf("%s", node->nodeValue);
+            fprintf(fp, "%s", node->nodeValue);
     }
 }
 
-void printTab(int top)
+
+/**
+ * 打印的辅助函数, 非外部调用
+ * 
+ * 按格式打印tab
+ * 
+ * 将根据tab栈的大小打印tab的数量
+ */ 
+static void printTab(int top, FILE *fp)
 {
     while(top >= 0) {
-        printf("  ");
+        fprintf(fp, "  ");
         top--;
     }
 }
 
-void printEnd(xmltreeNode *root, int tab)
+/**
+ * 打印的辅助函数, 非外部调用,
+ * 
+ * 打印结点尾部
+ * 
+ * 由于printXmlNodeNoEnd()没有打印结尾，故需要调用此函数进行关闭节点
+ */ 
+static void printEnd(xmltreeNode *root, int tab, FILE *fp)
 {
     if(root->lastChild != NULL)
-        printTab(tab);
-    printf("</%s>\n",root->nodeName);
+        printTab(tab, fp);
+    fprintf(fp, "</%s>\n",root->nodeName);
 }
 
 
-void printXmlTree(xmltreeNode *root, int *stack, int top)
+/**
+ * 打印的辅助函数, 非外部调用
+ * 
+ * 根据FILE参数，判断输出打印到文件中还是标准输出中
+ * 或者是其他类型的 _FILE_IO_
+ */ 
+static void printXmlTreeHleper(xmltreeNode *root, int *stack, int top, FILE *fp)
 {
     if(root != NULL) {
 
         // 先打印该节点，没有结尾
-        printXmlNodeNoend(root);
+        printXmlNodeNoEnd(root, fp);
 
         //保存同级节点的tab数
         int tabTmp = top; 
 
         // 如果该节点不是叶子节点，则换行
         if(root->lastChild != NULL) {
-            printf("\n");
+            fprintf(fp, "\n");
         }
 
         // 再打印该节点的最后一个子节点
         if(root->lastChild != NULL) {
             top++;
-            printTab(top);
-            printXmlTree(root->lastChild, stack, top);
+            printTab(top, fp);
+            printXmlTreeHleper(root->lastChild, stack, top, fp);
         }
         
         // 然后向左边打印同级节点
         if(root->prev != NULL) {
             // 先打印前一个结点的结尾
-            printEnd(root, tabTmp);
-            printTab(tabTmp);
-            printXmlTree(root->prev, stack, tabTmp);
+            printEnd(root, tabTmp, fp);
+            printTab(tabTmp, fp);
+            printXmlTreeHleper(root->prev, stack, tabTmp, fp);
         }
 
         // 同级节点结尾打印过了，直接返回
@@ -246,30 +288,165 @@ void printXmlTree(xmltreeNode *root, int *stack, int top)
         }
 
         // 打印结尾
-        printEnd(root, tabTmp);
+        printEnd(root, tabTmp, fp);
        
     }
 }
 
-void printXmlTreeCall(xmltreeNode *root)
+
+/**
+ * 将内存中的xml树保存到指定的文件中
+ * 
+ * root 是传入的xml树的根节点， filename是要保存的文件名
+ * 
+ * 如果保存失败，则不做任何操作，直接返回
+ */
+void saveXmlTreeToFile(xmltreeNode *root, const char *filename)
 {
     int stack[100];
     int top = -1;
-    printXmlTree(root, stack, top);
+    FILE *fp = fopen(filename, "w");
+    if(fp == NULL) {
+        printf("error: 保存时打开文件出错\n");
+        return;
+    }
+    printXmlTreeHleper(root, stack, top, fp);
+    fclose(fp);
 }
 
 
-
-void XmlToUserData(xmltreeNode *root)
+/**
+ * 打印xml树到标准输出
+ * 
+ * root xml树的根
+ */
+void printXmlTree(xmltreeNode *root)
 {
+    int stack[100];
+    int top = -1;
     
+    printXmlTreeHleper(root, stack, top, stdout);
 }
 
 
-int main()
+/**
+ * 添加xml节点到某个父节点下
+ * 
+ * parent 要添加到的父节点
+ * node 添加的节点
+ * 
+ * 例如：
+ *      将child节点添加到parent下
+ *      xmlAddNode(parent, child);
+ */ 
+void xmlAddNode(xmltreeNode *parent, xmltreeNode *node) 
 {
-    xmltreeNode *root = mxmlLoadFile("gg.xml");
-    
-    printXmlTreeCall(root);
-    return 0;
+    // 如果父节点为空，则直接添加
+    if(parent->child == NULL) {
+        parent->child = parent->lastChild = node;
+    } else {
+    // 否则插从头插入
+        node->next = parent->child;
+        node->prev = NULL;
+        parent->child->prev = node;
+        parent->child = node;  
+    }
+    node->parent = parent;
+}
+
+
+/**
+ * 释放xml的一个叶子节点及其节点内指针指向的堆内存
+ * 
+ * node: 指向xml树的一个结点，该节点必须是叶子节点
+ */ 
+static void freeXmlNode(xmltreeNode *node)
+{
+    if(node->attrName != NULL) {
+        free(node->attrName);
+        printf("free\n");
+    }
+        
+    if(node->attrValue != NULL) {
+        free(node->attrValue);
+        printf("free\n");
+    }
+        
+    if(node->nodeName != NULL) {
+        free(node->nodeName);
+        printf("free\n");
+    }
+        
+    if(node->nodeValue != NULL) {
+        free(node->nodeValue);
+        printf("free\n");
+    }
+}
+
+
+/**
+ * 删除xml节点及其节点下的所有子节点
+ * 
+ * node: 如果node是根节点(即parent为空)，则不做任何事情
+ */ 
+void xmlDeleteNode(xmltreeNode *node)
+{
+    // 如果父节点为空，则说明是根，直接返回
+    if(node->parent == NULL) 
+        return;
+     
+    xmltreeNode *parent = node->parent;
+
+    // 删除其所有孩子
+    xmltreeNode *child = node->child;
+    xmltreeNode *p;
+    while (child != NULL) {
+        p = child;
+        child = child->next;
+        xmlDeleteNode(p);
+    }
+
+    // 如果同级下有两个以上的节点
+    if(parent->lastChild != parent->child) {
+       
+        // 如果该节点是第一个孩子
+        if(node->prev == NULL) {
+            parent->child = node->next;
+            node->next->prev = NULL;
+        // 如果该节点是最后一个孩子
+        } else if(node->next == NULL) {
+            parent->lastChild = node->prev;
+            node->prev->next = NULL;
+        // 中间节点
+        } else {
+            node->prev->next = node->next;
+            node->next->prev = node->prev;
+        }
+    // 否则只有一个节点，则父节点直接指向空
+    } else {
+        parent->child = parent->lastChild = NULL;
+    }
+
+    freeXmlNode(node);
+}
+
+
+/**
+ * 删除xml树本身以及树下所有子节点
+ * 
+ * root xml树的树根，且必须是树根，否则删除后其父节点将
+ * 无法找到该节点。
+ */ 
+void xmlTreeDelete(xmltreeNode *root)
+{
+    // 删除其所有孩子
+    xmltreeNode *child = root->child;
+    xmltreeNode *p;
+    while (child != NULL) {
+        p = child;
+        child = child->next;
+        xmlDeleteNode(p);
+    }
+    // 删除根节点
+    freeXmlNode(root);
 }
