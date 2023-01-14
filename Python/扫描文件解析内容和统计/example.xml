@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="GB2312" ?>
+<Body>
+	<Head fsfid="3301100156" jsfid="null" wjscsj="20230110000000" jls="3" />
+	<Data ywlx="NQ" sjcssj="20230109235000" sjjssj="20230109235200">
+		<Item pollutant_code="n00001" value="19.8" />
+		<Item pollutant_code="n00002" value="19.1" />
+		<Item pollutant_code="n00003" value="23.6" />
+		<Item pollutant_code="n11003" value="18.4" />
+		<Item pollutant_code="n10005" value="21.4" />
+		<Item pollutant_code="n10010" value="21.3" />
+		<Item pollutant_code="n10050" value="19.1" />
+		<Item pollutant_code="n10090" value="18.7" />
+		<Item pollutant_code="n10095" value="18.7" />
+	</Data>
+	<Data ywlx="NQ" sjcssj="20230109234000" sjjssj="20230109235000">
+		<Item pollutant_code="n00001" value="19.8" />
+		<Item pollutant_code="n00002" value="19.1" />
+		<Item pollutant_code="n00003" value="23.3" />
+		<Item pollutant_code="n11003" value="18.3" />
+		<Item pollutant_code="n10005" value="21.4" />
+		<Item pollutant_code="n10010" value="21.2" />
+		<Item pollutant_code="n10050" value="19.1" />
+		<Item pollutant_code="n10090" value="18.7" />
+		<Item pollutant_code="n10095" value="18.6" />
+	</Data>
+	<Data ywlx="NQ" sjcssj="20230109235500" sjjssj="20230109235700">
+		<Item pollutant_code="n00001" value="19.9" />
+		<Item pollutant_code="n00002" value="19.1" />
+		<Item pollutant_code="n00003" value="23.0" />
+		<Item pollutant_code="n11003" value="18.5" />
+		<Item pollutant_code="n10005" value="21.4" />
+		<Item pollutant_code="n10010" value="21.3" />
+		<Item pollutant_code="n10050" value="19.1" />
+		<Item pollutant_code="n10090" value="18.7" />
+		<Item pollutant_code="n10095" value="18.7" />
+	</Data>
+</Body>
