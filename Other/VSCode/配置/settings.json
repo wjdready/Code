@@ -1,0 +1,161 @@
+/**
+    ----- 当前安装的插件 ------ 
+    * C-mantic                  [+--] C/C++ 代码自动生成(主要是定义之类的)
+    * C/C++ IntelliSense        [+++] 官方 C/C++ 支持
+    * Chinese (Simplified)      [+++] 提供简体中文界面
+    * Code Runner               [++-] 快速运行代码
+    * comment aligner space     [+--] 注释 // 自动对齐
+    * Doxygen                   [++-] 注释和文档生成
+    * LinkerScript              [+--] GNU lds 文件支持
+    * Markdown Table            [+--] 提供 Markdown 表格对齐
+    * Material Icon Theme       [+++] 提供文件图标
+    * One Monokai Theme         [+++] 个人喜欢的黑色主题
+    * Remote - SSH              [+--] 远程 VSCode 连接 (3)
+    * shell-format              [+--] 对 shell 脚本进行格式化
+    * Vim (VSCodeVim)           [+++] Vim 插件
+    
+    ----- 其他常用的插件 ------
+    * Hop Light                 [---] 个人喜欢的白色主题
+    * Arm Assembly              [+--] ARM 汇编支持
+    * DeviceTree                [+--] 设备树语法支持
+    * GitLens                   [++-] 提供 Git 实用工具大全
+    * Hex Editor                [++-] 二进制文件修改和查看工具
+    
+    ----- 编程字体选择列表 ------
+    YaHei Consolas Hybrid, JetBrains Mono NL, Ubuntu Mono  consolas, 
+    微软雅黑, 思源黑体, Menlo, Droid Sans Mono, monospace
+*/
+
+{
+    "editor.fontFamily": "Ubuntu Mono, 思源黑体",
+    "editor.mouseWheelZoom": true,                  // 鼠标控制缩放 
+    "window.enableMenuBarMnemonics": false,         // 不允许通过alt 控制菜单
+    "window.customMenuBarAltFocus": false,          // 不允许通过alt 聚焦菜单
+    "editor.minimap.enabled": false,                // 控制是否显示缩略图
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+
+    /* -------------------- The default CONFIG of C/C++  --------------------- */
+    "C_Cpp.default.includePath": [ 
+        "C:\\ProgramFiles\\msys64\\ucrt64\\include\\**",
+        "${workspaceFolder}/**",
+    ],
+    "C_Cpp.default.compilerPath": "C:\\ProgramFiles\\msys64\\ucrt64\\bin\\gcc.exe",
+    
+    /* -------------------------- vim 插件 ----------------------------------  */
+    "vim.easymotion": true,                                         // 简易模式
+    "vim.useSystemClipboard": true,                                 // 对未命名的寄存器使用系统剪贴板
+    "vim.leader": "<space>",                                        // 设置 leader 键
+    "vim.insertModeKeyBindings": [                                  // 插入模式下的按键绑定
+        { "before": ["j", "k"], "after": [ "<Esc>"] },
+        { "before": ["j", "j"], "after": [ "<Esc>"] },
+    ],
+    "vim.normalModeKeyBindingsNonRecursive": [                      // Normal 模式下的快捷键绑定
+        { "before": [ "<leader>", "v" ], "after": [ "<C-v>"  ] },   // 块编辑模式绑定为 leader + v
+    ],
+    "vim.handleKeys": {                                             // 禁用 vim 的某些快捷键
+        "<C-a>": false, "<C-f>": false, "<C-c>": false,
+        "<C-v>": false, "<C-x>": false, "<C-y>": false,
+        "<C-k>": false,
+    },
+
+    /* --------------------------- Doxdocgen 插件 --------------------------- */
+    /* 函数功能描述中前缀由@改为\, 输入 /** 回车即触发 */
+    // "doxdocgen.generic.paramTemplate": "\\param {param} ",     
+    // "doxdocgen.generic.returnTemplate": "\\return {type} ",
+    // "doxdocgen.generic.briefTemplate": "\\brief {text}",
+
+    /* --------------------------- Code Runner ------------------------------ */
+    "code-runner.executorMap": {                                          
+        "c" : "msys -c \"make && make run\"",                       // 运行工作目录下的构建脚本
+        "cpp" : "msys -c \"make && make run\"",
+        "makefile": "cd $dir && msys -c \"make && make run\""
+        // "c" : "cd $dir && msys -c \"gcc $fileName -o a && start ./a\""    // 运行单个文件
+    },                                                                    // start $fileNameWithoutExt
+    "code-runner.runInTerminal": true,                                    // 是否在终端中运行
+
+    /* ---------------------------- LaTex ----------------------------------- */
+    "latex-workshop.latex.recipes": [
+        { "name": "xelatexmk 🔃", "tools": [ "xelatexmk" ] },
+    ],
+    "latex-workshop.latex.tools": [
+        { "name": "xelatexmk", "command": "echo", },
+    ],
+    
+    /* ---------------------- Automatic generation fucker ------------------- */
+    "terminal.integrated.defaultProfile.windows": "Command Prompt",
+    "debug.console.fontSize": 16,
+    "editor.fontSize": 16,
+    "diffEditor.ignoreTrimWhitespace": false,
+    "workbench.editorAssociations": {
+        "*.blob": "default"
+    },
+    "remote.SSH.remotePlatform": {
+        "172.20.10.3": "linux",
+        "192.168.0.81": "windows",
+        "yfbwsl": "linux",
+        "yfb": "windows",
+        "172.16.91.128": "linux",
+        "vmubuntu18.04": "linux"
+    },
+    "workbench.editor.untitled.hint": "hidden",
+    "editor.unicodeHighlight.nonBasicASCII": false,
+    "workbench.iconTheme": "material-icon-theme",
+    "window.zoomLevel": 1,
+    "editor.unicodeHighlight.ambiguousCharacters": false,
+    "workbench.colorTheme": "One Monokai",
+    "cmake.configureOnOpen": false,
+    "git.autofetch": true,
+}
+
+
+/**
+
+---------- C/C++ launch.json 模板, 需要 -g-------------------
+Debug 的使用详情: https://code.visualstudio.com/docs/editor/debugging
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "(gdb) 启动",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/a.exe",
+            "preLaunchTask": "Build",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            "miDebuggerPath": "C:\\ProgramFiles\\msys64\\ucrt64\\bin\\gdb.exe",
+            "setupCommands": [
+            ]
+        }
+    ]
+}
+
+---------- C/C++ task.json 模板 (Ctrl+Shfit+B 启动任务) ------------
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build",
+            "type": "shell",
+            "command": "msys -c \"make\"",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
+
+---------- 一些使用技巧 ------------
+* 代码片段配置: 
+  点击右边设置-> 配置用户代码片段, 生成网站 https://snippet-generator.app/
+  回到上一个片段: Shit+Tab, 代码片段中中退出Vim模式: A
+  更多信息参考: https://code.visualstudio.com/docs/editor/userdefinedsnippets
+
+* Debug 红色圆点右击可设置中断点属性
+
+*/
