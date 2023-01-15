@@ -1,3 +1,4 @@
+BLOG_SOURCE_DIR = _myblog
 
 help:
 	@echo "push 			-- 推送到远程仓库."
@@ -12,5 +13,13 @@ cleanpath:
 	@Scripts/cleanpath.sh .
 
 blog:
-	@Scripts/generateblog.sh .
+	@Scripts/generateblog.sh . $(BLOG_SOURCE_DIR)
 
+blog_server:
+	make blog && cd $(BLOG_SOURCE_DIR) && hexo server
+
+blog_deploy:
+	make blog && cd $(BLOG_SOURCE_DIR) && hexo deploy
+
+blog_template:
+	@Scripts/blogtemplate.sh

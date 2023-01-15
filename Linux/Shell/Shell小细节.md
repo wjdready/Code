@@ -1,3 +1,11 @@
+---
+mytags: myblog
+title: Shell 小细节
+date: 2023-01-15 10:28:54
+categories: Linux
+tags: Shell 脚本
+---
+
 * 屏蔽命令执行的出错信息
    ```
    ls a 2> /dev/null 
