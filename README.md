@@ -22,7 +22,7 @@ fullclean:
 	make clean 
 ```
 
-第一行的 `# [MyProject]` 指明模板类型, 如果改行不存在，扫描脚本将忽略该 Makefile
+第一行的 `# [MyProject]` 指明模板类型, 如果该行不存在，扫描脚本将忽略该 Makefile
 
 * MyProject 模板须包含 `run`, `clean`, `fullclean` 目标, 
   其中 `fullclean` 目标是顶层目录 Makefile 在清除所有不必要文件时调用的,
