@@ -48,3 +48,5 @@ tags:
 
 其中 `mytags: myblog` 必须存在并放在第二行, 否则扫描脚本会跳过该 Markdown 文件, 可执行 make blog_template 来输出模板.
 
+对于根目录下的文件夹, 如果是 `.` 或 `_` 开头的文件夹, 扫描脚本会进行忽略，请不要将要发布的 Markdown 文档放到这些文件夹下, 比如 .vscode 文件夹.
+
