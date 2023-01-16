@@ -1,5 +1,12 @@
-# Latex 入门（一） 
+---
+mytags: myblog
+title: Latex 入门 1
+date: 2023-01-16 11:00:37
+categories: [Latex, 入门]
+tags: [Latex, 入门]
+---
 
+# Latex 入门（一） 
 
 ## 1. 程序发展介绍
 
