@@ -1,3 +1,10 @@
+---
+mytags: myblog
+title: Windows作为服务器远程控制
+date: 2023-01-16 10:45:44
+categories: [Windows, 实践]
+tags: [SSH, 远程控制]
+---
 
 #### 安装 SSH 和 WSL
 修改 C:/ProgramData/ssh/sshd_config
