@@ -2,5 +2,4 @@
 *.out
 *.exe
 build/
-__tmp/
-_myblog/
+_*/
