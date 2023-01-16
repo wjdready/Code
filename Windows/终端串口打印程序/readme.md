@@ -1,4 +1,12 @@
-<!-- myblog -->
+---
+mytags: myblog
+title: 终端串口打印程序
+date: 2023-01-16 10:06:42
+categories: Windows
+tags: [串口通信, 工具]
+---
+
+实现一个终端串口打印程序
 
 serial.c
 ```c
