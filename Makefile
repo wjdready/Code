@@ -15,7 +15,7 @@ push:
 
 simple:
 	make cleanpath
-	git add . && git commit -m "1"
+	git add . && git commit -m "1"	|| true
 	make push
 	make blog_deploy
 
