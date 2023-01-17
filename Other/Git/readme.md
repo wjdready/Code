@@ -1,5 +1,5 @@
 
-# Git 使用
+# Git 常用操作
 
 ```sh
 git remote add origin xxx.git
@@ -16,4 +16,16 @@ git push -u gitee_origin master
 
 # 拉取
 git pull origin master 
+```
+
+* 子模块
+
+下载的源码中包含有另一个模块
+
+```sh
+# 初始化模块依赖
+git submodule init
+
+# 更新模块信息
+git submodule update
 ```
