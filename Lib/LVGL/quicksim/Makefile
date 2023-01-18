@@ -22,4 +22,4 @@ clean:
 	rm  build -rf 2> /dev/null || true
 
 fullclean:
-	make run 
+	make clean 
