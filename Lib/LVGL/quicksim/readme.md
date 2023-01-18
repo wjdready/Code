@@ -123,6 +123,7 @@ static void hal_init(void)
   lv_img_set_src(cursor_obj, &mouse_cursor_icon);           /*Set the image source*/
   lv_indev_set_cursor(mouse_indev, cursor_obj);             /*Connect the image  object to the driver*/
 }
+```
 
 然后写参照官方仿真例子写 CMakeLists.txt 
 ```cmake
