@@ -23,3 +23,5 @@ clean:
 
 fullclean:
 	make clean 
+	rm lvgl -rf 
+
