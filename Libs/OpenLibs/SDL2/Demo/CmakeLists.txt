@@ -6,4 +6,4 @@ add_executable(a main.c)
 
 # 链接库和依赖
 find_package(SDL2 REQUIRED SDL2)
-target_link_libraries(a SDL2::SDL2-static)
+target_link_libraries(a SDL2::SDL2main SDL2::SDL2-static)

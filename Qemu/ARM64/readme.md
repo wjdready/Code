@@ -1,4 +1,13 @@
-<!-- myblog -->
+---
+mytags: myblog
+title: QEMU ARM64 仿真
+date: 2023-01-18 08:04:16
+categories: [QEMU, ARM64]
+tags: [QEMU, 仿真]
+---
+
+本文主要介绍如何通过 QEMU 仿真 ARM64 板子
+<!-- more -->
 
 # QEMU ARM64
 
