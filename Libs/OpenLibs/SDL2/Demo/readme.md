@@ -6,7 +6,7 @@ categories: [SDL2, 入门]
 tags: [SDL2]
 ---
 
-本文主要介绍 SDL2 的基本使用.
+本文主要介绍 SDL2 库的基本使用.
 <!-- more -->
 
 一个简单的 SDL2 程序
@@ -59,7 +59,8 @@ gcc main.c -lmingw32 -lSDL2main -lSDL2
 
 若去掉 `-lmingw32 -lSDL2main` 则需要在 `#include <SDL2/SDL.h>` 之前添加 `#define SDL_MAIN_HANDLED` 以避免找不到 `WinMain`
 
-SDL_MAIN_HANDLED 在 sdl_main.h 中有如下定义
+因为 SDL_MAIN_HANDLED 在 sdl_main.h 中有如下定义
+
 ```c
 #ifndef SDL_MAIN_HANDLED
 #if defined(__WIN32__)
