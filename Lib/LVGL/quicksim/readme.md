@@ -187,3 +187,12 @@ clean:
 ```
 
 可以将 lvgl 下的 `lv_conf.h` 和 `lv_drv_conf.h` 复制到 src 下而不用对 lvgl 源码进行任何修改
+
+### 使用方法
+
+复制 quicksim 文件夹并重命名, 执行 make 即可.
+
+lv_config.h 中设置一些常用配置
+
+* `LV_USE_MEM_MONITOR` 是否显示内存统计
+* `LV_USE_PERF_MONITOR`  是否显示帧率
