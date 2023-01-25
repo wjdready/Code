@@ -21,5 +21,7 @@ int main(void)
     qDebug() << "a value " << a.value();
     qDebug() << "b value " << b.value();
 
+    getchar();
+    
     return 0;
 }
