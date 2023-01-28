@@ -1,6 +1,6 @@
 ---
 mytags: myblog
-title: GTK Packing
+title: GTK Custom Drawing
 date: 2023-01-21 21:06:02
 categories: [GTK]
 tags: [入门]
