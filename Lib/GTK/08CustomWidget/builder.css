@@ -1,0 +1,16 @@
+
+button {
+    border: 1px solid black;
+}
+
+#myButton {                  
+    background: #669999;
+    text-shadow: 1px 1px 5px black;
+    box-shadow: 0px 0px 5px black;
+    margin: 20px;
+}
+
+.myClass {
+    color: red;   
+}
+
