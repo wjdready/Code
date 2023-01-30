@@ -1,0 +1,48 @@
+/* 
+button {
+    border: 1px solid black;
+} */
+
+#windowid {
+    background: #e5cccc;
+}
+#myButton {                  
+
+    border-radius: 10px;
+    background: linear-gradient(145deg, #f5dada, #ceb8b8);
+    box-shadow:  6px 6px 12px #9c8b8b,
+                 -6px -6px 12px #ffffff;
+
+    color: rgb(95, 94, 94);
+    /* border-radius: 10px; */
+    border: 0px;
+    margin: 20px;
+    padding: 10px;
+    min-width: 200px;
+    min-height: 150px;
+}
+
+
+                          
+#myButton:hover {                  
+    background: #e5cccc;
+    box-shadow:  6px 6px 12px #d3bcbc,
+                 -6px -6px 12px #f7dcdc;
+    
+}
+
+
+#myButton:active {                  
+    /* background: linear-gradient(315deg, #cccccc, #acacac); */
+    background: #e5cccc;
+    box-shadow: inset 6px 6px 12px #d3bcbc,
+                inset -6px -6px 12px #f7dcdc;
+}
+
+.myClass {
+    color: rgb(58, 58, 58);   
+}
+
+.myClass2 {
+    font-size:medium; 
+}
