@@ -31,12 +31,12 @@ static void activate(GtkApplication *app, gpointer user_data)
     g_signal_connect_swapped(button, "clicked", G_CALLBACK(quit_cb), window);
 
     /* 加载 CSS 样式到整个窗口 */
-    GdkDisplay *display = gtk_widget_get_display (GTK_WIDGET (button));
+    GdkDisplay *display = gtk_widget_get_display (GTK_WIDGET (window));
     GtkCssProvider *provider = gtk_css_provider_new ();
     gtk_css_provider_load_from_path(provider, "mybuilder.css");
     gtk_style_context_add_provider_for_display (display, GTK_STYLE_PROVIDER (provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
-    gtk_widget_show(GTK_WIDGET(button));
+    gtk_widget_show(GTK_WIDGET(window));
 
     g_object_unref(builder);
 }
