@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
     <object id="window" class="GtkWindow">
+        <property name="name">windowid</property>
         <property name="title">Grid</property>
-
         <child>
             <object id="grid" class="GtkGrid">
+            <property name="halign">center</property>
+            <property name="valign">center</property>
                 <child>
                     <object id="button1" class="GtkButton">
                         <property name="label">Button 1</property>
@@ -28,6 +30,7 @@
                 </child>
                 <child>
                     <object id="quit" class="GtkButton">
+                        <property name="name">myButton</property>
                         <property name="label">Quit</property>
                         <layout>
                             <property name="column">0</property>

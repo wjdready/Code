@@ -76,7 +76,6 @@ int main(int argc, char *argv[])
 <interface>
     <object id="window" class="GtkWindow">
         <property name="title">Grid</property>
-
         <child>
             <object id="grid" class="GtkGrid">
                 <child>
@@ -103,6 +102,9 @@ int main(int argc, char *argv[])
                 <child>
                     <object id="quit" class="GtkButton">
                         <property name="label">Quit</property>
+                        <style>
+                            <class name="myClass" />
+                        </style>
                         <layout>
                             <property name="column">0</property>
                             <property name="row">1</property>
@@ -174,24 +176,45 @@ GTK 的 CSS 有几种基本选择器，如下:
 
    ```xml
    <object id="button2" class="GtkButton">
+        <property name="label">Button 2</property>
+        <style>
+            <class name="myClass"/>
+            <class name="myClass2"/>
+            <class name="myClass3"/>
+        </style>
+   </object>
+   ```
+   另外, 注意到 `gtk_style_context_add_class` 是 add 也就是说和 HTML 类似的, 即一个元素可以同时添加多个类来描述
+
+   当然如果使用的是 `property`, 同时加入多个 property class 并不能添加多个 class, 但是 property 和 style 组合使用也是可以叠加的, 所以可以先使用 `property` 作为主调, 然后 style 则是附加的修饰.
+   ```xml
+   <object id="button2" class="GtkButton">
        <property name="label">Button 2</property>
        <property name="css-classes">myClass</property>
    </object>
    ```
 
-   另外, 注意到 `gtk_style_context_add_class` 是 add 也就是说和 HTML 类似的, 即一个元素可以同时添加多个类来描述
+   ```xml
+   <object id="button2" class="GtkButton">
+       <property name="label">Button 2</property>
+       <property name="css-classes">myClass</property>
+       <style>
+            <class name="myClass2"/>
+            <class name="myClass3"/>
+        </style>
+   </object>
+   ```
 
-   类选择器使用 `#` 开头, 比如
+   类选择器使用 `.` 开头, 比如
     ```css
     .myClass {
         color: red;   
     }
     ```
+
 3. id 选择器
    
-   所谓的 id 就是 Object 的 name 属性, 而且这个 name 是唯一的, 如果使用 css 为某一个 id 设置, 则其他元素无法公用, 因为 id 选择器一般用于设置页面中唯一性的元素。
-   
-   可通过下面函数来设置 widget 的 name 属性
+   所谓的 id 就是 Object 的 name 属性, 可通过下面函数来设置 widget 的 name 属性
 
    ```
    gtk_widget_set_name
@@ -203,8 +226,33 @@ GTK 的 CSS 有几种基本选择器，如下:
    <object id="button2" class="GtkButton">
        <property name="label">Button 2</property>
        <property name="name">myButton</property>
-       <property name="css-classes">myClass</property>
    </object>
    ```
+    
+    css 中的 id 定义好后也是可以同时给多个 Object 使用的, 只要 Object 添加对应的 name 属性即可.
 
-https://neumorphism.io/#e5cccc
+    类选择器使用 `.` 开头, 比如
+    ```css
+    #myButton {                  
+        background: #669999;
+        text-shadow: 1px 1px 5px black;
+        box-shadow: 0px 0px 5px black;
+        margin: 20px;
+    }
+    ```
+
+### 使用 gtk-builder-tools 预览 ui 文件
+
+```shell
+# --css 可选
+gtk4-builder-tool preview builder.ui --css=builder.css
+# 也可以使用 screenshot 来生成截图
+gtk4-builder-tool screenshot builder.ui --css=builder.css --force
+```
+
+screenshot 真的很好用, 这样就可以一边写一边预览, 通过 VSCode 快捷键, 写的同时可以同步预览, 唯一比较遗憾的是截图的方式不能体验交互,比如 css 的 `hover` 需要实际运行程序才能知道.
+
+### Tips
+
+一个快速生成拟物风格的[网页](https://neumorphism.io/#e5cccc)
+
