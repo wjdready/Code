@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+    <object id="window" class="GtkWindow">
+        <property name="title">Grid</property>
+        <property name="default-width">300</property>
+        <property name="default-height">300</property>
+        <child>
+            <object id="box" class="GtkBox">
+                <property name="orientation">vertical</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="css-classes">box</property>
+
+                <!-- box child 0 -->
+                <child>
+                    <object id="box2" class="GtkBox">
+                        <property name="orientation">vertical</property>
+                        <property name="halign">center</property>
+                        <property name="orientation">horizontal</property>
+                        <property name="css-classes">box</property>
+                        
+                        <child>
+                            <object id="button1" class="GtkButton">
+                                <property name="label">Button 2</property>
+                                <property name="css-classes">boxbutton</property>
+                            </object>
+                        </child>
+
+                        <child>
+                            <object id="button3" class="GtkButton">
+                                <property name="label">Button 3</property>
+                                <property name="css-classes">boxbutton</property>
+                            </object>
+                        </child>
+
+                    </object>
+                </child>
+
+  
+                <!-- box child 2 -->
+                <child>
+                    <object id="label1" class="GtkLabel">
+                        <property name="label">Hello World</property>
+                        <property name="css-classes">boxbutton</property>
+                    </object>
+                </child>
+
+                <child>
+                    <object id="button2" class="GtkButton">
+                        <property name="label">Button 2</property>
+                    </object>
+                </child>
+                
+            </object>
+        </child>
+    </object>
+</interface>
