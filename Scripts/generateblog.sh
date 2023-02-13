@@ -27,7 +27,11 @@ function loop_for_markdown
     fi
 
     local dir=$1
+
+    IFS=$'\n'   # 仅使用 \n 分割 file list 以支持文件或文件夹的空格名称
     for file in $(find $dir -type f -name "*.md"); do
+        # 略过 . _ 开头的文件或文件夹
+        echo $file | grep -q "^.*/[_.].*" && continue
 
         local head_title=$(sed -n '2p' $file)
 
