@@ -1,3 +1,13 @@
+---
+mytags: myblog
+title: QT 样式 Qss
+date: 2023-02-13 09:22:05
+categories: [QT, UI, Style, Qss]
+tags: [QT, Style]
+---
+
+本文主要介绍 Qss 的使用
+<!-- more -->
 
 # Qss
 
