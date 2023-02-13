@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+    <object id="window" class="GtkWindow">
+        <property name="can-focus">False</property>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkPaned">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkBox">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="label" translatable="yes">串口号</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkComboBoxText">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <items>
+                              <item translatable="yes">COM33</item>
+                              <item translatable="yes">COM12</item>
+                              <item translatable="yes">COM4</item>
+                              <item translatable="yes">COM13</item>
+                            </items>
+                            <style>
+                              <class name="config_combox"/>
+                            </style>
+                          </object>
+                        </child>
+                        <style>
+                          <class name="boxofSerialConfig"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkBox">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="label" translatable="yes">波特率</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkComboBoxText">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <items>
+                              <item translatable="yes">400</item>
+                              <item translatable="yes">9600</item>
+                              <item translatable="yes">48600</item>
+                              <item translatable="yes">115200</item>
+                            </items>
+                            <style>
+                              <class name="config_combox"/>
+                            </style>
+                          </object>
+                        </child>
+                        <style>
+                          <class name="boxofSerialConfig"/>
+                        </style>
+                      </object>
+                      
+                    </child>
+                    <child>
+                      <object class="GtkBox">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="label" translatable="yes">停止位</property>
+                          </object>
+                          
+                        </child>
+                        <child>
+                          <object class="GtkComboBoxText">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <items>
+                              <item translatable="yes">1</item>
+                              <item translatable="yes">2</item>
+                              <item translatable="yes">4</item>
+                              <item translatable="yes">8</item>
+                            </items>
+                            <style>
+                              <class name="config_combox"/>
+                            </style>
+                          </object>
+                          
+                        </child>
+                        <style>
+                          <class name="boxofSerialConfig"/>
+                        </style>
+                      </object>
+                      
+                    </child>
+                    <child>
+                      <object class="GtkBox">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="label" translatable="yes">控制流</property>
+                          </object>
+                          
+                        </child>
+                        <child>
+                          <object class="GtkComboBoxText">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <items>
+                              <item translatable="yes">无</item>
+                              <item translatable="yes">硬件</item>
+                              <item translatable="yes">软件</item>
+                            </items>
+                            <style>
+                              <class name="config_combox"/>
+                            </style>
+                          </object>
+                          
+                        </child>
+                        <style>
+                          <class name="boxofSerialConfig"/>
+                        </style>
+                      </object>
+                      
+                    </child>
+                    <style>
+                      <class name="motherbox"/>
+                    </style>
+                  </object>
+                  
+                </child>
+                <child>
+                  <object class="GtkPaned">
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkTextView">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                      </object>
+                      
+                    </child>
+                    <child>
+                      <object class="GtkBox">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <child>
+                          <object class="GtkTextView">
+                            <property name="visible">True</property>
+                            <property name="can-focus">True</property>
+                          </object>
+                          
+                        </child>
+                        <child>
+                          <object class="GtkButton">
+                            <property name="label" translatable="yes">button</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">True</property>
+                            <property name="receives-default">True</property>
+                          </object>
+                          
+                        </child>
+                      </object>
+                      
+                    </child>
+                  </object>
+                  
+                </child>
+              </object>
+              
+            </child>
+          </object>
+        </child>
+    </object>
+</interface>

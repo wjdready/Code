@@ -1,0 +1,37 @@
+
+
+/* button {
+    padding: 5px;
+    margin: 5px;
+    margin-top: 5px;
+    border-width: 1px;
+    border-color: black;
+} */
+
+.config_combox button {
+    border-width: 0px;
+    border: 0px;
+    margin: 5px;
+    padding: 5px;
+}
+
+
+
+.boxofSerialConfig  {
+    /* border: 1px solid black;
+    padding: 3px;
+    margin: 2px;
+    border-radius: 5px; */
+    margin: 5px;
+    background-color: antiquewhite;
+    border-radius: 5px;
+}
+
+.motherbox {
+    /* border: 1px solid black;
+    padding: 3px;
+    border-radius: 5px;
+    margin: 5px; */
+    background-color: white;
+}
+
