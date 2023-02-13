@@ -18,7 +18,7 @@
   ```shell
   idf.py build flash monitor
   ```
-  你可以只执行其中的一个或两个，清除可用 `fullclean`
+  你可以只执行其中的一个或两个，清除可用 `globalclean`
 * CMakeLists.txt 文件
   * 下面是用来设置源文件和头文件路径
     ```Cmake

@@ -13,5 +13,5 @@ clean:
 build_exe:
 	pyinstaller --onefile --nowindowed  demo.py
 
-fullclean:
+globalclean:
 	make clean

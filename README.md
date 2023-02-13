@@ -18,15 +18,20 @@ run:
 clean:
 	@rm ./a.exe 2> /dev/null || true 
 
-fullclean:
+globalclean:
 	make clean 
+
+fullclean:
+	make clean
+
 ```
 
 第一行的 `# [MyProject]` 指明模板类型, 如果该行不存在，扫描脚本将忽略该 Makefile
 
-* MyProject 模板须包含 `run`, `clean`, `fullclean` 目标, 
-  其中 `fullclean` 目标是顶层目录 Makefile 在清除所有不必要文件时调用的,
-  `clean` 则可用于本地调试代码时清除临时数据用的
+* MyProject 模板须包含 `run`, `clean`, `globalclean` 目标, 
+  其中 `globalclean` 目标是顶层目录 Makefile 在清除不必要文件时调用的,
+  `clean` 则可用于本地调试代码时清除临时数据用的, `fullclean` 用于完全清理， 他会对所有临时文件或中间不必要文件进行删除,
+  这可能会删除一些下载的包, 因此谨慎使用.
 
 ## 博客自动生成系统
 

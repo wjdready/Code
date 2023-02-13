@@ -13,5 +13,5 @@ clean:
 cmake_build:
 	mkdir build -p && cd build && cmake .. -G "MSYS Makefiles" && make -j8
 
-fullclean:
+globalclean:
 	make clean

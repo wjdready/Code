@@ -9,7 +9,7 @@ run:
 clean:
 	@rm ./a.exe 2> /dev/null || true
 
-fullclean:
+globalclean:
 	@rm ./a.exe 2> /dev/null || true
 
 static_lib_create:
