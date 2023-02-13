@@ -1,57 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-    <object id="window" class="GtkWindow">
-        <property name="title">Grid</property>
-        <property name="default-width">300</property>
-        <property name="default-height">300</property>
+  <object class="GtkWindow" id="window">
+    <property name="resizable">0</property>
+    <property name="default-width">500</property>
+    <property name="default-height">500</property>
+    <child type="titlebar">
+      <object class="GtkHeaderBar">
         <child>
-            <object id="box" class="GtkBox">
-                <property name="orientation">vertical</property>
-                <property name="halign">center</property>
-                <property name="valign">center</property>
-                <property name="css-classes">box</property>
-
-                <!-- box child 0 -->
-                <child>
-                    <object id="box2" class="GtkBox">
-                        <property name="orientation">vertical</property>
-                        <property name="halign">center</property>
-                        <property name="orientation">horizontal</property>
-                        <property name="css-classes">box</property>
-                        
-                        <child>
-                            <object id="button1" class="GtkButton">
-                                <property name="label">Button 2</property>
-                                <property name="css-classes">boxbutton</property>
-                            </object>
-                        </child>
-
-                        <child>
-                            <object id="button3" class="GtkButton">
-                                <property name="label">Button 3</property>
-                                <property name="css-classes">boxbutton</property>
-                            </object>
-                        </child>
-
-                    </object>
-                </child>
-
-  
-                <!-- box child 2 -->
-                <child>
-                    <object id="label1" class="GtkLabel">
-                        <property name="label">Hello World</property>
-                        <property name="css-classes">boxbutton</property>
-                    </object>
-                </child>
-
-                <child>
-                    <object id="button2" class="GtkButton">
-                        <property name="label">Button 2</property>
-                    </object>
-                </child>
-                
-            </object>
+          <object class="GtkBox">
+            <style>
+              <class name="linked"/>
+            </style>
+            <child>
+              <object class="GtkButton">
+                <property name="icon-name">go-previous-symbolic</property>
+                <signal name="clicked" handler="iconscroll_prev_clicked_cb"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton">
+                <property name="icon-name">go-next-symbolic</property>
+                <signal name="clicked" handler="iconscroll_next_clicked_cb"/>
+              </object>
+            </child>
+          </object>
         </child>
-    </object>
+        <child type="end">
+          <object class="GtkLabel" id="fps_label">
+            <attributes>
+              <attribute name="font-features" value="tnum=1"/>
+            </attributes>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkScrolledWindow" id="scrolledwindow">
+        <property name="hscrollbar-policy">never</property>
+        <property name="hadjustment">
+          <object class="GtkAdjustment" id="hadjustment"/>
+        </property>
+        <property name="vadjustment">
+          <object class="GtkAdjustment" id="vadjustment"/>
+        </property>
+      </object>
+    </child>
+  </object>
 </interface>

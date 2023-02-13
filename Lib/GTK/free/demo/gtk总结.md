@@ -2,6 +2,8 @@
 
 ### GtkBox
 
+## 控件属性
+
 .ui 文件中 使用
 
 ```xml
@@ -21,3 +23,6 @@
 * halign, halign 
   设置 widget 水平、垂直方向的对齐方式
   * center
+
+
+## 布局
