@@ -1,0 +1,8 @@
+<RCC>
+  <qresource prefix="/">
+    <file>image/emoji_celebrate.png</file>
+    <file>style/style_default.qss</file>
+    <file>font/iconfont.ttf</file>
+    <file>font/myfont.otf</file>
+  </qresource>
+</RCC>

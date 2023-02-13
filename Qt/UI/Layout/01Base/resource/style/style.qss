@@ -1,0 +1,71 @@
+
+QWidget {
+    background-color: rgb(237, 237, 237);
+    font-family: Microsoft YaHei;
+}
+
+QTextEdit {
+    background-color: white;
+    border-color: rgb(31, 31, 30);
+    min-width: 200px;
+    min-height: 100px; 
+    border-radius: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
+    padding: 20px;
+} 
+
+QComboBox {
+    border-radius: 5px;
+    padding: 1px 18px 1px 3px;
+    min-width: 60px;
+    min-height: 30px;
+    margin: 5px;
+    background-color: white;
+}
+
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 10px;
+    
+    border-radius: 5px;
+    background-color: white;
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+
+QComboBox::drop-down :hover {
+    background-color: white;
+}
+
+QComboBox::drop-down :!hover {
+    background-color: white;
+}
+
+QPushButton {
+    background-color: rgb(7, 193, 96);
+    color: white;
+    border-radius: 5px;
+    padding: 5px;
+    min-width: 50px;
+    min-height: 30px;
+}
+
+QPushButton#btnSend {
+    min-width: 150px;
+}
+
+QPushButton:hover {
+    background-color: rgb(57, 212, 132);
+}
+
+QPushButton:pressed {
+    background-color: rgb(7, 193, 96);
+}
+
+

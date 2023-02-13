@@ -1,0 +1,66 @@
+
+@font-face {
+    font-family: "iconfont"; /* Project id  */
+    src: url(:/font/iconfont.ttf) format('truetype');
+  }
+  
+
+QWidget {
+    background-color: rgb(237, 237, 237);
+    /* font-family: Microsoft YaHei; */
+    
+}
+
+QPushButton {
+    background-color: rgba(7, 193, 96, 0.5);
+    background-image: url(:/image/emoji_celebrate.png);
+    /* background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover; */
+    /* background-attachment: fixed; */
+    font-family: Microsoft YaHei;
+    color: rgba(0, 0, 0, 1);
+    border-radius: 5px;
+    padding: 5px;
+    min-width: 3em;
+    min-height: 3em;
+}
+
+QPushButton#label, [objectName ^= btn], #pushButton {
+    font-family: Microsoft YaHei;
+}
+
+/* QPushButton#btnSend {
+    background-color: rgba(245, 6, 6, 0.5);
+}
+
+QPushButton#btnSend:hover {
+    background-color: rgba(245, 6, 6, 0.7);
+}
+
+QPushButton#btnSend:pressed {
+    background-color: rgba(245, 6, 6, 1);
+} */
+
+/* QPushButton {
+    background-color: red;
+} */
+
+
+.QPushButton:hover {
+    background-color: rgba(7, 193, 96, 0.7);
+    /* opacity: 200; */
+    /* font-family: iconfont; */
+    /* background-image: "0xe60c"; */
+
+}
+
+.QPushButton:pressed {
+    background-color: rgba(7, 193, 96, 1);
+    /* border-image: url(:/image/button2.jpg); */
+}
+
+QPushButton[objectName = pushButton_2] QPushButton {
+    background-color: red;
+}
+

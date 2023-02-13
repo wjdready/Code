@@ -1,0 +1,7 @@
+<RCC>
+  <qresource prefix="/">
+    <file>image/emoji_celebrate.png</file>
+    <file>image/dog.jpg</file>
+    <file>style/style_default.qss</file>
+  </qresource>
+</RCC>
