@@ -21,7 +21,7 @@ run:
 clean:
 	rm  build -rf 2> /dev/null || true
 
-fullclean:
+globalclean:
 	make clean 
 	rm lvgl -rf 
 

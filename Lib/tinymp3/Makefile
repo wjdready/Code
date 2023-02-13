@@ -20,6 +20,6 @@ build:
 clean:
 	@rm test.mp3 $(target) 2> /dev/null || true
 
-fullclean:
+globalclean:
 	@make clean 2> /dev/null || true
 	@rm ./tinymp3 -rf 2> /dev/null || true

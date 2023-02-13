@@ -13,6 +13,6 @@ uic:
 clean:
 	@rm build -rf 2> /dev/null || true
 
-fullclean:
+globalclean:
 	@rm build -rf 2> /dev/null || true
 

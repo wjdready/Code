@@ -28,5 +28,5 @@ clean:
 run:
 	./exampleapp
 
-fullclean:
+globalclean:
 	make clean
