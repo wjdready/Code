@@ -1,0 +1,138 @@
+
+
+
+QWidget {
+    background-color: rgb(237, 237, 237);
+    font-family: Microsoft YaHei;
+}
+
+QTextEdit {
+    background-color: white;
+    border-color: rgb(31, 31, 30);
+    min-width: 200px;
+    min-height: 100px; 
+    border-radius: 10px;
+    margin-right: 10px;
+    margin-left: 10px; 
+    padding: 20px;
+}
+
+QLineEdit {
+    background-color: white;
+    border-color: rgb(31, 31, 30);
+    border-radius: 10px;
+    margin-right: 10px;
+    margin-left: 10px; 
+    padding: 20px;
+}
+QComboBox {
+    border-radius: 5px;
+    padding: 1px 18px 1px 3px;
+    min-width: 60px;
+    min-height: 30px;
+    margin: 5px;
+    background-color: white;
+}
+
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 10px;
+    
+    border-radius: 5px;
+    background-color: white;
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+
+QComboBox::drop-down :hover {
+    background-color: white;
+}
+
+QComboBox::drop-down :!hover {
+    background-color: white;
+}
+
+QPushButton {
+    background-color: rgba(7, 193, 96, 1);
+    /* background-image: url(:/image/emoji_celebrate.png); */
+    /* background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover; */
+    /* background-attachment: fixed; */
+    color: rgb(255, 255, 255);
+    border-radius: 5px;
+    padding: 5px;
+    /* min-width: 3em;
+    min-height: 3em; */
+/* 
+    border-width: 2px;
+    border-style: outset;
+    border-color: black; */
+    
+}
+
+
+QPushButton#btnSend {
+    min-width: 150px;
+}
+
+QPushButton:hover {
+    background-color: rgba(7, 193, 96, 0.7);
+}
+
+QPushButton:pressed {
+    background-color: rgba(7, 193, 96, 1);
+}
+
+
+/* QLabel {
+    margin: 5px;
+    padding: 5px;
+    border-width: 2px;
+    border-style: outset;
+    border-color: black;
+    min-height: 100px;
+    background-color: rgb(198, 112, 0);
+} */
+
+QListView#listWidget {
+    padding: 0px;
+    margin: 0px;
+    border-width: 0px;
+    border-style: outset;
+    border-color: black;
+    border-radius: 10px;
+}
+
+QFrame#frame {
+    padding: 0px;
+    margin: 0px;
+    /* background-color: rebeccapurple; */
+    /* border-width: 2px;
+    border-color: black; */
+}
+
+QWidget[objectName = ListItem] QFrame[objectName = ListItemFram] {
+    /* border-width: 2px;
+    border-style: outset;
+    border-color: black; */
+    border-radius: 10px;
+    background-color: white;
+}
+
+QWidget[objectName = ListItem] QFrame[objectName = ListItemFram]:hover {
+    background-color: white;
+}
+
+QWidget[objectName = ListItem] QLabel {
+    /* border-width: 2px;
+    border-style: outset;
+    border-color: black; */
+    border-radius: 10px;
+    background-color: white;
+}
