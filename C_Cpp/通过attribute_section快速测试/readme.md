@@ -65,123 +65,251 @@ int main(int argc, char const *argv[])
 
 有了上面的基础, 就可以尝试写快速测试的代码了，一般来说我们希望快速测试一个函数, 编写完后在函数下面通过一个宏定义 TEST_FUNC_ADD 就可以将函数插入到测试代码的行列。
 
-test.h
+test_command.c
+
+```c
+#include "test_command.h"
+#include <stdio.h>
+#include <string.h>
+
+#ifdef __ARMCC_VERSION /* ARM C Compiler */
+extern test_command_t test_command_section$$Base;
+extern test_command_t test_command_section$$Limit;
+test_command_t *test_command_section_begin = &(test_command_section$$Base);
+test_command_t *test_command_section_end = &(test_command_section$$Limit);
+#elif defined(__GNUC__)
+extern test_command_t __start_test_command_section;
+extern test_command_t __stop_test_command_section;
+test_command_t *test_command_section_begin = &__start_test_command_section;
+test_command_t *test_command_section_end = &__stop_test_command_section;
+#else
+#error "The platform is not supported"
+#endif
+
+#define foreach_command(item)                                                                              \
+    for (test_command_t *item = test_command_section_begin; item != test_command_section_end; item++)
+
+/* 快速定义内部命令, 内部命令什么也不做只是用来显示和提供帮助 */
+#define TEST_FUN_ADD_INTERNAL(label, n, d)                                                                 \
+    static int _##label(int argc, char **argv)                                                             \
+    {                                                                                                      \
+        return 0;                                                                                          \
+    }                                                                                                      \
+    EXPORT_TEST_COMMAND(_##label, n, d)
+
+/* 添加内部命令 */
+TEST_FUN_ADD_INTERNAL(last_result, "r", "Get last command exec result");
+TEST_FUN_ADD_INTERNAL(all_command, "a", "Show all supported command");
+
+/* 将给定字符串拆分成参数列表 */
+static int test_command_get_args(char *command_string, const char *tokens, int argc_max, char **argv)
+{
+    int argc = 0;
+    char *token = strtok(command_string, tokens);
+
+    while (token != NULL)
+    {
+        argv[argc++] = token;
+        if (argc >= argc_max)
+            break;
+
+        token = strtok(NULL, tokens);
+    }
+
+    return argc;
+}
+
+/**
+ * @brief 处理给定的输入字符串
+ *
+ * 例如 echo "Hello"
+ *
+ * @param input_string 输入字符串
+ *
+ * @return int
+ */
+int test_command(char *input_string)
+{
+    char *argv[32] = {0};
+    static int result = 0;
+
+    int argc = test_command_get_args(input_string, " \n", 31, argv);
+    if (argc == 0)
+        return -1;
+
+    if (strcmp(argv[0], "a") == 0 || strcmp(argv[0], "help") == 0)
+    {
+        foreach_command(entry) test_command_printf("    %-15s\t -- %s\n", entry->name, entry->desc);
+
+        return 0;
+    }
+
+    /* 打印上一次命令执行结果 */
+    if (strcmp(argv[0], "r") == 0)
+    {
+        test_command_printf("%d\n", result);
+        return 0;
+    }
+
+    foreach_command(entry)
+    {
+        if (strcmp(entry->name, argv[0]) == 0)
+        {
+            result = entry->fun(argc, argv);
+            return result;
+        }
+    }
+
+    test_command_printf("Command %s not found\n", argv[0]);
+
+    return -1;
+}
+```
+
+test_command.h
 
 ```c
 #pragma once
 
+typedef int (*command_func_t)(int, char **);
+
+#define test_command_printf printf
+
 typedef struct
 {
-    void (*fun)(void);
+    int (*fun)(int, char **);
     const char *name;
     const char *desc;
     char _tmp[8]; /* 32 位对齐 */
 } test_command_t;
 
-#define SECTION __attribute((used, section("myfun_section")))
+#define TEST_COMMAND_FUNC_DEFINE(f) int f(int argc, char **argv)
 
-#define EXPORT_TEST_COMMAND(f, n, d)       \
-    static test_command_t _##f SECTION = { \
-        .fun = f,                          \
-        .name = n,                         \
-        .desc = d,                         \
+#define SECTION __attribute((used, section("test_command_section")))
+
+/**
+ * @brief 导出一个标准的测量命令
+ *      一个标准的命令应该是形如 int command(int argc, char *argv[]);
+ *      它能接收命令行参数, 并作出相应的处理, 同时还有返回值 int
+ * 例如:
+ *
+ * static int my_test_command(int argc, char *argv[])
+ * {
+ *     printf("command %s, args number: %d\n", argv[0], argc);
+ *
+ *     return 0;
+ * }
+ * EXPORT_TEST_COMMAND(my_test_command, "mytest", "打印命令参数");
+ *
+ * 一般来说, 我们可以通过定义一个标准测试命令, 并处理输入的参数来对某一个上下文定义的函数进行测试
+ */
+#define EXPORT_TEST_COMMAND(f, n, d)                                                             \
+    static test_command_t _##f SECTION = {                                                       \
+        .fun = f,                                                                                \
+        .name = n,                                                                               \
+        .desc = d,                                                                               \
     }
 
-#define TEST_FUNC_ADD(f, n, d, ...)           \
-    static void _##f(void)                    \
-    {                                         \
-        int r = f(__VA_ARGS__);               \
-        if (r == 0)                           \
-            printf("Func %s TEST OK\n", n);   \
-        else                                  \
-            printf("%s TEST ERR %d\n", n, r); \
-        return;                               \
-    }                                         \
+/**
+ * @brief 将一个已有的函数添加到测量命令里
+ *  即对一个已有的函数进行快速测试, 需要显式提供被测函数的参数
+ *
+ * 例如: 现有一个函数 add(int a, int b);
+ *
+ *      那么其导出到测试命令的写法为:
+ *
+ *      TEST_FUN_ADD(add, "add_test", "对函数 add() 进行测试, 参数为 (1,2)", 1, 2);
+ *
+ *      其中, 1, 2 是我们希望对函数进行测试的参数
+ */
+#define TEST_FUN_ADD(f, n, d, ...)                                                               \
+    static int _##f(int argc, char **argv)                                                       \
+    {                                                                                            \
+        f(__VA_ARGS__);                                                                          \
+        return 0;                                                                                \
+    }                                                                                            \
     EXPORT_TEST_COMMAND(_##f, n, d)
 
+/* -- function prototypes -- */
+
+/**
+ * @brief 处理给定的输入字符串
+ *
+ * 例如 echo "Hello"
+ *
+ * @param input_string 输入字符串
+ *
+ * @return int
+ */
+int test_command(char *input_string);
+
+/* -- END OF function prototypes -- */
 ```
 
-test.c
+main.c 
 
 ```c
-#include "test.h"
 #include <stdio.h>
-#include <string.h>
-
-/* 获取函数列表所在的内存区间 */
-extern test_command_t __start_myfun_section;
-extern test_command_t __stop_myfun_section;
-test_command_t *myfun_section_begin = &__start_myfun_section;
-test_command_t *myfun_section_end = &__stop_myfun_section;
-
-#define foreach_command(item) \
-    for (test_command_t *item = myfun_section_begin; \
-    item != myfun_section_end; item++)
-
-void func1(void)
-{
-    printf("func1: hello\n");
-}
-EXPORT_TEST_COMMAND(func1, "print", "To print hello");
-
-int func_test(int max)
-{
-    if (max < 10)
-        return 0;
-
-    return -1;
-}
-TEST_FUNC_ADD(func_test, "less", "Check less than 10", 8);
+#include "test_command.h"
 
 int main(int argc, char const *argv[])
 {
-    char command[256];
+    char input_string[1024];
 
     while (1)
     {
-        printf("\nsh# ");
-        gets(command);
-
-        if (strncmp(command, "help", 4) == 0)
-        {
-            foreach_command(entry)
-            {
-                printf("    %-15s\t -- %s\n", entry->name, entry->desc);
-            }
-
-            continue;
-        }
-
-        foreach_command(entry)
-        {
-            if (strcmp(entry->name, command) == 0)
-            {
-                entry->fun();
-                break;
-            }
-        }
+        printf("\n#sh ");
+        gets(input_string);
+    
+        test_command(input_string);
     }
-
+    
     return 0;
 }
+
+/* __TEST_COMMAND__START__ */
+#include "test_command.h"
+static int ret1(int argc, char *argv[])
+{
+    printf("Hello World\n");
+    
+    return 1;
+}
+EXPORT_TEST_COMMAND(ret1, "ret1", "return 2");
+/* __TEST_COMMAND__END__ */
+
+
+/* __TEST_COMMAND__START__ */
+#include "test_command.h"
+static int ret2(int argc, char *argv[])
+{
+    printf("Hello World\n");
+    
+    return 2;
+}
+EXPORT_TEST_COMMAND(ret2, "ret2", "return 2");
+/* __TEST_COMMAND__END__ */
+
 ```
 
-然而上述功能只能对 GCC 平台有效, 如果是 ARMCC 或是其他平台, 因为编译器不同, 方法可能不一样, 为了跨平台, 就不得不添加平台检测的宏, 比如将下面的代码替换获取 myfun_section 所在的内存区间部分即可支持 ARMCC 平台。
+makefile
 
-```c
-#ifdef __ARMCC_VERSION  /* ARM C Compiler */
-    extern test_command_t myfun_section$$Base;
-    extern test_command_t myfun_section$$Limit;
-    test_command_t *myfun_section_begin = &(myfun_section$$Base);
-    test_command_t *myfun_section_end = &(myfun_section$$Limit);
-#elif defined (__GNUC__)
-    extern test_command_t __start_myfun_section;
-    extern test_command_t __stop_myfun_section;
-    test_command_t *myfun_section_begin = &__start_myfun_section;
-    test_command_t *myfun_section_end = &__stop_myfun_section;
-#else
-    #error "The platform is not supported"
-#endif
+```makefile
+# [MyProject]
+
+default:
+	gcc main.c test_command.c
+
+run:
+	./a.exe
+
+clean:
+	@rm ./a.exe 2> /dev/null || true 
+
+globalclean:
+	make clean
 ```
 
-[参考](https://stackoverflow.com/questions/3633896/append-items-to-an-array-with-a-macro-in-c)
+
+[参考文献](https://stackoverflow.com/questions/3633896/append-items-to-an-array-with-a-macro-in-c)
+

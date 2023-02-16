@@ -1,30 +1,19 @@
 #include <stdio.h>
 #include "test_command.h"
-#include "pthread.h"
-#include <unistd.h>
-
-void *test_command_task(void * arg)
-{
-    test_command_start();
-    while (1)
-    {
-        sleep(1);
-    }
-}
 
 
 int main(int argc, char const *argv[])
 {
-    printf("Hello World\n");
-    
-    pthread_t t;
-    pthread_create(&t, NULL, test_command_task, NULL);
+    char input_string[1024];
+
     while (1)
     {
-        sleep(1);
+        printf("\n#sh ");
+        gets(input_string);
+    
+        test_command(input_string);
     }
     
-
     return 0;
 }
 
