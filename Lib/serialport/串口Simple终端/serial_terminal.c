@@ -72,7 +72,6 @@ void *serial_write_task(void * arg)
     {
         gets(buf);
         int n = strlen(buf);
-        buf[n++] = '\r';
         buf[n++] = '\n';
         if(connected)
         {
