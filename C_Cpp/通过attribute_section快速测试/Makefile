@@ -1,7 +1,7 @@
 # [MyProject]
 
 default:
-	g++ main.c test_command.c
+	gcc main.c test_command.c
 
 run:
 	./a.exe
