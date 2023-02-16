@@ -1,3 +1,14 @@
+---
+mytags: myblog
+title: 通过 __attribute( (section(x)) ) 来对函数进行快速测试
+date: 2023-02-17 00:45:08
+categories: [C/C++, 宏]
+tags: [C/C++, 宏]
+---
+
+本文主要介绍通过 __attribute( (section(x)) ) 来对函数进行快速测试
+<!-- more -->
+
 ### 通过 __attribute( (section(x)) ) 来对函数进行快速测试
 
 先从简单代码开始，以下代码通过宏 `EXPORT` 来帮助我们快速定义一个 myfun_t 变量, 所以在` EXPORT(hello); `就定义了一个 `_hello` 变量, 于是我们可以在 main 中进行访问
