@@ -80,6 +80,8 @@ void *serial_write_task(void * arg)
     }
 }
 
+char buf[4096000];
+
 int main(int argc, char const *argv[])
 {
     SetConsoleOutputCP(65001);
@@ -92,7 +94,6 @@ int main(int argc, char const *argv[])
     else 
         connected = 1;
     
-    char buf[4096];
     int buf_len = sizeof(buf);
 
     gets(buf);
@@ -111,6 +112,12 @@ int main(int argc, char const *argv[])
                 connected = 0;
                 continue;
             }
+            for (int i = 0; i < n; i++)
+            {
+                if (buf[i] == '\0')
+                    buf[i] = ' ';
+            }
+            
             printf("%.*s", n, buf);
             fflush(stdout);
         }
