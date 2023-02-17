@@ -353,6 +353,74 @@ void app_main(void)
 }
 ```
 
+裸机情况下, 结合 test_command 也可以实现简单的串口 shell
+```c
+void test_command_handler(void)
+{
+    static char input_string[1024];
+    static int ofs;
+    uint8_t ch;
+
+    /* 若有数据则一次性处理完 */
+    while (uart_read_from_rb(&huart1, &ch, 1) > 0)
+    {
+        if(ch != '\n')
+        {
+            input_string[ofs++] = ch;
+            if(ofs >= sizeof(input_string) - 1)
+                ofs = 0;
+            continue;
+        }
+
+        input_string[ofs] = '\0';
+        test_command(input_string);
+        ofs = 0;
+        printf("\n#sh ");
+    }
+}
+
+void app_main(void)
+{
+    uart_com_init();
+
+    printf("\n#sh ");
+    
+    while (1)
+    {
+        test_command_handler();
+
+        HAL_Delay(10);
+    }
+}
+```
+
+### 移植技巧 (Cubemx)
+
+要使用上面的串口驱动, 可在 Cubemx 中选中相应的串口, 比如 USART1
+
+* Mode 选 Asynchronous 异步通信
+* DMA Settings 添加 RX 和 TX, 注意 RX 的 DMA Mode 为 Circular, 即循环接收
+* NVIC Settings 里将 global interrupt 打勾, 这是给 IDLE 中断用的
+
+其他默认就行了, 但是需要注意的一点是, 在最开始配置串口功能的时候要记得把 DMA 也配置了再输出工程, 因为这里面有一个坑.
+
+如果是使能了串口功能但是不配置 DMA 就输出先输出工程, 到后面才去添加串口 DMA, 输出的初始化函数顺序如下:
+
+```c
+MX_USART1_UART_Init();
+MX_DMA_Init();
+```
+
+如果在使能串口功能的同时就把DMA 也配置了, 输出的初始化函数顺序如下:
+```c
+MX_DMA_Init();
+MX_USART1_UART_Init();
+```
+
+你会发现, 只有第二种情况能工作, 因为 MX_USART1_UART_Init 函数里面依赖 MX_DMA_Init 里面的 DMA handle, 第一种先初始化了串口, 而这时 DMA handle 是不可用的, 因此 DMA 功能失效, 这应该是 Cubemx 的一个 BUG, 我目前使用的版本 V6.6.0 仍有这个 BUG, 不知后面会不会更改.
+
+但是, 如果你真的不小心忘记配置 DMA 就先输出工程也是可以重新设置初始化顺序的, 可在 Project Manager 下的 Advanced Settings 中重新设置顺序.
+
 ### 参考文献
 
 程序中使用到了开源的环形缓冲器的实现 [lwrb](https://github.com/MaJerle/lwrb.git)
@@ -360,4 +428,9 @@ void app_main(void)
 另外, 禁用半主机模式的部分参考了 [Disable semihosting with ARM Compiler 5/6](https://mklimenko.github.io/english/2018/11/02/disable-semihosting/)
 
 是否使用 MicroLib 的宏 `__MICROLIB` 参考了 ARM 官方源码里面的 [ARM-software/Tool-Solutions](https://github.com/ARM-software/Tool-Solutions/blob/main/docker/cmsis-models/Platforms/IPSS/ARMCM7/system_ARMCM7.c)
+
+[ARM官网](https://developer.arm.com/documentation/dui0472/k/Compiler-specific-Features/Predefined-macros)提供了更多 ARMCC 的内置宏
+
+串口 MDA 初始化顺序问题参考了 [STM32 HAL UART DMA不通的问题解决及注意事项](https://blog.csdn.net/hwytree/article/details/121659787) 以及 [Why does the sequence of init calls matter in STM32CubeIDE?](https://stackoverflow.com/questions/68988109/why-does-the-sequence-of-init-calls-matter-in-stm32cubeide)
+
 
