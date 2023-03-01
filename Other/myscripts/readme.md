@@ -5,7 +5,7 @@
 
 这是一个个人脚本工具管理系统, 支持 python 和 bash shell 
 
-使用前需将环境变量导出到 PATH, 当然可以在 ~/.bashrc 中添加, 这样每次打开中断都自动导出环境了.
+使用前需将环境变量导出到 PATH, 当然可以在 ~/.bashrc 中添加, 这样每次打开终端都自动导出环境了.
 
 ```shell
 export PATH=$PATH:~/.myscripts/shell:~/.myscripts/python

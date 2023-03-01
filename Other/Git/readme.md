@@ -122,3 +122,18 @@ git remote -v
 # 然后就可以 pull , push
 git pull origin master  --allow-unrelated-histories
 ```
+
+### git clone
+
+```sh
+# 克隆深度
+git clone --depth [depth] [remote-url]
+
+```
+
+#### git filter-branch
+
+```sh
+# 删除不小心提交的文件
+git filter-branch --tree-filter 'rm -rf [/path/to/spurious/asset/folder]' [commit]
+```

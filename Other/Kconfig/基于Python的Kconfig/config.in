@@ -1,0 +1,18 @@
+mainmenu "My Kconfig Demo"
+
+menu "Main"
+config CONFIG_DEBUG
+    bool "Enable debug"
+    default n
+    help
+        Will print debug information if enable.
+
+config CONFIG_DEBUG_UART
+    bool "Enable UART debug"
+    default n
+    depends on CONFIG_DEBUG
+
+source src/fs/config.in
+
+endmenu
+
