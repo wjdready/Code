@@ -1,0 +1,31 @@
+cmake_minimum_required(VERSION 3.10)
+
+project(lvgl)
+
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 11)
+
+find_package(SDL2 REQUIRED SDL2)
+include_directories(
+        ${SDL2_INCLUDE_DIRS}
+        ${SDL2_INCLUDE_DIRS}/../
+        ${PROJECT_SOURCE_DIR}
+        "src"
+        "lvgl"
+)
+
+file(GLOB_RECURSE SOURCES  
+  "src/*.c"
+)
+
+file(GLOB_RECURSE INCLUDES 
+)
+
+add_subdirectory(lvgl/lvgl)
+add_subdirectory(lvgl/lv_drivers)
+
+set(CMAKE_C_FLAGS "-static" )
+
+add_executable(main lvgl/mouse_cursor_icon.c ${SOURCES} ${INCLUDES})
+target_link_libraries(main PRIVATE lvgl lvgl::examples lvgl::demos lvgl::drivers 
+  SDL2::SDL2main SDL2::SDL2-static -lserialport -lpthread)

@@ -433,4 +433,3 @@ MX_USART1_UART_Init();
 
 串口 MDA 初始化顺序问题参考了 [STM32 HAL UART DMA不通的问题解决及注意事项](https://blog.csdn.net/hwytree/article/details/121659787) 以及 [Why does the sequence of init calls matter in STM32CubeIDE?](https://stackoverflow.com/questions/68988109/why-does-the-sequence-of-init-calls-matter-in-stm32cubeide)
 
-

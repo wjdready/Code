@@ -53,3 +53,4 @@ program  build/H743Go.hex
 官方文档 [Reset-Configuration](https://openocd.org/doc/html/Reset-Configuration.html) 描述如何配置复位信号
 
 官方文档[flash 指南](https://openocd.org/doc-release/html/Flash-Commands.html)
+

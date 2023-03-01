@@ -1,0 +1,31 @@
+# Maintainer: Your Name <youremail@domain.com>
+pkgname=mydemopkg
+pkgver=v1.0.0
+pkgrel=1
+pkgdesc=""
+arch=()
+url=""
+license=('GPL')
+groups=()
+depends=()
+makedepends=()
+optdepends=()
+provides=()
+conflicts=()
+replaces=()
+backup=()
+options=()
+install=
+changelog=
+source=()
+noextract=()
+md5sums=() #autofill using updpkgsums
+
+build() {
+    echo "$pkgname-$pkgver"
+
+}
+
+package() {
+    echo "$pkgname-$pkgver"
+}

@@ -6,6 +6,9 @@ python_path=~/.myscripts/python
 rm $shell_path/*
 rm $python_path/*
 
+mkdir $shell_path -p
+mkdir $python_path -p
+
 for file in $(find shell -type f -name "*.sh"); do
     fname=$(basename $file)
     echo "copy shell/$fname to $shell_path/myshell_$fname"
