@@ -280,41 +280,173 @@ ln -s functions/mass_storage.usb0 configs/c.1/
 
 感觉要优化系统的话, systemd 肯定还是得熟悉, 那么开新坑吧, 先去学 deb 打包, Startup udev 之类的, 把守护进程这些知识搞清楚再来继续...
 
+### [2023-03-02 11:42:37]
 
-```shell
+现在要实现一个脚本打开 MTP 了. deb 打包还没完全弄懂, 先不管那么多了, 先来裸包...
 
-cd /sys/kernel/config/usb_gadget/l4t
-
-# 添加 mtp 功能
-mkdir functions/ffs.mtp
-
-mkdir /dev/ffs-umtp
-mount -t functionfs mtp /dev/ffs-umtp
-
-# 开启 umtprd
-/home/dk/uMTP-Responder-master/umtprd
-
-# 关闭 UDC
-echo  > /sys/kernel/config/usb_gadget/l4t/UDC
-
-# 开启 UDC
-ls /sys/class/udc/ > /sys/kernel/config/usb_gadget/l4t/UDC
+```
+$ ls
+startmtp.sh  stopmtp.sh  umtprd  umtprd.conf
 ```
 
-
-尝试创建新配置 
+startmtp.sh
 
 ```shell
-cd /sys/kernel/config/usb_gadget/l4t
+#!/bin/bash
 
-mkdir configs/c.2
-mkdir configs/c.2/strings/0x409
-echo "Conf 2" > configs/c.2/strings/0x409/configuration
-echo 120 > configs/c.2/MaxPower
+function create_mtp_device {
 
-mkdir functions/ffs.mtp
-ln -s functions/ffs.mtp configs/c.2
+    mkdir /sys/kernel/config/usb_gadget/g1
 
-echo  > /sys/kernel/config/usb_gadget/g1/UDC
-ls /sys/class/udc/ > /sys/kernel/config/usb_gadget/g1/UDC
+    if [ ! "$?" == "0" ]; then
+        echo "ERROR: We can not create usb device! For more information to see dmesg."
+        exit -1
+    fi
+
+    cd /sys/kernel/config/usb_gadget/g1
+
+    mkdir configs/c.1
+    mkdir functions/ffs.mtp
+    mkdir strings/0x409
+    mkdir configs/c.1/strings/0x409
+
+    echo 0x0100 >idProduct
+    echo 0x1D6B >idVendor
+
+    echo "Widora" >strings/0x409/manufacturer
+    echo "AWA6280" >strings/0x409/product
+
+    echo "Conf 1" >configs/c.1/strings/0x409/configuration
+    echo 120 >configs/c.1/MaxPower
+    ln -s functions/ffs.mtp configs/c.1
+}
+
+function main {
+    if [ ! -d "/sys/kernel/config/usb_gadget/g1" ]; then
+        create_mtp_device
+    fi
+
+    if [ ! -f "/dev/ffs-mtp/ep0" ]; then
+        mkdir /dev/ffs-mtp -p
+        mount -t functionfs mtp /dev/ffs-mtp
+    fi
+
+    [ ! -f "$PWD/umtprd" ] && echo "ERROR: We can not find umtprd in $PWD" && exit -1
+
+    [ ! -f "$PWD/umtprd.conf" ] && echo "ERROR: We can not find umtprd.conf in $PWD" && exit -1
+
+    mkdir -p /etc/umtprd
+    cp $PWD/umtprd.conf /etc/umtprd/umtprd.conf
+
+    umtprd_pid=$(ps -a | awk "\$4==\"umtprd\" {print \$1}")
+
+    if [ "$umtprd_pid" ]; then
+        kill $umtprd_pid
+        echo "Umtprd is running, Now we restart it."
+    fi
+
+    ./umtprd &
+
+    sleep 1
+
+    UDC=$(cat /sys/kernel/config/usb_gadget/g1/UDC)
+
+    if [ "$UDC" == "" ]; then
+        ls /sys/class/udc/ > /sys/kernel/config/usb_gadget/g1/UDC
+    fi
+
+    echo "MTP Started!"
+}
+
+main
+
+```
+
+stopmtp.sh
+
+```shell
+#!/bin/bash
+
+UDC=$(cat /sys/kernel/config/usb_gadget/g1/UDC)
+
+umtprd_pid=$(ps -a | awk "\$4==\"umtprd\" {print \$1}")
+
+if [ "$umtprd_pid" ]; then
+    kill $umtprd_pid
+    echo "Umtprd is running, Now we kill it."
+fi
+
+[ "$UDC" == "" ] && {
+    echo "MTP not start!"
+    exit 0
+}
+
+echo >/sys/kernel/config/usb_gadget/g1/UDC
+```
+
+umtprd.conf
+
+```conf
+#
+# uMTP Responder config file
+# Must be copied to /etc/umtprd/umtprd.conf
+#
+
+# Loop / daemon mode
+
+# Set to 1 to don't shutdown uMTPrd when the link is disconnected.
+loop_on_disconnect 1
+
+#storage command : Create add a storage entry point. Up to 16 entry points supported
+#Syntax : storage "PATH" "NAME"
+storage "/home" "我的数据" "rw"
+
+# Set the USB manufacturer string
+manufacturer "Widora"
+
+# Set the USB Product string
+product "AWA6280"
+
+# Set the USB Serial number string
+serial "01234567"
+
+# Set the USB interface string. Should be always "MTP"
+interface "MTP"
+
+# Set the USB Vendor ID, Product ID and class
+usb_vendor_id 0x1D6B  # Linux Foundation
+usb_product_id 0x0100 # PTP Gadget
+usb_class 0x6         # Image
+usb_subclass 0x1      # Still Imaging device
+usb_protocol 0x1      #
+
+# Device version
+usb_dev_version 0x3008
+
+# inotify support
+# If you want disable the events support (beta), uncomment the following line :
+# no_inotify 0x1
+
+#
+# Internal buffers size
+#
+# Internal default usb_max_rd_buffer_size and usb_max_wr_buffer_size value set to 0x10000.
+# Internal default read_buffer_cache_size value set to 0x100000.
+# Uncomment the following lines to reduce the buffers sizes to fix USB issues on iMX6 based systems.
+# usb_max_rd_buffer_size 0x200      # MAX usb read size. Must be a multiple of 512 and be less than read_buffer_cache_size
+# usb_max_wr_buffer_size 0x200      # MAX usb write size. Must be a multiple of 512.
+# read_buffer_cache_size 0x4000     # Read file cache buffer. Must be a 2^x value.
+
+# Generic FunctionFS Mode
+usb_functionfs_mode 0x1
+
+#
+# USB gadget device driver path  
+#
+usb_dev_path "/dev/ffs-mtp/ep0"
+usb_epin_path "/dev/ffs-mtp/ep1"
+usb_epout_path "/dev/ffs-mtp/ep2"
+usb_epint_path "/dev/ffs-mtp/ep3"
+
+usb_max_packet_size 0x200
 ```
