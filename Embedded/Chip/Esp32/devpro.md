@@ -231,3 +231,56 @@ idf_component_register (
 
 因为注册组件时, 构建系统只认 CMakeLists 给出的 SRCS 和 INCLUDE_DIRS 等相关信息, 而不会管文件夹具体的内容.
 
+
+### [2023-03-01 23:30:54]
+
+##### idf.py 切换 target chip
+
+例如:
+
+```shell
+# 参数为空会列出支持的所有芯片
+idf.py  set-target
+
+idf.py  set-target esp32s3
+```
+
+#### 使用 PSRAM
+
+在 menuconfig --> Component config --> ESP PSRAM 
+
+选择 `Support for external, SPI-connected RAM` 即可使用, 不过有一些参数可供配置:
+
+##### 1. Mode (QUAD/OCT) of SPI RAM chip in use (Quad Mode PSRAM)
+
+用于配置 SPI PSRAM 是 OSPI 还是 QSPI 通信方式. 官方默认的 8 Pin SPIRAM 是使用 QSPI, 不知道是否真的支持 OSPI...
+
+##### 2.  Type of SPIRAM chip in use (Auto-detect)
+
+```
+(X) Auto-detect
+( ) ESP-PSRAM16 or APS1604
+( ) ESP-PSRAM32
+( ) ESP-PSRAM64 , LY68L6400 or APS6408
+```
+
+也就是说, 其实支持的芯片就是列出的这几个了, 所以要根据这里列出的芯片进行选型?
+
+##### 3. [*] Allow external memory as an argument to xTaskCreateStatic
+
+也就是说, 可以将 freertos 的静态任务创建在 SPI RAM 吗? 好像还不错...
+
+##### 4. [ ] Cache fetch instructions from SPI RAM
+
+Cache 从 PSI RAM 中取指令, 也就说代码是可以直接运行在 SPI RAM 上的, 然后用开启 Cache 加快执行速度.
+
+##### 5. [ ] Cache load read only data from SPI RAM
+
+Cache 可以从 SPI RAM 加载只读数据, 我觉得如果勾选上面的 `Cache fetch instructions from SPI RAM` 那这个肯定也要勾选了啊, 因为既然要从 SPI RAM 执行指令, 那么必然要把固件从 flash 复制到 RAM, 不论是从 SD 卡的 SDIO Nand Flash 还是 SPI Nor flash, 那么不可避免原固件肯定有只读数据区和代码区, 那么采用 Cache 的方式就能加快只读区域访问速度
+
+一般来说可写区域要么是堆栈, 要么是一块静态内存区. 不知支不支持 SPI RAM 写 Cache, 它也没这个选项...
+
+##### 6. Set RAM clock speed (40Mhz clock speed)
+
+写入速度支持 `40MHz, 80MHz, 120MHz`, 如果稳定的话, 那肯定是越快越好, 然而当我设置 120MHz 时根本编译不通过, 选 80 MHz 下载进去初始化 SPIRAM 失败.
+
