@@ -51,7 +51,6 @@ def processPath(scanpath:str, blogpath:str):
     if os.path.exists(post_basedir):
         shutil.rmtree(post_basedir)
 
-    # 目录，则递归处理
     for root, dirs, files in os.walk(scanpath):
         for file in files:
             filepath = os.path.join(root, file)
