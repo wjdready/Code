@@ -135,5 +135,5 @@ git clone --depth [depth] [remote-url]
 
 ```sh
 # 删除不小心提交的文件
-git filter-branch --tree-filter 'rm -rf [/path/to/spurious/asset/folder]' [commit]
+git filter-branch --tree-filter 'rm -rf path/to/spurious/asset/folder' [commit]
 ```
