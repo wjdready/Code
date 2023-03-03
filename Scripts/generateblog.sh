@@ -38,8 +38,17 @@ function loop_for_markdown
         if echo "$head_title" | grep -q "^[ ]*mytags[ ]*:[ ]*myblog[ ]*$"; then
             mylog info "find $file" 
 
-            blog_dist_file=$BLOG_POSTS_PATH/auto_generate_$index.md
+            blog_dist_dir=$BLOG_POSTS_PATH/auto_generate_$index
+            mkdir $blog_dist_dir -p
+
+            blog_dist_file=$blog_dist_dir/$(basename $file)
             cp $file $blog_dist_file
+
+            # 复制图片文件, 如果存在的话
+            file_dir=$(dirname $file)
+            if [ -d "$file_dir/md.img" ]; then
+                cp $file_dir/md.img $blog_dist_dir -r
+            fi
 
             echo -e "\n\n[源文件来自于]($BLOG_SOURCE_LINK/$file)\n" >> $blog_dist_file
 
