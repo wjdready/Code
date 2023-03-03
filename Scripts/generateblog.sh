@@ -46,8 +46,8 @@ function loop_for_markdown
 
             # 复制图片文件, 如果存在的话
             file_dir=$(dirname $file)
-            if [ -d "$file_dir/md.img" ]; then
-                cp $file_dir/md.img $blog_dist_dir -r
+            if [ -f "$file_dir/BulkTransactions.PNG" ]; then
+                cp $file_dir/BulkTransactions.PNG $blog_dist_dir 
             fi
 
             echo -e "\n\n[源文件来自于]($BLOG_SOURCE_LINK/$file)\n" >> $blog_dist_file
