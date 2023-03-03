@@ -404,5 +404,4 @@ in 事务是主机从 USB 设备的某个端点中获取数据的过程, 正确�
 
 ##### 1）批量传输 (Bulk Transactions)
 
-![Bulk Transactions](BulkTransactions.PNG)
-
+![Bulk Transactions](01USB概述及协议基础/BulkTransactions.PNG)
