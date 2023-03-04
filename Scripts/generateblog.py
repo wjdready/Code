@@ -28,13 +28,14 @@ def doProcessFile(filepath:str, post_basedir:str, blogindex:int):
         
         with open(post_dst_file, "a", encoding="UTF-8") as myfile:
             myfile.write("\n\n[源文件来自于](%s/%s)\n" % (blog_source_link, filepath))
-
-        imgpath = os.path.dirname(filepath) + '/' + "01USB概述及协议基础"
-        if os.path.exists(imgpath):
-            print(imgpath)
-            shutil.copytree(imgpath, post_dir + '/01USB概述及协议基础')
         
-        print(post_dir)
+        print("find: " + filepath)
+
+        assetpath = os.path.dirname(filepath) + "/" + os.path.basename(name)
+        if os.path.exists(assetpath):
+            print("copy: " + assetpath)
+            shutil.copytree(assetpath, post_dir + "/" + os.path.basename(name))
+        
 
         return 1
 

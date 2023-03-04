@@ -4,6 +4,7 @@ title: 01USB概述及协议基础
 date: 2023-03-02 19:53:59
 categories: [Book, 圈圈教你玩转USB]
 tags: [USB]
+asset_folder: image
 ---
 
 本文主要介绍USB的基本概念和基础知识
