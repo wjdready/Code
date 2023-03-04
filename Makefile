@@ -23,7 +23,7 @@ cleanpath:
 	@Scripts/cleanpath.py .
 
 blog:
-	@python Scripts/generateblog.py . $(BLOG_SOURCE_DIR)/
+	@Scripts/generateblog.py . $(BLOG_SOURCE_DIR)/
 
 blog_server:
 	make blog && cd $(BLOG_SOURCE_DIR) && hexo server
