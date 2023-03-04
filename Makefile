@@ -20,7 +20,7 @@ simple:
 	make blog_deploy
 
 cleanpath:
-	@Scripts/cleanpath.sh .
+	@Scripts/cleanpath.py .
 
 blog:
 	@python Scripts/generateblog.py . $(BLOG_SOURCE_DIR)/
