@@ -1,0 +1,164 @@
+\documentclass{beamer}
+\usepackage[UTF8]{ctex}
+\usetheme{PaloAlto}
+%\useoutertheme{shadow}
+\useinnertheme{circles}
+\usecolortheme{albatross}
+\usefonttheme{structuresmallcapsserif}
+\definecolor{bottomcolor}{rgb}{0.32,0.3,0.38}
+\definecolor{middlecolor}{rgb}{0.08,0.08,0.16}
+\setbeamertemplate{background canvas}[vertical shading][bottom=bottomcolor,middle=middlecolor,top=black]
+%\setbeamerfont{title}{size=\LARGE}
+%\setbeamercolor{title}{fg=yellow,bg=gray}
+%\setbeamertemplate{section in toc}[sections numbered]%节标题模板颜色
+%\setbeamercolor{section in toc}{fg=yellow!80!gray}%节标题模板颜色
+\setbeamertemplate{frametitle}{\noindent\insertframetitle\par\noindent\insertframesubtitle\par}
+\setbeamerfont{frametitle}{size=\large}
+%\setbeamercolor{frametitle}{fg=yellow!70!gray}
+\setbeamercolor{normal text}{fg=white,bg=black}
+\setbeamertemplate{blocks}[rounded][shadow=true]
+\setbeamercolor{block title}{fg=white,bg=gray!50!black}
+%\setbeamercolor{block body}{bg=gray}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}%常用的数学宏包
+\usepackage{amssymb}%数学宏包，可以实现一些数学符号
+\usepackage{graphicx}
+\usepackage{float}
+\RequirePackage{caption}
+\usepackage{subfigure}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{pxfonts}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{amsfonts}%数学字体宏包
+\usepackage{comment}%批量注释的宏包
+\usepackage{boxedminipage}%为文本段添加边框的宏包
+\usepackage{shadow}%带阴影的边框
+\usepackage{fancybox}%实现边框效果的宏包
+\usepackage{esint}%实现多重积分的宏包
+\usepackage{relsize}%提供加大数学符号命令\mathlarger
+
+\title{向量内积相关题目(第5题)}
+\subtitle{数学的奥秘：本质与思维}
+\author{Itachi酱}
+\date{2022年5月9日}
+
+\begin{document}
+\begin{frame}
+\titlepage
+Produced by \LaTeX\hspace{0.4em}Beamer
+\end{frame}
+
+
+\begin{frame}
+\frametitle{题目介绍}
+\begin{block}{第5题}
+5.对平面中的任意向量定义内积为：$(x,y)=x_{1}y_{1}+x_{2}y_{2}$。
+
+(1)试用该定义给出平面中向量的长度，以及任意两向量之间的夹角；
+
+(2)试用内积定义证明平行四边形法则；
+
+(3)试证明当范数满足平行四边形时，由它可以定义一个内积（先给出定义，再验证它满足内积的三条性质）。
+
+注：平行四边形法则是指：平行四边形中两条对角线长度的平方和等于四个边长度的平方和，即$\left\|x+y\right\|^{2}+\left\|x-y\right\|^{2}=2(\left\|x\right\|^{2}+\left\|y\right\|^{2})$
+\end{block}
+\end{frame}
+
+\begin{frame}[t]
+\frametitle{题目分析}
+\begin{block}{第(1)小题}
+题中定义了向量内积，由内积的几何意义可知，向量的长度就是其在自身方向上的投影。两向量内积除以范数之积即得到向量夹角的余弦。
+\end{block}
+\begin{block}{第(2)小题}
+已知内积的定义，由平行四边形两对角线与边长的关系即可得到平行四边形法则。
+\end{block}
+\begin{block}{第(3)小题}
+满足平行四边形法则的范数是由内积诱导的，范数满足平行四边形法则时，可以定义一个内积，且满足内积的性质，即交换律、齐次性、分配率、非负性。
+\end{block}
+\end{frame}
+
+\begin{frame}[t]
+\frametitle{题目解答}
+\begin{block}{第(1)小题}
+设$\mathop{x}=(x_{1},x_{2}),\mathop{y}=(y_{1},y_{2})$为内积空间中的任意两向量
+
+向量的长度为$\left\|\mathop{x}\right\|=\sqrt{(\mathop{x},\mathop{x})}=\sqrt{{x_{1}}^{2}+{{x}_{2}}^{2}}$
+
+\hspace{6.3em}$\left\|\mathop{y}\right\|=\sqrt{(\mathop{y},\mathop{y})}=\sqrt{{y_{1}}^{2}+{{y}_{2}}^{2}}$
+
+向量夹角的余弦值为
+
+$\cos\widehat{(\mathop{x},\mathop{y})}=\cfrac{(x,y)}{\left\|\mathop{x}\right\|,\left\|\mathop{y}\right\|}=\cfrac{x_{1}y_{1}+x_{2}y_{2}}{\sqrt{{x_{1}}^{2}+{{x}_{2}}^{2}}\sqrt{{y_{1}}^{2}+{{y}_{2}}^{2}}}$
+
+故向量之间的夹角为
+
+$\widehat{(\mathop{x},\mathop{y})}=\arccos\cfrac{x_{1}y_{1}+x_{2}y_{2}}{\sqrt{{x_{1}}^{2}+{{x}_{2}}^{2}}\sqrt{{y_{1}}^{2}+{{y}_{2}}^{2}}}$
+\end{block}
+\end{frame}
+
+\begin{frame}[c]
+\frametitle{题目解答}
+\begin{block}{第(2)小题}
+由范数和内积的关系易得
+
+$\begin{cases}
+{\left\|x+y\right\|}^{2}=(x,x)+(x,y)+(y,x)+(y,y)&(i)\\
+{\left\|x-y\right\|}^{2}=(x,x)-(x,y)-(y,x)+(y,y)&(ii)\\
+\end{cases}$
+
+(i)(ii)两式相加得到
+
+${\left\|x+y\right\|}^{2}+{\left\|x-y\right\|}^{2}=2[(x,x)+(y,y)]=2(
+{\left\|x\right\|}^{2}+
+{\left\|y\right\|}^{2})$
+
+\end{block}
+\end{frame}
+
+\begin{frame}[c]
+\frametitle{题目解答}
+\begin{block}{第(3)小题}
+定义内积$(x,y)=\cfrac{{\left\|x+y\right\|}^{2}-{\left\|x-y\right\|}^{2}}{4}$
+
+\begin{itemize}
+\item 交换律
+
+$\begin{aligned}(y,x)&=\cfrac{{\left\|y+x\right\|}^{2}-{\left\|y-x\right\|}^{2}}{4}\\&=\cfrac{{\left\|x+y\right\|}^{2}-{\left\|x-y\right\|}^{2}}{4}\\&=(x,y)\end{aligned}$
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}[c]
+\frametitle{题目解答}
+\begin{block}{第(3)小题}
+\begin{itemize}
+\item 齐次性
+
+$\begin{aligned}
+	(kx,y)&=\cfrac{{\left\|kx+y\right\|}^{2}-{\left\|kx-y\right\|}^{2}}{4}\\
+	&=k\cfrac{{\left\|x+y\right\|}^{2}-{\left\|x-y\right\|}^{2}}{4}\\
+	&=k(x,y)
+\end{aligned}$
+\end{itemize}	
+\end{block}
+\end{frame}
+
+\begin{frame}[c]
+\frametitle{题目解答}
+\begin{block}{第(3)小题}
+\begin{itemize}
+\item 分配律
+
+$\begin{aligned}
+	(x+y,z)&=\cfrac{{\left\|x+y+z\right\|}^{2}-{\left\|x+y-z\right\|}^{2}}{4}\\
+	&=\cfrac{{\left\|x+z\right\|}^{2}-{\left\|x-z\right\|}^{2}}{4}+\cfrac{{\left\|y+z\right\|}^{2}-{\left\|y-z\right\|}^{2}}{4}\\
+	&=(x,z)+(y,z)
+\end{aligned}$
+\end{itemize}	
+\end{block}
+\end{frame}
+
+\end{document}
+
