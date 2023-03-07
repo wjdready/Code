@@ -1,5 +1,7 @@
 
 
+.vimrc 
+
 ```python
 set nu
 syntax enable
@@ -36,5 +38,14 @@ Plug 'scrooloose/nerdtree'
 call plug#end() 
 ```
 
+常用 Vim 快捷键和技巧:
+
+| 模式   | 快捷键   | 备注                         |
+| ------ | -------- | ---------------------------- |
+| Normal | S        | 删除当前行, 然后进入插入模式 |
+| Normal | cc       | 删除当前行, 然后进入插入模式 |
+| Normal | ddO      | 删除当前行, 然后进入插入模式 |
+| Normal | A\<C-u\> | 删除当前行, 然后进入插入模式 |
+| Normal | D        | 删除光标后的所有内容         |
 
 
