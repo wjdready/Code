@@ -2,7 +2,7 @@
 mytags: myblog
 title: 01USB概述及协议基础
 date: 2023-03-02 19:53:59
-categories: [Book, 圈圈教你玩转USB]
+categories: [Book, 圈圈教你玩USB]
 tags: [USB]
 asset_folder: image
 ---
@@ -16,7 +16,6 @@ asset_folder: image
 [USB 中文网](https://www.usbzh.com/) 有很多资料, 很实用哦.
 
 USB 是通用串行总线 (Universal Serial Bus) 的缩写.
-
 
 | 版本                                                     | 理论最高速度          |
 | -------------------------------------------------------- | --------------------- |
@@ -96,7 +95,7 @@ USB 2.0 又新增了 2 个标准描述符:
 * 设备限定符描述符 (Device Qualifier Descriptor)
 * 其他速度配置描述符 (Other Speed Configuration Descriptor)
 
-另外还有一些特殊的描述符, 例如类特殊描述符 (如 HDI 描述符和音频接口描述符), 厂商自定义的描述符等.
+另外还有一些特殊的描述符, 例如类特殊描述符 (如 HID 描述符和音频接口描述符), 厂商自定义的描述符等.
 
 #### 1. 描述符的内容
 
@@ -455,7 +454,7 @@ in 事务是主机从 USB 设备的某个端点中获取数据的过程, 正确�
 ![中断传输](01USB概述及协议基础/InterruptTransaction.PNG)
 
 
-##### 3）等时传输 (Isochronous Transaction.PNG)
+##### 3）等时传输 (Isochronous Transaction)
 
 等时传输（同步传输）用在数据量大、对实时性要求高的场合。
 
@@ -469,7 +468,7 @@ in 事务是主机从 USB 设备的某个端点中获取数据的过程, 正确�
 
 
 
-##### 3）控制传输 (Isochronous Transaction.PNG)
+##### 3）控制传输 (Isochronous Transaction)
 
 控制传输与前面三种传输相比，要稍微复杂一些。
 

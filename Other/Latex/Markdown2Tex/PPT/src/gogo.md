@@ -121,3 +121,31 @@ int main(int argc, char const *argv[])
 
 最后将梦想世界的
 
+
+## 增量
+
+::: incremental
+
+- Eat spaghetti
+- Drink wine
+
+:::
+
+## 非增量
+
+::: nonincremental
+
+- Eat spaghetti
+- Drink wine
+
+:::
+
+## 非增量中也可使用旧式增量方法
+
+::: nonincremental
+
+>- Eat spaghetti
+>- Drink wine
+
+:::
+
