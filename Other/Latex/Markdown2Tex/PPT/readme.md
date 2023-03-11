@@ -130,3 +130,55 @@ Right column list:
 - Let's go for it!
 - No way we go for it!
 ```
+
+
+### 增量
+
+[参考](https://www.uv.es/wikibase/doc/cas/pandoc_manual_2.7.3.wiki?162)
+
+增量时
+
+```md
+::: incremental
+
+- Eat spaghetti
+- Drink wine
+
+:::
+```
+
+非增量时
+
+```md
+::: nonincremental
+
+- Eat spaghetti
+- Drink wine
+
+:::
+```
+
+非增量中也可使用旧式增量方法
+
+```md
+::: nonincremental
+
+>- Eat spaghetti
+>- Drink wine
+
+:::
+```
+
+### 插入停顿 （非常重要非常好)
+
+```
+content before the pause
+
+. . .
+
+content after the pause
+
+```
+
+[More information](https://pandoc.org/MANUAL.html#incremental-lists)
+

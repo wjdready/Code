@@ -10,6 +10,10 @@ def doProcessFile(filepath:str, post_basedir:str, blogindex:int):
     if not type == ".md" or "/_" in filepath or "/." in filepath:
         return False
     
+    # Windows Python 路径情况
+    if "\_" in filepath or "\." in filepath:
+        return False
+
     with open(filepath, encoding="UTF-8") as f:
         line = f.readline()
         if "---" not in line:

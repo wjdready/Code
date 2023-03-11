@@ -15,3 +15,7 @@ __root    用于告诉编译器/链接器变量或函数应该保存在二进制
 
 [嵌入式高手jaycarlson的博客](https://jaycarlson.net/embedded-linux/)
 
+
+
+Chip8 是什么神秘东西, 感觉会很好玩哇.
+

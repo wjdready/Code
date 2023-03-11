@@ -29,6 +29,7 @@ function main {
         -V monofont='JetBrainsMono-Light' \
         -V tableofcontents \
         --highlight-style=tango \
+        --nonincremental \
         --slide-level 2 \
         --template=$template_file \
         -o $target_texfile
