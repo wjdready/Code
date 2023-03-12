@@ -1,0 +1,63 @@
+<html>
+
+<body>
+    <pre><script>
+
+        if ("")
+            document.writeln(true)
+        else
+            document.writeln(typeof (null))
+
+        var stooge = {
+            "typeof": "Jerome",
+            "last_name": "Howard"
+        };
+
+        if (typeof Object.beget !== 'function') {
+            Object.create = function (o) {
+                var F = function () { };
+                F.prototype = o;
+                return new F();
+            };
+        }
+
+        var anther_stooge = Object.create(stooge);
+
+        anther_stooge['last_name'] = "fff";
+
+        document.writeln(anther_stooge.last_name);
+
+        anther_stooge.last_name = 'nnn';
+
+        document.writeln(anther_stooge.last_name);
+        document.writeln(stooge.last_name);
+
+
+        document.writeln(typeof (stooge))
+
+        stooge.fucker = 'mmm';
+        stooge.first_name = "mother fucker"
+        
+        for (var name in anther_stooge) {
+            if (anther_stooge.hasOwnProperty(name)) {
+                document.writeln("MyOwnPropery -- " + name + ": " + anther_stooge[name]);
+            }
+            else {
+                document.writeln(name + ": " + anther_stooge[name]);
+            }
+        }
+
+        var properties = [
+            'first_name',
+            'middle-name',
+            'last-name',
+            'profession'
+        ];
+
+        for (var i = 0; i < properties.length; i++) {
+            document.writeln(properties[i] + ":" + 
+                anther_stooge[properties[i]]);
+        }
+
+    </script></pre>
+</body>
