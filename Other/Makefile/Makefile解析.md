@@ -169,3 +169,31 @@ clean :
 ```
 > 值得注意的是, 上面的 SRC_DIR 变量是可以多目录指定的, 并且还可以精确控制参加编译的目录。
 > 可以看到，这里不需要指定 vpath 是因为需求文件的路径是完整的, 也就是顺利匹配的。
+
+# 多 Makefile 文件
+
+## include
+
+有很多项目的构建框架都是使用 include 的方式来实现 SDK 与应用分离, 其原理是在应用代码处的 Makefile 通过 include SDK_PATH 下的 Makefile 框架来提供统一的构建功能，从而实现在应用目录下进行的代码编译。
+
+### 1) TinyUSB
+
+TinyUSB 的每一个 example 就相当于一个完整的工程项目，每个 example 的 Makefile 基本内容如下:
+
+```makefile
+include ../../make.mk
+
+INC += \
+	src \
+	$(TOP)/hw \
+
+# Example source
+EXAMPLE_SOURCE += $(wildcard src/*.c)
+SRC_C += $(addprefix $(CURRENT_PATH)/, $(EXAMPLE_SOURCE))
+
+include ../../rules.mk
+```
+
+在开头处添加一个 include 来导入一些环境和变量, 然后对给出当前工程的相关编译信息, 这里主要是向变量 INC 中添加头文件路径，向 SRC_C 中添加源文件信息， 这其中包含了 main 函数。
+
+最后在结尾处添加一个 include 来完成真正的编译。
