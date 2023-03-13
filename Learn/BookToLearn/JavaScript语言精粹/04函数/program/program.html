@@ -1,25 +1,27 @@
 <html>
 
 <body>
-    <pre><script>
+    <pre>
 
+    <script>
+        // 定义一个函数，它设置一个 DOM 节点为黄色，然后把它渐变为白色
 
-
-
-
-        var func = function () {
-            var b = 11;
-
-            console.log(a);
-
-            var a = 12;
-
-
+        var fade = function (node) {
+            var level = 1;
+            var setp = function () {
+                var hex = level.toString(16);
+                node.style.backgroundColor = '#FFFF' + hex + hex;
+                if (level < 15) {
+                    level += 1;
+                    setTimeout(setp, 100);
+                }
+            };
+            setTimeout(setp, 100);
         };
 
+        fade(document.body);
+    </script>
 
-        func();
+    </pre>
 
-
-    </script></pre>
 </body>
