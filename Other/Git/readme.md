@@ -137,3 +137,17 @@ git clone --depth [depth] [remote-url]
 # 删除不小心提交的文件
 git filter-branch --tree-filter 'rm -rf path/to/spurious/asset/folder' [commit]
 ```
+
+
+# 常见问题
+
+### HOME 目录更改
+
+在提交时 git 会在当前用户的 HOME 目录下查找 .ssh 文件夹, 根据里面的内容来获取公钥和密钥，因此若出现
+
+```
+no matching host key type found. Their offer: ssh-rsa,ssh-dss
+```
+
+有可能是安装其他软件时, HOME 目录被篡改成其他目录，导致 git 无法获取 .ssh 文件夹了
+
