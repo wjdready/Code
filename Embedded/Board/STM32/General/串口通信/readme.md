@@ -401,6 +401,7 @@ void app_main(void)
 * Mode 选 Asynchronous 异步通信
 * DMA Settings 添加 RX 和 TX, 注意 RX 的 DMA Mode 为 Circular, 即循环接收
 * NVIC Settings 里将 global interrupt 打勾, 这是给 IDLE 中断用的
+* 将 IDLE 中断处理函数放到 USARTx_IRQHandler 中断入口函数中执行, **不要忘了**
 
 其他默认就行了, 但是需要注意的一点是, 在最开始配置串口功能的时候要记得把 DMA 也配置了再输出工程, 因为这里面有一个坑.
 

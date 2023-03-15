@@ -4,22 +4,40 @@
     <pre>
 
     <script>
-        // 定义一个函数，它设置一个 DOM 节点为黄色，然后把它渐变为白色
 
-        var fade = function (node) {
-            var level = 1;
-            var setp = function () {
-                var hex = level.toString(16);
-                node.style.backgroundColor = '#FFFF' + hex + hex;
-                if (level < 15) {
-                    level += 1;
-                    setTimeout(setp, 100);
-                }
-            };
-            setTimeout(setp, 100);
+var add_the_handlers = function (nodes) {
+    for (var i = 0; i < nodes.length; i++) {
+        nodes[i].onclick = function (e) {
+            alert(i);
         };
+    }
+};
 
-        fade(document.body);
+var add_the_handlers2 = function (nodes)  {
+    var helper = function (i) {
+        return function (e) {
+            alert(i);
+        };
+    };
+    for (var i = 0; i < nodes.length; i += 1) {
+        nodes[i].onclick = helper(i);
+    }
+};
+
+var buttons = (function() {
+    var buttons = [];
+    for (var i = 0; i < 5; i++) {
+        var btn = document.createElement("input");
+        btn.type = "button";
+        btn.value = "Button " + i;
+        buttons.push(btn);
+        document.body.appendChild(btn);
+    }
+    return buttons;
+})();
+
+add_the_handlers(buttons);
+        
     </script>
 
     </pre>
