@@ -6,15 +6,14 @@ int test_command(char *input_string);
 int main(int argc, char const *argv[])
 {
     initialise_monitor_handles();
-
-    // for (int i = 0; i < 100000; i++)
-    // {
-    //     printf("Hello World %d\n", i);
-    // }
-
     char buf[256];
 
-   while(1)
+    /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+    HAL_Init();
+    /* Configure the system clock */
+    SystemClock_Config();
+
+    while (1)
     {
         gets(buf);
         // printf("you input is %s\n", buf);
@@ -23,18 +22,17 @@ int main(int argc, char const *argv[])
     return 0;
 }
 
-
 /* __TEST_COMMAND__START__ */
 #include "test_command.h"
 static int asdasdasd(int argc, char *argv[])
 {
     printf("Hello World GOgo\n");
-    
-    FILE *fp  = fopen("goo.txt", "w");
-    fwrite("H", 1, sizeof("H"), fp);
+
+    FILE *fp = fopen("goo.txt", "w");
+    fwrite("Hello World", 1, sizeof("Hello World"), fp);
     fclose(fp);
 
     return 0;
 }
-EXPORT_TEST_COMMAND(asdasdasd, "name", "中文的强大指出");
+EXPORT_TEST_COMMAND(asdasdasd, "cmd_test", "test Command");
 /* __TEST_COMMAND__END__ */

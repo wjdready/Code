@@ -49,6 +49,7 @@ C_SOURCES +=  \
 C_SOURCES += \
 	src/system_stm32h7xx.c \
 	src/main.c \
+	src/test.c \
 	src/test_command.c
 
 # ASM sources

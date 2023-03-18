@@ -5,29 +5,18 @@
 
 extern void initialise_monitor_handles(void);
 
+int aaa = 12345;
+
 int main(int argc, char const *argv[])
 {
-    // initialise_monitor_handles();
-    char *data = malloc(1);
-    if (data == NULL)
-    {
-        return -1;
-    }
+    initialise_monitor_handles();
 
-    memset(data, 0, 1);
-    printf("Hello World %s\n", data);
+    char *data = malloc(64);
+    if (data == NULL)
+        return -1;
+
+    strcpy(data, "I am Jack");
+    printf("Hello World, %s, aaa is %d\n", data, aaa);
 
     return 0;
 }
-
-// // extern void __set_heaptop(void *ptr);
-// char *_sbrk(int adj)
-// {
-//     extern char end;
-//     static char *heap = &end;
-//     char *rv = heap;
-
-//     heap += adj;
-//     // __set_heaptop(heap);
-//     return rv;
-// }
