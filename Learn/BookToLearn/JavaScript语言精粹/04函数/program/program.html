@@ -5,39 +5,155 @@
 
     <script>
 
-var add_the_handlers = function (nodes) {
-    for (var i = 0; i < nodes.length; i++) {
-        nodes[i].onclick = function (e) {
-            alert(i);
+        var add_the_handlers = function (nodes) {
+            for (var i = 0; i < nodes.length; i++) {
+                nodes[i].onclick = function () {
+                    var m = i;
+                    return function (e) {
+                        alert(m);
+                    };
+                }();
+            }
         };
-    }
-};
 
-var add_the_handlers2 = function (nodes)  {
-    var helper = function (i) {
-        return function (e) {
-            alert(i);
+        var add_the_handlers2 = function (nodes) {
+            var helper = function (i) {
+                return function (e) {
+                    alert(i);
+                };
+            };
+            for (var i = 0; i < nodes.length; i += 1) {
+                nodes[i].onclick = helper(i);
+            }
         };
-    };
-    for (var i = 0; i < nodes.length; i += 1) {
-        nodes[i].onclick = helper(i);
-    }
-};
 
-var buttons = (function() {
-    var buttons = [];
-    for (var i = 0; i < 5; i++) {
-        var btn = document.createElement("input");
-        btn.type = "button";
-        btn.value = "Button " + i;
-        buttons.push(btn);
-        document.body.appendChild(btn);
-    }
-    return buttons;
-})();
+        var buttons = (function () {
+            var buttons = [];
+            for (var i = 0; i < 5; i++) {
+                var btn = document.createElement("input");
+                btn.type = "button";
+                btn.value = "Button " + i;
+                buttons.push(btn);
+                document.body.appendChild(btn);
+            }
+            return buttons;
+        })();
 
-add_the_handlers(buttons);
+        add_the_handlers(buttons);
+
+        Function.prototype.method = function (name, func) {
+            this.prototype[name] = func;    // 注：这里的 this 指向的是特定的函数对象
+            return this;
+        };
+
+        String.method('deentityify', function () {
+            var entity = {
+                quot: '"',
+                lt: '<',
+                gt: '>',
+            };
+
+            // 返回 deentityify 方法
+            return function () {
+                // 这才是 deentityify 方法。它调用字符串的 replace 方法，
+                // 查找 & 开头和 ; 结束的子字符串。如果这些字符可以在字符实体表中找到，
+                // 那么就将该字符实体替换为映射表中的值。
+
+                return this.replace(/&([^&;]+);/g, function (a, b) {
+                    var r = entity[b];
+                    return typeof r == 'string' ? r : a;
+                });
+            };
+        }());
+
+        document.writeln('&lt;&quot;&gt;'.deentityify());  // <">
+
+        Function.method('curry', function () {
+            var slice = Array.prototype.slice,
+                args = slice.apply(arguments),
+                that = this;
+
+            return function () {
+                return that.apply(null, args.concat(slice.apply(arguments)));
+            };
+        });
+
+        function add(a, b) {
+            return a + b;
+        };
+
+        var add1 = add.curry(1);
+        document.writeln(add1(6)); // 7
+
+        // var fibonacci = function (n) {
+        //     return n < 2 ? n : fibonacci(n - 1) + fibonacci(n - 2);
+        // };
+
+        // for (var i = 0; i <= 10; i += 1) {
+        //     document.writeln('// ' + i + ': ' + fibonacci(i));
+        // }
+
+
+        // var fibonacci = function () {
+        //     var memo = [0, 1];
+
+        //     return function fib(n) {
+        //         var result = memo[n];
+        //         if (typeof result !== 'number') {
+        //             result = fib(n - 1) + fib(n - 2);
+        //             memo[n] = result;
+        //         };
+        //         return result;
+        //     };
+        // }();
+
+
+        var memoizer = function (memo, formula) {
+            return function recur(n) {
+                var result = memo[n];
+                if (typeof result !== 'number') {
+                    result = formula(recur, n);
+                    memo[n] = result;
+                };
+                return result;
+            };
+        };
+    
+        var fibonacci = memoizer([0, 1], function (recur, n) {
+            return recur (n - 1) + recur (n - 2);
+        });
         
+        for (var i = 0; i <= 10; i += 1) {
+            document.writeln('// ' + i + ': ' + fibonacci(i));
+        }
+            
+        // 产生阶乘函数
+        var memo = [1, 1];
+        var factorial = memoizer(memo, function (recur, n) {
+            return n * recur (n - 1);
+        });
+            
+        for (var i = 0; i <= 10; i += 1) {
+            document.writeln('// ' + i + ': ' + factorial(i));
+        }
+
+        for (var i = 0; i <= 10; i += 1) {
+            document.writeln(memo[i]);
+        }
+
+
+        var nn = [];
+        function fff(x) {
+            // x[0] = 456;
+            x = 456;
+        }
+
+        // nn[0] = 123;
+        nn = 123;
+        fff(nn);
+
+        document.writeln(nn);
+
     </script>
 
     </pre>
