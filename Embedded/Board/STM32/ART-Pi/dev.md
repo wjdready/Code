@@ -13,6 +13,7 @@
 原理图等相关资料在仓库资料中有，但为了方便，这里直接给出 [原理图链接](https://gitee.com/mirrors/ART-Pi/raw/master/documents/board/ART-Pi_HW_V1.5/ART-Pi_SCH_V1.5_Release.pdf)
 
 其中比较重要的是调试串口的引脚信息， 这里直接给出：
+
 ```
 PI9     ------> UART4_RX
 PA0     ------> UART4_TX
@@ -52,6 +53,28 @@ ART-Pi 板子上的 DRAM 使用的是 [华邦 W9825G6DH ](http://pdf-html.ic37.c
 | 6, 12, 46, 52   | VSSQ      | I/O Buffer 地           | 将接地与 VSS 分开，以提高 DQ 的抗噪性。                                           |
 | 40              | NC        | 不连接                  | 没有连接 (NC 引脚应连接到 GND 或悬空）                                            |
 
+DRAM 原理：
+
+可以看到，除了数据线，地址线和电源，剩下就是关键的控制线。包括:
+
+CS、RAS、CAS、WE、LDQM,UDQM、CLK、CKE
+
+![W9825G6DH 控制图](dev/W9825G6DH_Block.PNG)
 
 有一款国产 XRAM (自刷新 DRAM)[XM8A51216V33A](https://bbs.16rd.com/misc.php?mod=citiao&id=22945&mobile=no), 也就说能自己刷新时钟，这样就可以简化设计。封装也小了:
+
+![XM8A51216V33A](dev/XM8A51216V33A.png)
+
+其控制原理为:
+
+![NandFlash](dev/XM8A51216V33A_pro.png)
+
+
+相比之前用过的 TSOP Type 1 封装的 [Nand Flash](https://file.elecfans.com/web2/M00/67/73/poYBAGMYRHuAPulQACvETxIsMxY627.pdf) 有什么区别呢？
+
+
+
+![NandFlash](dev/NandFlash.png)
+
+![NandFlash2](dev/NandFlash2.png)
 

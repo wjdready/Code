@@ -23,4 +23,7 @@ SECTIONS
         *(.text)
         *(.text.*)
     }
+
+    end = .;
 }
+

@@ -1,7 +1,7 @@
 # [MyProject]
 
 default:
-	gcc serial.c -lserialport -lpthread
+	gcc serial.c -lserialport -lpthread -static -lCfgMgr32 -lSetupapi
 
 run:
 	./a.exe

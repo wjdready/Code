@@ -111,7 +111,9 @@ svc_stack_start:
  ***************************************
  */
     .section .text
+    .type reset, %function
     .global reset
+
 reset:
     /* Enter svc mode and mask interrupts */
     mrs r0, cpsr
@@ -122,7 +124,6 @@ reset:
     /* init cpu  */
     bl  cpu_init_crit
 
-    b main
     /* Call low level init function */
     ldr     sp, =svc_stack_start
     @ ldr     r0, =rt_low_level_init

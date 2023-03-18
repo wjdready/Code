@@ -197,3 +197,38 @@ include ../../rules.mk
 在开头处添加一个 include 来导入一些环境和变量, 然后对给出当前工程的相关编译信息, 这里主要是向变量 INC 中添加头文件路径，向 SRC_C 中添加源文件信息， 这其中包含了 main 函数。
 
 最后在结尾处添加一个 include 来完成真正的编译。
+
+
+# 模板
+```makefile
+TARGET = awa_pc
+BUILD_DIR = build
+
+SRCS +=  $(wildcard src/*.c port/*.c test/*.c)
+SRCS +=  cJSON/cJSON.c
+
+OBJS = $(addprefix $(BUILD_DIR)/, $(notdir $(SRCS:.c=.o)))
+vpath %.c $(sort $(dir $(SRCS)))
+
+CFLAGS += -Isrc -IcJSON -Iport -Itest
+CFLAGS += -g -O0 -Werror -Wall
+
+LDFLAGS += -lpthread -static
+
+$(BUILD_DIR)/$(TARGET): $(OBJS)
+	@gcc $(OBJS) $(LDFLAGS) -o $@ 
+	@echo Output $@
+
+$(BUILD_DIR)/%.o: %.c | $(BUILD_DIR)
+	@gcc $(CFLAGS) -c $< -o $@
+	@echo CC $<
+
+run:
+	cd build && start awa_pc.exe
+
+$(BUILD_DIR) :
+	@mkdir $@
+
+clean:
+	rm -fR build
+```
