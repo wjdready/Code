@@ -1,7 +1,7 @@
 
 CC = arm-none-eabi-gcc
 
-LDFLAGS = -mcpu=cortex-m7 -lc -lm  -lrdimon -Tlink.ld -Wl,--gc-sections
+LDFLAGS = -mcpu=cortex-m7 -lc -lrdimon -Tlink.ld -Wl,--gc-sections
 
 CFLAGS = -mcpu=cortex-m7 -g 
 
