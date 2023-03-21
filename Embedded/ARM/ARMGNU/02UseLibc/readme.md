@@ -1,4 +1,3 @@
-
 ---
 mytags: myblog
 title: 02UseLibc
