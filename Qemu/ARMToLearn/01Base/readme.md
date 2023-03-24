@@ -1,0 +1,5 @@
+-cpu cortex-m3 是模拟cortex-m3处理器的选项
+-S 启动时不启动 CPU
+-gdb,tcp::1234 通过 tcp 端口 1234 连接到 GDB
+-nographic 禁用我们不需要的功能
+-kernel add.elf告诉 qemu 直接从我们的目标文件执行。

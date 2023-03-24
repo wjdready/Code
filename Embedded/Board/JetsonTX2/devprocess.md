@@ -450,3 +450,42 @@ usb_epint_path "/dev/ffs-mtp/ep3"
 
 usb_max_packet_size 0x200
 ```
+
+
+# [2023-03-21 14:50:12]
+
+本来打算给板子做个最小系统，顺便学习一下，但是一直没时间做，现在比较紧急，先走一步算一步吧...
+
+先烧写官方示例 rootfs 看看.
+
+根据官方文档的[Flashing Support](https://docs.nvidia.com/jetson/archives/r35.2.1/DeveloperGuide/text/SD/FlashingSupport.html#before-you-begin)
+
+
+```sh
+ls
+Jetson_Linux_R35.2.1_aarch64.tbz2  NVIDIA_Jetson_Linux_Driver_Package.zip  Tegra_Linux_Sample-Root-Filesystem_R35.2.1_aarch64.tbz2 public_sources.tbz2
+
+tar -xf Jetson_Linux_R35.2.1_aarch64.tbz2 -C ../
+tar -xf public_sources.tbz2 -C ../Linux_for_Tegra/source/
+sudo tar -xf Tegra_Linux_Sample-Root-Filesystem_R35.2.1_aarch64.tbz2 -C ../Linux_for_Tegra/rootfs
+
+cd ../Linux_for_Tegra 
+
+# 执行更改
+sudo ./apply_binaries.sh
+
+# sudo ./flash.sh <board> <rootdev>
+sudo ./flash.sh jetson-xavier-nx-devkit  mmcblk0p1 
+```
+
+我的电脑 VM 虚拟机程序根本下不起来，服了啊...
+
+每次都卡在
+
+```
+Error: probing the target board failed.
+       Make sure the target board is connected through
+       USB port and is in recovery mode.
+```
+
+虚拟机版本 `16.2.1 build-18811642` Ubuntu 18.04 和 20.04 都不行...
