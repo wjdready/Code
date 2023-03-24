@@ -38,7 +38,7 @@ $(BUILD_DIR) :
 	@mkdir $@
 
 qemu:
-	qemu-system-arm -M vexpress-a9 -kernel $(TARGET) -S -s
+	qemu-system-arm -M vexpress-a9 -kernel $(TARGET) -serial vc -serial vc -S -s
 
 clean:
 	rm build -rf

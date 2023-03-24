@@ -11,7 +11,6 @@ reset:
 stop:
     b stop
 
-
 .section .vectors
 .code 32
 
