@@ -11,7 +11,6 @@ int main(int argc, char const *argv[])
 
     // refreshes the screen
     refresh();
-
     // pause the screen output
     getch();
 
