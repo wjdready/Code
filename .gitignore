@@ -4,3 +4,4 @@
 build/
 _*/
 *.o
+node_modules/
