@@ -70,7 +70,7 @@ make -j4
 ```ld
 . = ALIGN(4);
 __start_test_command_section = .;
-*(test_command_section)
+KEEP(*(test_command_section))
 . = ALIGN(4);
 __stop_test_command_section = .;
 ```
