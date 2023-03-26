@@ -14,10 +14,13 @@ include_directories(
         ${PROJECT_SOURCE_DIR}
         "src"
         ${LIB_LVGL_DIR}
+        "lv_lib_freetype"
+        "/ucrt64/include/freetype2 "
 )
 
 file(GLOB_RECURSE SOURCES  
   "src/*.c"
+  "lv_lib_freetype/lv_freetype.c"
 )
 
 file(GLOB_RECURSE INCLUDES 
@@ -27,8 +30,12 @@ file(GLOB_RECURSE INCLUDES
 add_subdirectory(${LIB_LVGL_DIR}/lvgl lvgl)
 add_subdirectory(${LIB_LVGL_DIR}/lv_drivers lv_drivers)
 
-set(CMAKE_C_FLAGS "-static" )
+# set(CMAKE_C_FLAGS "-static")
+set(CMAKE_BUILD_TYPE "Debug" )
+
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(PKG_FREETYPE REQUIRED freetype2) 
 
 add_executable(main ${LIB_LVGL_DIR}/mouse_cursor_icon.c ${SOURCES} ${INCLUDES})
 target_link_libraries(main PRIVATE lvgl lvgl::examples lvgl::demos lvgl::drivers 
-  SDL2::SDL2main SDL2::SDL2-static -lserialport -lpthread)
+  SDL2::SDL2main SDL2::SDL2-static serialport pthread ${PKG_FREETYPE_LIBRARIES})
