@@ -151,3 +151,14 @@ no matching host key type found. Their offer: ssh-rsa,ssh-dss
 
 有可能是安装其他软件时, HOME 目录被篡改成其他目录，导致 git 无法获取 .ssh 文件夹了
 
+### 合并另一个分支中的某个文件
+
+很多时候在另一个分支更改了, 但是不想合并全部, 可指定合并某个文件
+
+```
+git checkout --patch 来源分支名称 文件路径
+```
+
+### 对某个 commit 打标签
+
+git tag -a v0.1.1 9fbc3d0
