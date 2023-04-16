@@ -30,3 +30,20 @@ vim /etc/nsswitch.conf
          printf -v $2 %q "$1"
      fi
 ```
+
+
+# MSYS 安装后
+
+```sh
+# 中科大源
+sed -i "s#mirror.msys2.org/#mirrors.ustc.edu.cn/msys2/#g" /etc/pacman.d/mirrorlist*
+pacman -Sy
+
+# 安装 SDL2 make cmake gcc
+pacman -S make
+pacman -S mingw-w64-ucrt-x86_64-cmake
+pacman -S mingw-w64-ucrt-x86_64-gcc
+pacman -S mingw-w64-ucrt-x86_64-SDL2
+
+```
+

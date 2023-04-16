@@ -31,22 +31,10 @@ int main()
     auto slice   = pwm_gpio_to_slice_num(4);
     auto channel = pwm_gpio_to_channel(4);
 
-    pwm_set_clkdiv(slice, 100.0f);  /// Setting the divider to slow down the clock
-    pwm_set_wrap(slice, 1250);      /// setting the Wrap time to 9764 (20 ms)
-    pwm_set_chan_level(slice, channel, 1250 / 2);
+    pwm_set_clkdiv(slice, 256.0f);  /// Setting the divider to slow down the clock
+    pwm_set_wrap(slice, 9804);      /// setting the Wrap time to 9764 (20 ms)
     pwm_set_enabled(slice, true);
 
-    int freq = 1000;
-
-    // pwm_set_clkdiv(slice, 125000000.0f / 2.0f / freq);
-    // sleep_ms(10);
-
-    // for (int i = 100; i < 400000; i++)
-    // {
-    //     pwm_set_clkdiv(slice, 125000000.0f / 1250.0f / i);
-    //     sleep_ms(10);
-    // }
-    
     // for (uint i = 0; i < 10; ++i)
     // {
 
@@ -58,14 +46,12 @@ int main()
     //     sleep_ms(2000);
     // }
 
-    // pwm_set_chan_level(slice, channel, 2000);
-
-    // for (int i = 1; i < 1000000; i += 2)
-    // {
-    //     pwm_set_wrap(slice, i);
-    //     pwm_set_chan_level(slice, channel, i / 2);
-    //     sleep_ms(10);
-    // }
+    for (int i = 2; i < 1000000; i += 2)
+    {
+        pwm_set_wrap(slice, i);
+        pwm_set_chan_level(slice, channel, i / 2);
+        sleep_ms(1);
+    }
     
 
     printf("\n#sh ");
@@ -119,21 +105,19 @@ void my_pwm_init(void)
 
 void set_pwm_freq(int freq) 
 {
-    // printf("freq %d\n", freq);
+    printf("freq %d\n", freq);
 
-    // uint32_t pwm_clkfreq = 125000000; // PWM clock frequency
-    // uint32_t pwm_clkdiv = 1; // PWM clock divider
+    uint32_t pwm_clkfreq = 125000000; // PWM clock frequency
+    uint32_t pwm_clkdiv = 1; // PWM clock divider
 
-    // uint32_t div = pwm_clkfreq / freq / 2; // calculate the PWM clock divider
-    // pwm_clkdiv = div + 1;
+    uint32_t div = pwm_clkfreq / freq / 2; // calculate the PWM clock divider
+    pwm_clkdiv = div + 1;
     
-    // printf("pwm_clkdiv %d\n", pwm_clkdiv);
+    printf("pwm_clkdiv %d\n", pwm_clkdiv);
 
-    // // set the PWM clock divider
+    // set the PWM clock divider
     uint slice_num = pwm_gpio_to_slice_num(CONFIG_PWM_PIN); // map the GPIO pin to the corresponding PWM slice number
-    // pwm_set_clkdiv(slice_num, pwm_clkdiv);
-
-    pwm_set_clkdiv(slice_num, 125000000.0f / 1250.0f / freq);
+    pwm_set_clkdiv(slice_num, pwm_clkdiv);
 }
 
 static int pwm_set_freq(int argc, char *argv[])

@@ -159,6 +159,42 @@ no matching host key type found. Their offer: ssh-rsa,ssh-dss
 git checkout --patch 来源分支名称 文件路径
 ```
 
+### 拉取远程分支
+
+```
+git checkout -b develop origin/develop
+```
+
+### 暂存代码
+
+有时有突发工作，这时我们可先暂时存储当前代码, 转去做其他内容
+
+```sh
+# 暂存命令
+git stash save "暂存的备注"
+
+# 查看暂存记录
+git stash list
+
+# 取回暂存代码
+git stash pop
+
+# 取消【取消暂存代码】 (慎用)
+git reset --hard
+```
+
+
 ### 对某个 commit 打标签
 
 git tag -a v0.1.1 9fbc3d0
+
+### 对于 Windows 下换行符自动转换
+
+[参考](https://blog.csdn.net/Babylonxun/article/details/126598477)
+
+
+### 修改之前提交的用户信息
+
+[参考](https://zhuanlan.zhihu.com/p/455741996)
+
+
