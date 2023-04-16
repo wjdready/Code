@@ -78,3 +78,54 @@ CS、RAS、CAS、WE、LDQM,UDQM、CLK、CKE
 
 ![NandFlash2](dev/NandFlash2.png)
 
+
+# [2023-03-29 11:19:29]
+
+使用 RTThread Art-Pi BSP 自带的 SDIO 驱动 sd 卡有问题
+
+```
+r12: 0x0000000c
+ lr: 0x90001a8b
+ pc: 0x90001760
+hard fault on thread: mmcsd_de�
+
+thread   pri  status      sp     stack size max used left tick  error
+-------- ---  ------- ---------- ----------  ------  ---------- ---
+tshell    20  suspend 0x000000c4 0x00001000    06%   0x00000009 OK
+sd_mount  30  suspend 0x000000e0 0x00000800    11%   0x00000014 OK
+mmcsd_de  15  running 0x0000026c 0x00000800    30%   0x00000007 OK
+tidle0    31  ready   0x00000060 0x00000100    56%   0x00000014 OK
+main      10  suspend 0x000000b0 0x00000800    17%   0x0000000e OK
+bus fault:
+
+SCB_CFSR_BFSR:0x04 IMPRECISERR
+```
+
+跟踪错误发现是执行 rthw_sdio_send_command 时出现问题, 该函数出错部分如下:
+
+主要是 SCB_CleanInvalidateDCache 出错了.
+
+```c
+addr2line -e rt-thread.elf  -a -f 0x90001760
+
+/* data pre configuration */
+if (data != RT_NULL)
+{
+    SCB_CleanInvalidateDCache();
+
+    reg_cmd |= SDMMC_CMD_CMDTRANS;
+    hw_sdio->mask &= ~(SDMMC_MASK_CMDRENDIE | SDMMC_MASK_CMDSENTIE);
+    hw_sdio->dtimer = HW_SDIO_DATATIMEOUT;
+    hw_sdio->dlen = data->blks * data->blksize;
+    hw_sdio->dctrl = (get_order(data->blksize) << 4) | (data->flags & DATA_DIR_READ ? SDMMC_DCTRL_DTDIR : 0);
+    hw_sdio->idmabase0r = (rt_uint32_t)cache_buf;
+    hw_sdio->idmatrlr = SDMMC_IDMA_IDMAEN;
+}
+```
+
+据我所知，SCB_CleanInvalidateDCache 是全局 clean 是不能随便用的, 我暂时把它注释掉就能运行了，不知会不会影响其他地方
+
+
+# [2023-03-29 11:36:15]
+
+

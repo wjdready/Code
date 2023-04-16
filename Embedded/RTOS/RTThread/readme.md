@@ -123,3 +123,14 @@ rtt.bat 的实现如下:
 
 最后, 我发现 RTThread 官方已经提供 VSCode 的开发插件, 使用起来更简单了.
 
+
+## 官方教程
+
+[官方教程](https://www.rt-thread.org/document/site/#/rt-thread-version/rt-thread-standard/README)
+
+
+
+## Note 
+
+scons 使用的是 python 2.7, 里面的命令无法支持长路径复制, 因此 scons --dist 如果路径过长就会导出失败, 真的坑...
+

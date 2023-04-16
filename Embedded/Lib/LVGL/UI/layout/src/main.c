@@ -39,7 +39,14 @@ int main(int argc, char **argv)
 //  lv_example_flex_3();
 //  lv_example_label_1();
 
-    lv_demo_widgets();
+    // lv_demo_widgets();
+
+    // lv_example_style_15();
+    lv_example_flex_1();
+    
+
+    void ui_init(void);
+    ui_init();
 
   while(1) {
       /* Periodically call the lv_task handler.
