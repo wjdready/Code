@@ -9,6 +9,8 @@
 #include <SDL2/SDL.h>
 
 #include "lv_freetype.h"
+#include <ft2build.h>
+#include <freetype/freetype.h>
 
 static void hal_init(void);
 
@@ -45,7 +47,7 @@ int main(int argc, char **argv)
 
     /*Init freetype library
      *Cache max 64 faces and 1 size*/
-    lv_freetype_init(128, 1, 0);
+    lv_freetype_init(128, 20, 0);
 
     /*Create a font*/
     static lv_ft_info_t info;
@@ -60,18 +62,45 @@ int main(int argc, char **argv)
     info2.style = FT_FONT_STYLE_NORMAL;
     lv_ft_font_init(&info2);
 
-    /*Create style with the new font*/
-    static lv_style_t style;
-    lv_style_init(&style);
-    lv_style_set_text_font(&style, info.font);
-
     /*Create a label with the new style*/
     lv_obj_t *label = lv_label_create(lv_scr_act());
-    lv_obj_add_style(label, &style, 0);
-    lv_label_set_text(label, "Hello world 中文卧槽");
+    lv_obj_set_style_text_font(label, info.font, 0);
+    lv_label_set_text(label, "Hello world 中文");
     lv_obj_enable_style_refresh(true);
 
     int cnt = 0;
+    int size = 32;
+
+    FT_Library library;
+    FT_Face face;
+    FT_Error error = FT_Init_FreeType( &library );
+
+    // error = FT_Set_Char_Size(face,    /* handle to face object */
+    //                          0,       /* char_width in 1/64th of points */
+    //                          16 * 64, /* char_height in 1/64th of points */
+    //                          300,     /* horizontal device resolution */
+    //                          300);    /* vertical device resolution */
+
+    // error = FT_Set_Pixel_Sizes(face, /* handle to face object */
+    //                            0,    /* pixel_width */
+    //                            16);  /* pixel_height */
+
+    // glyph_index = FT_Get_Char_Index(face, charcode);
+
+    // error = FT_Load_Glyph(face,        /* handle to face object */
+    //                       glyph_index, /* glyph index */
+    //                       load_flags); /* load flags, see below */
+
+    // error = FT_Render_Glyph(face->glyph,  /* glyph slot */
+    //                         render_mode); /* render mode */
+
+    // error = FT_Set_Transform(face,    /* target face object */
+    //                          &matrix, /* pointer to 2x2 matrix */
+    //                          &delta); /* pointer to 2d vector */
+
+    // draw_bitmap( &slot->bitmap, pen_x + slot->bitmap_left, pen_y - slot->bitmap_top );
+
+    error = FT_New_Face( library, "./MSYH.TTC", 0, &face );
 
     while (1)
     {
@@ -81,15 +110,22 @@ int main(int argc, char **argv)
 
         if (cnt++ >= 100)
         {
+            // size += 1;
+            lv_ft_font_destroy(&info);
+            info.name = "./MSYH.TTC";
             info.weight += 1;
-            lv_style_set_text_font(&style, info2.font);
+            info.style = FT_FONT_STYLE_NORMAL;
+            lv_ft_font_init(&info);
+            
+            lv_obj_del(label);
+            label = lv_label_create(lv_scr_act());
+            lv_obj_set_style_text_font(label, info2.font, 0);
 
             char buf[64];
             snprintf(buf, 64, "Hello 中文 %d", info.weight);
-
-            lv_obj_add_style(label, &style, 0);
             lv_label_set_text(label, buf);
             cnt = 0;
+            
         }
 
         usleep(5 * 1000);
@@ -150,8 +186,8 @@ static void hal_init(void)
     lv_indev_set_group(enc_indev, g);
 
     /*Set a cursor for the mouse*/
-    LV_IMG_DECLARE(mouse_cursor_icon);                  /*Declare the image file.*/
-    lv_obj_t *cursor_obj = lv_img_create(lv_scr_act()); /*Create an image object for the cursor */
-    lv_img_set_src(cursor_obj, &mouse_cursor_icon);     /*Set the image source*/
-    lv_indev_set_cursor(mouse_indev, cursor_obj);       /*Connect the image  object to the driver*/
+    // LV_IMG_DECLARE(mouse_cursor_icon);                  /*Declare the image file.*/
+    // lv_obj_t *cursor_obj = lv_img_create(lv_scr_act()); /*Create an image object for the cursor */
+    // lv_img_set_src(cursor_obj, &mouse_cursor_icon);     /*Set the image source*/
+    // lv_indev_set_cursor(mouse_indev, cursor_obj);       /*Connect the image  object to the driver*/
 }

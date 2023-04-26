@@ -29,3 +29,4 @@ add_compile_options(-Wall
 # Hardware-specific examples in subdirectories:
 add_subdirectory(template)
 add_subdirectory(pwm)
+add_subdirectory(arduboy)
