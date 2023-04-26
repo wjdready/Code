@@ -20,3 +20,4 @@ git clone https://github.com/lvgl/lv_lib_freetype
 
 
 cmake 中加载 pkg-config 库[参考](https://cmake.org/cmake/help/v3.5/module/FindPkgConfig.html)
+

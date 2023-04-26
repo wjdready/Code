@@ -181,6 +181,9 @@ git stash pop
 
 # 取消【取消暂存代码】 (慎用)
 git reset --hard
+
+# git stash 冲突
+https://blog.csdn.net/jy692405180/article/details/78520251
 ```
 
 

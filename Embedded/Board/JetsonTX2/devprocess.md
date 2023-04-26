@@ -2,7 +2,9 @@
 
 ### [2023-02-20 22:48:21] 起始
 
-不得不吐槽官方找资料真的好难定位到准确位置, 之前找到过, 过了一段时间忘记了. 各个链接点来点去后来找不到位置. 找了好久, 这里就给出 [Jetson Linux 相关文档链接](https://developer.nvidia.com/embedded/jetson-linux)
+不得不吐槽官方找资料真的好难定位到准确位置, 之前找到过, 过了一段时间忘记了. 各个链接点来点去后来找不到位置. 找了好久, 这里就给出 [Jetson Linux 相关文档链接](https://developer.nvidia.com/embedded/jetson-linux-archive)
+
+发现新的版本已经不支持 TX2 板子了，这里就下最新[支持 TX2 的资源](https://developer.nvidia.com/embedded/linux-tegra-r3273)
 
 在这里可以看到有官方已经编译好的驱动和示例根文件系统, 然后下面是驱动和跟文件示例的源代码. 这四组文件都要下载...
 
@@ -465,9 +467,9 @@ usb_max_packet_size 0x200
 ls
 Jetson_Linux_R35.2.1_aarch64.tbz2  NVIDIA_Jetson_Linux_Driver_Package.zip  Tegra_Linux_Sample-Root-Filesystem_R35.2.1_aarch64.tbz2 public_sources.tbz2
 
-tar -xf Jetson_Linux_R35.2.1_aarch64.tbz2 -C ../
+tar -xf Jetson_Linux_R32.7.3_aarch64.tbz2 -C ../
 tar -xf public_sources.tbz2 -C ../Linux_for_Tegra/source/
-sudo tar -xf Tegra_Linux_Sample-Root-Filesystem_R35.2.1_aarch64.tbz2 -C ../Linux_for_Tegra/rootfs
+sudo tar -xf Tegra_Linux_Sample-Root-Filesystem_R32.7.3_aarch64.tbz2 -C ../Linux_for_Tegra/rootfs
 
 cd ../Linux_for_Tegra 
 
@@ -475,7 +477,7 @@ cd ../Linux_for_Tegra
 sudo ./apply_binaries.sh
 
 # sudo ./flash.sh <board> <rootdev>
-sudo ./flash.sh jetson-xavier-nx-devkit  mmcblk0p1 
+sudo ./flash.sh jetson-tx2-devkit  mmcblk0p1 
 ```
 
 我的电脑 VM 虚拟机程序根本下不起来，服了啊...
@@ -489,3 +491,122 @@ Error: probing the target board failed.
 ```
 
 虚拟机版本 `16.2.1 build-18811642` Ubuntu 18.04 和 20.04 都不行...
+
+
+# [2023-04-24 15:55:52]
+
+我发现之前根本就没进入 recovery 吧, lsusb 应该显示的是 Crop 而不是 APX.
+
+改回来后下载提示:
+
+```
+Error: The Actual SoC ID(0x18) mismatches intended jetson-xavier-nx-devkit SoC ID(0x19).
+```
+
+才发现原来自己找资源时下载错包了，最新的包已经不支持 TX2 了，唉.
+
+# [2023-04-24 16:44:32]
+
+下载成功了，之前 VMWare 一直失败，但是这次成功，难道是因为创建虚拟机时硬件兼容性选择了 15.x 版本的原因吗...
+
+## 源码编译
+
+在 Linux_for_Tegra/source 中执行 nv_src_build.sh 可将源码导出, 需要设置工具链和板子:
+
+```sh
+# 这里直接使用包管理下载好的
+apt-get install gcc-aarch64-linux-gnu 
+apt-get install gcc-arm-linux-gnueabihf
+export CROSS_COMPILE_ARM_PATH=/usr
+export CROSS_COMPILE_AARCH64_PATH=/usr
+erxport NV_TARGET_BOARD=jetson-tx2-devkit
+```
+
+这时 kernel 被解压到了 src_out 目录，之后可以直接在 src_out 中执行 ./nvbuild.sh 进行编译
+
+# [2023-04-25 08:43:45]
+
+[Flashing Support](https://docs.nvidia.com/jetson/archives/r35.2.1/DeveloperGuide/text/SD/FlashingSupport.html#flashing-support)
+
+Flash 有两种方案:
+
+* flash.sh 常规 flash，将带有引导加载程序和内核的镜像 flash 到设备，还可以选择将根文件系统 flash 到内部或外部存储设备
+
+* l4t_initrd_flash.sh 先 flash 进一个运行在 ramdisk 的内核，在内核中在通过口或 usb 进行 flash 到内部或外部闪存, 因此速度通常比 flash.sh 快.
+
+## 克隆系统镜像
+
+[官方例子 To clone a Jetson device and flash](https://docs.nvidia.com/jetson/archives/r35.2.1/DeveloperGuide/text/SD/FlashingSupport.html#to-clone-a-jetson-device-and-flash)
+
+```sh
+# 首先从调好的板子克隆系统镜像:
+sudo ./flash.sh -r -k APP -G myspace/system.img jetson-tx2-devkit mmcblk0p1
+
+# 再将克隆的镜像替换到烧录目录中的镜像
+sudo cp myspace/system.img bootloader/system.img
+
+# 最后再执行 flash 操作
+
+# 如果板子烧写过系统, 只是更新 system 镜像
+sudo ./flash.sh -r -k APP jetson-tx2-devkit mmcblk0p1
+
+# 板子没系统，现在完全更新，包括最新镜像
+sudo ./flash.sh -r jetson-tx2-devkit mmcblk0p1
+```
+
+> -r 参数将跳过构建 system.img, 直接使用一个已经存在的 system.img
+
+克隆 kernel-dtb
+
+sudo ./flash.sh -r -k kernel-dtb -G myspace/kernel_tegra186-quill-p3310-1000-c03-00-base.dtb jetson-tx2-devkit mmcblk0p1
+sudo ./flash.sh -r -k kernel-dtb jetson-tx2-devkit mmcblk0p1
+
+克隆 kernel 
+
+sudo ./flash.sh -r -k kernel -G myspace/boot.img jetson-tx2-devkit mmcblk0p1
+sudo ./flash.sh -r -k kernel jetson-tx2-devkit mmcblk0p1
+
+## massflash 构建系统包
+
+[官方文档](https://docs.nvidia.com/jetson/archives/r35.2.1/DeveloperGuide/text/SD/FlashingSupport.html#to-back-up-and-restore-a-jetson-device)
+
+好像没找到...
+
+发现被 l4t_initrd_flash.sh 替代了，功能已经包含在 l4t_initrd_flash 中了. 就是 `l4t_initrd_flash.sh --massflash`
+
+## 通过 initrd 进行 flash
+
+生产环境的 flash: [Flashing to Multiple Jetson Devices](https://docs.nvidia.com/jetson/archives/r35.2.1/DeveloperGuide/text/SD/FlashingSupport.html#flashing-to-multiple-jetson-devices)
+
+需要下载 [secureboot 包](https://developer.nvidia.com/embedded/l4t/r32_release_v6.1/t186/secureboot_r32.6.1_aarch64.tbz2)
+
+下载后解压到工程目录:
+
+```sh
+tar -xf secureboot_r32.6.1_aarch64.tbz2 -C ../
+```
+
+生成 massflash
+
+```sh
+sudo ./tools/kernel_flash/l4t_initrd_flash.sh --no-flash --massflash jetson-tx2-devkit mmcblk0p1
+```
+
+> --massflash 会在工程根目录中生成 mfi_jetson-tx2-devkit.tar.gz 从而可以拿给工程烧写
+
+flash 到板子:
+
+```sh
+sudo ./tools/kernel_flash/l4t_initrd_flash.sh --flash-only jetson-tx2-devkit mmcblk0p1
+```
+
+如果是虚拟机，注意记得进入 initrd 后主动切换 USB 到虚拟机, 否则 flash 检测不到 usb 口.
+
+
+## 修改 rootfs 
+
+可在 rootfs 中自定义内容, 这样就可以了哈哈, rootfs 不就是 ubuntu-base 来的吗。然后试了以下，确实可以，这下有的玩了...
+
+```
+sudo arch-chroot rootfs
+```

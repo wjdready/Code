@@ -121,3 +121,80 @@ mount sd0 /sdcard elm
 # [2023-04-14 09:11:13]
 
 打算开一个线程来闪烁 led 作为工作指示灯, 使用 INIT_BOARD_EXPORT 时发现进不去线程, 只能使用 INIT_APP_EXPORT 初始化的线程才能进入线程, 可能是那时系统都还没初始化，这时候配置线程进去不。
+
+
+# [2023-04-17 21:48:48]
+
+堆内存初始化失败，卡在断言检测，这个是静态定义的数组, 
+
+```c
+static struct rt_object_information _object_container[RT_Object_Info_Unknown] =
+{
+    /* initialize object container - thread */
+    {RT_Object_Class_Thread, _OBJ_CONTAINER_LIST_INIT(RT_Object_Info_Thread), sizeof(struct rt_thread)},
+#ifdef RT_USING_SEMAPHORE
+    /* initialize object container - semaphore */
+    {RT_Object_Class_Semaphore, _OBJ_CONTAINER_LIST_INIT(RT_Object_Info_Semaphore), sizeof(struct rt_semaphore)},
+#endif
+#ifdef RT_USING_MUTEX
+    /* initialize object container - mutex */
+    {RT_Object_Class_Mutex, _OBJ_CONTAINER_LIST_INIT(RT_Object_Info_Mutex), sizeof(struct rt_mutex)},
+#endif
+#ifdef RT_USING_EVENT
+    /* initialize object container - event */
+    {RT_Object_Class_Event, _OBJ_CONTAINER_LIST_INIT(RT_Object_Info_Event), sizeof(struct rt_event)},
+#endif
+#ifdef RT_USING_MAILBOX
+    /* initialize object container - mailbox */
+    {RT_Object_Class_MailBox, _OBJ_CONTAINER_LIST_INIT(RT_Object_Info_MailBox), sizeof(struct rt_mailbox)},
+#endif
+#ifdef RT_USING_MESSAGEQUEUE
+    /* initialize object container - message queue */
+    {RT_Object_Class_MessageQueue, _OBJ_CONTAINER_LIST_INIT(RT_Object_Info_MessageQueue), sizeof(struct rt_messagequeue)},
+#endif
+#ifdef RT_USING_MEMHEAP
+    /* initialize object container - memory heap */
+    {RT_Object_Class_MemHeap, _OBJ_CONTAINER_LIST_INIT(RT_Object_Info_MemHeap), sizeof(struct rt_memheap)},
+#endif
+#ifdef RT_USING_MEMPOOL
+    /* initialize object container - memory pool */
+    {RT_Object_Class_MemPool, _OBJ_CONTAINER_LIST_INIT(RT_Object_Info_MemPool), sizeof(struct rt_mempool)},
+#endif
+#ifdef RT_USING_DEVICE
+    /* initialize object container - device */
+    {RT_Object_Class_Device, _OBJ_CONTAINER_LIST_INIT(RT_Object_Info_Device), sizeof(struct rt_device)},
+#endif
+    /* initialize object container - timer */
+    {RT_Object_Class_Timer, _OBJ_CONTAINER_LIST_INIT(RT_Object_Info_Timer), sizeof(struct rt_timer)},
+#ifdef RT_USING_MODULE
+    /* initialize object container - module */
+    {RT_Object_Class_Module, _OBJ_CONTAINER_LIST_INIT(RT_Object_Info_Module), sizeof(struct rt_dlmodule)},
+#endif
+#ifdef RT_USING_HEAP
+    /* initialize object container - small memory */
+    {RT_Object_Class_Memory, _OBJ_CONTAINER_LIST_INIT(RT_Object_Info_Memory), sizeof(struct rt_memory)},
+#endif
+};
+```
+
+但是判断时, 总是失败
+```c
+rt_object_get_information(enum rt_object_class_type type)
+{
+    int index;
+
+    for (index = 0; index < RT_Object_Info_Unknown; index ++)
+        if (_object_container[index].type == type) return &_object_container[index];
+
+    return RT_NULL;
+}
+
+type = RT_Object_Class_Memory;
+information = rt_object_get_information(type);
+RT_ASSERT(information != RT_NULL);
+```
+
+最后发现是自己移植过来时, LVGL disp_port 中定义了大的静态数组导致内存溢出了?
+
+去除后 _object_container 初始化正确了，但如果内存不过为什么链接时不提示，然后运行后无法初始化。
+
