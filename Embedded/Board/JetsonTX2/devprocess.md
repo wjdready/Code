@@ -519,7 +519,7 @@ apt-get install gcc-aarch64-linux-gnu
 apt-get install gcc-arm-linux-gnueabihf
 export CROSS_COMPILE_ARM_PATH=/usr
 export CROSS_COMPILE_AARCH64_PATH=/usr
-erxport NV_TARGET_BOARD=jetson-tx2-devkit
+export NV_TARGET_BOARD=jetson-tx2-devkit
 ```
 
 这时 kernel 被解压到了 src_out 目录，之后可以直接在 src_out 中执行 ./nvbuild.sh 进行编译
@@ -542,6 +542,9 @@ Flash 有两种方案:
 # 首先从调好的板子克隆系统镜像:
 sudo ./flash.sh -r -k APP -G myspace/system.img jetson-tx2-devkit mmcblk0p1
 
+# 克隆完成后生产两个文件, 一个是原始分区文件 .raw 另一个是 Spare image 后重整的大小..
+# 如果 APP 分区本身文件很多的话，即使重整也很大
+
 # 再将克隆的镜像替换到烧录目录中的镜像
 sudo cp myspace/system.img bootloader/system.img
 
@@ -554,7 +557,7 @@ sudo ./flash.sh -r -k APP jetson-tx2-devkit mmcblk0p1
 sudo ./flash.sh -r jetson-tx2-devkit mmcblk0p1
 ```
 
-> -r 参数将跳过构建 system.img, 直接使用一个已经存在的 system.img
+> -r 参数将跳过构建 system.img, 直接使用拷贝后的 system.img
 
 克隆 kernel-dtb
 
@@ -610,3 +613,11 @@ sudo ./tools/kernel_flash/l4t_initrd_flash.sh --flash-only jetson-tx2-devkit mmc
 ```
 sudo arch-chroot rootfs
 ```
+
+
+# [2023-04-26 09:16:16]
+
+## 全新构建？
+
+本来想完全构建 rootfs，HDMI 原版是可以正常登录和显示，但是 MIPI 屏还是有问题, 只能退而求其次, 直接根据该 rootfs 改了.
+

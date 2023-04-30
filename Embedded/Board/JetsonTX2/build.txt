@@ -1,0 +1,146 @@
+
+
+
+export JTX2=~/JetsonTx2/Linux_for_Tegra
+
+mkdir $JTX2/myspace -p
+cd $JTX2/myspace 
+
+mount_roofs ()
+{
+    sudo mount -v --bind /dev base/dev
+    sudo mount -vt devpts devpts base/dev/pts -o gid=5,mode=620
+    sudo mount -vt proc proc base/proc
+    sudo mount -vt sysfs sysfs base/sys
+    sudo mount -vt tmpfs tmpfs base/run
+}
+
+umount_roofs ()
+{
+    sudo umount base/dev/pts
+    sudo umount base/proc
+    sudo umount base/sys
+    sudo umount base/run
+    sudo umount base
+}
+
+
+
+## Alpine 不能用, 因为官方包是 deb 的
+# git clone https://github.com/alpinelinux/alpine-chroot-install.git  
+
+# sudo ./alpine-chroot-install/alpine-chroot-install \
+#     -m http://mirrors.tuna.tsinghua.edu.cn/alpine \
+#     -d $JTX2/rootfs \
+#     -a aarch64  \
+#     -p openrc
+
+wget http://cdimage.ubuntu.com/ubuntu-base/releases/18.04/release/ubuntu-base-18.04.5-base-arm64.tar.gz
+tar -pxvf ubuntu-base-20.04.4-base-arm64.tar.gz -C $JTX2/rootfs
+
+sudo $JTX2/apply_binaries.sh
+
+sudo rm $JTX2/rootfs/dev/random $JTX2/rootfs/dev/urandom
+
+
+cd $JTX2/myspace 
+sudo cp /etc/resolv.conf $JTX2/rootfs/etc/
+source tools.sh 
+mount_roofs
+sudo chroot $JTX2/rootfs /usr/bin/bash
+
+apt --fix-broken install
+
+umount_roofs
+
+# 下载镜像到 mmcblk0
+sudo ./flash.sh jetson-tx2-devkit mmcblk0p1
+
+#dtb dowload
+sudo ./flash.sh -r -k kernel-dtb jetson-tx2 mmcblk0p1
+
+
+setenv ipaddr 192.168.31.100
+setenv serverip 192.168.31.111
+kernel_addr_r=80280000
+tftp 80280000 zImage
+tftp 80000000 tegra186-quill-p3310-1000-c03-00-dsi-hdmi-hdmi-imx274-hdmiin.dtb 
+bootz 80280000 - 80000000
+
+
+setenv load_emmc "load mmc 1:1 0x80280000 Image;load mmc 1:1 0x80000000 tegra186-quill-p3310-1000-c03-00-base.dtb;"
+setenv bootcmd "run load_emmc;booti 0x80280000 - 0x80000000;"
+
+
+load mmc 1:1 0x80280000 Image
+load mmc 1:1 0x80000000 tegra186-quill-p3310-1000-c03-00-dsi-hdmi-hdmi-imx274-hdmiin.dtb 
+setenv bootargs "root=/dev/mmcblk2p2 rw console=ttyS0,115200n8"
+booti 0x80280000 - 0x80000000
+
+bootcmd=run distro_bootcmd  # 默认
+
+## 更新 kernel 分区，实际是 u-boot, linux kernel 在 /boot 分区中, 由 u-boot 引导
+
+sudo ./flash.sh -k BMP \
+    --image myspace/logo_create/jw_boot_logo/bmp.blob  jetson-tx2-devkit mmcblk0p1
+
+
+mount_roofs()
+{
+    sudo mount -t proc /proc $LFS/ubuntu/proc
+    sudo mount -t sysfs /sys $LFS/ubuntu/sys
+    sudo mount -o bind /dev $LFS/ubuntu/dev
+    sudo mount -o bind /dev/pts $LFS/ubuntu/dev/pts
+}
+
+umount_roofs()
+{
+    sudo umount $LFS/ubuntu/proc
+    sudo umount $LFS/ubuntu/sys
+    sudo umount $LFS/ubuntu/dev/pts
+    sudo umount $LFS/ubuntu/dev
+}
+
+
+sudo chroot $LFS/ubuntu /bin/bash
+
+dd if=/dev/zero of=$LFS/dst/rootfs.img bs=1G count=4
+mkfs.ext4 $LFS/dst/rootfs.img
+
+sudo mount -o loop $LFS/dst/rootfs.img /mnt
+sudo cp $LFS/ubuntu/* /mnt -r
+sudo umount /mnt
+
+qemu-system-arm                                     \
+    -M vexpress-a9                                  \
+    -m 512M                                         \
+    -kernel $LFS/dst/zImage                         \
+    -net nic -net user,hostfwd=tcp::10021-:22       \
+    -dtb $LFS/dst/vexpress-v2p-ca9.dtb              \
+    -sd $LFS/dst/rootfs.img                         \
+    -append "root=/dev/mmcblk0 rw console=ttyAMA0"
+
+
+apt-get install libdrm-tests
+
+modetest -M pl111 -s 34@32:1024x768
+
+
+sed -i 's/ports.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
+apt-get update
+
+systemd 
+
+libwrap0 libmnl0 libnl-genl-3-dev
+
+libpcsclite-dev libssl1.0-dev libelf-dev openssh-server libparted-dev 
+
+inetutils-ping wpasupplicant parted kmod xxd iproute2
+
+mtd-utils isc-dhcp-client
+
+net-tools dhcpcd5
+
+./apply_binaries.sh
+apt --fix-broken install
+

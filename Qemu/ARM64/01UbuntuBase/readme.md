@@ -116,6 +116,7 @@ qemu-system-aarch64         \
     -m 4096M                \
     -kernel $LFS/dst/Image  \
     -nographic              \
+    -net nic -net user,hostfwd=tcp::10021-:22 \
     -append "root=/dev/vda rw rootfstype=ext4 console=ttyAMA0 ignore_loglevel" \
     -drive if=none,file=$LFS/dst/rootfs.img,id=hd0 \
     -device virtio-blk-device,drive=hd0
