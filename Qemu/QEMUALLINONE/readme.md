@@ -1,7 +1,7 @@
 环境2：WSL Ubuntu18.4 
 
-```php
-echo "\nexport LFS=~/lfs" >> ~/.zshrc
+```bash
+echo "export LFS=~/lfs" >> ~/.bashrc
 
 # 创建工作目录
 mkdir ~/lfs -p
@@ -114,6 +114,4 @@ make headers_install INSTALL_HDR_PATH=./outheader
 
 cp -a outlib/lib/modules $LFS/rootfs/lib 
 cp -a outheader/include $LFS/rootfs/usr/include
-
-
 ```

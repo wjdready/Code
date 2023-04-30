@@ -24,5 +24,3 @@
 
 官方文档经常出现的 guest 和 host 是什么呢, host 是指你用来跑 QEMU 的那个主机系统, guest 是运行在 QEMU 里面的那个系统.
 
-
-
