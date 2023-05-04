@@ -185,7 +185,7 @@ module mytri(out, in, enable);
 endmodule
 ```
 
-> 'bz 表示高阻态
+> `'bz` 表示高阻态
 
 
 # Verilog 用于模块的测试
