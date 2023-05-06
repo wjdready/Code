@@ -309,7 +309,18 @@ SOURCES += main.cpp
 apt-get install qt5-default g++ make
 qmake && make -j8
 export QT_QPA_PLATFORM=linuxfb:tty=/dev/fb0
+export QT_QPA_GENERIC_PLUGINS=evdevmouse:/dev/input/event2,evdevkeyboard:/dev/input/event1
 ./qtdemo
+
+# 更多 QT 选项
+export QTDIR=/usr/lib/qt5
+export QT_QPA_PLATFORM_PLUGIN_PATH=$QTDIR/plugins
+export QT_QPA_PLATFORM=eglfs:fb=/dev/fb0
+# 触摸设备支持 evdevtouch 或 tslib
+# evdevtouch:/dev/input/event1
+# tslib:/dev/input/ts0
+export QT_QPAFONTDIR=/usr/lib/fonts
+export QML2_IMPORT_PATH=$QTDIR/qml
 ```
 
 ## 参考文献

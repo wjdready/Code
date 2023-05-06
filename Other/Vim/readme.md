@@ -49,3 +49,19 @@ call plug#end()
 | Normal | D        | 删除光标后的所有内容         |
 
 
+
+# [2023-05-06 13:06:19]
+
+###### 粘贴缩进乱问题
+
+```
+:set paste
+```
+
+##### 以只读打开 root 文件无法保存问题:
+
+https://blog.csdn.net/HandsomeHong/article/details/126941111
+
+```
+:w !sudo tee %
+```
