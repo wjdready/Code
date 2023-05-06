@@ -114,4 +114,8 @@ make headers_install INSTALL_HDR_PATH=./outheader
 
 cp -a outlib/lib/modules $LFS/rootfs/lib 
 cp -a outheader/include $LFS/rootfs/usr/include
+
+# 要在本机编译模块, 需拷贝整个源码 (此方法待商榷)
+# 然后启动后将 /lib/modules/`uname -r`/build 软链接到 /usr/src/kernel_src
+# cp kernel_src /usr/src/kernel_src -r 
 ```

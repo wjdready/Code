@@ -559,15 +559,16 @@ sudo ./flash.sh -r jetson-tx2-devkit mmcblk0p1
 
 > -r 参数将跳过构建 system.img, 直接使用拷贝后的 system.img
 
-克隆 kernel-dtb
-
+```sh
+# 克隆 kernel-dtb
 sudo ./flash.sh -r -k kernel-dtb -G myspace/kernel_tegra186-quill-p3310-1000-c03-00-base.dtb jetson-tx2-devkit mmcblk0p1
 sudo ./flash.sh -r -k kernel-dtb jetson-tx2-devkit mmcblk0p1
 
-克隆 kernel 
+# 克隆 kernel 
 
 sudo ./flash.sh -r -k kernel -G myspace/boot.img jetson-tx2-devkit mmcblk0p1
 sudo ./flash.sh -r -k kernel jetson-tx2-devkit mmcblk0p1
+```
 
 ## massflash 构建系统包
 
@@ -620,4 +621,34 @@ sudo arch-chroot rootfs
 ## 全新构建？
 
 本来想完全构建 rootfs，HDMI 原版是可以正常登录和显示，但是 MIPI 屏还是有问题, 只能退而求其次, 直接根据该 rootfs 改了.
+
+## 精简 rootfs
+
+```sh
+// 查看所有已安装的软件包
+dpkg -l
+
+// 卸载 gnome 相关的东西
+apt-get purge gnome*
+
+// 卸载不必要的软件
+sudo apt-get autoremove
+
+# 桌面管理器 lightdm gdm3
+
+# 查看当前使用的显示管理器
+cat /etc/X11/default-display-manager
+
+# 切换其他界面系统
+dpkg-reconfigure gdm3
+
+```
+
+
+
+QT 开机启动 https://www.toradex.cn/pt-br/blog/arm-linux
+
+
+
+
 

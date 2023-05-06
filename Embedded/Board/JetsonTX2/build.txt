@@ -125,7 +125,6 @@ apt-get install libdrm-tests
 
 modetest -M pl111 -s 34@32:1024x768
 
-
 sed -i 's/ports.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
 apt-get update
 
