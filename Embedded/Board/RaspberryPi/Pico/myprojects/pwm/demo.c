@@ -1,73 +1,11 @@
-#include "hardware/clocks.h"
-#include "hardware/pwm.h"
-#include "pico/stdlib.h"
-#include "test_command.h"
-#include <stdint.h>
+#include <windows.h>
 #include <stdio.h>
-#include <stdlib.h>
+#include <stdint.h>
 
-#define CONFIG_PWM_PIN 9
-#define PWM_COUNTER_MAX 1250
-#define PWM_CLOCK 125000000.f
-
-void test_command_handler(void)
-{
-    static char input_string[1024];
-    int test_command(char *input_string);
-
-    gets(input_string);
-
-    test_command(input_string);
-
-    printf("\n#sh ");
-}
-
-typedef uint8_t uint8_t;
-
-int main()
-{
-    stdio_init_all();
-
-    gpio_set_function(CONFIG_PWM_PIN, GPIO_FUNC_PWM);
-    int slice = pwm_gpio_to_slice_num(CONFIG_PWM_PIN);
-    int channel = pwm_gpio_to_channel(CONFIG_PWM_PIN);
-
-    pwm_set_wrap(slice, PWM_COUNTER_MAX);                    // PWM 计数器溢出周期
-    pwm_set_chan_level(slice, channel, PWM_COUNTER_MAX / 2); // PWM 占空比 (音量) = x / 计数器溢出周期
-    pwm_set_enabled(slice, true);
-
-    printf("\n#sh ");
-
-    playScore();
-
-    while (1)
-    {
-        test_command_handler();
-    }
-}
 
 void beep(int freq, int delay)
 {
-    int slice = pwm_gpio_to_slice_num(CONFIG_PWM_PIN);
-    int channel = pwm_gpio_to_channel(CONFIG_PWM_PIN);
-    /**
-     * 设置 PWM 时钟分频系数 (用来改变输出频率)
-     *
-     * 输入时钟 / 计数器溢出周期 = 最大输出频率
-     * 最大输出频率 / 需要的频率 = 分频系数
-     */
-    if (freq <= 0)
-    {
-        pwm_set_chan_level(slice, channel, 0);
-        pwm_set_clkdiv(slice, 0xffff);
-    }
-    else
-    {
-        pwm_set_chan_level(slice, channel, PWM_COUNTER_MAX / 2);
-        pwm_set_clkdiv(slice, PWM_CLOCK / PWM_COUNTER_MAX / freq);
-    }
-
-    sleep_ms(delay);
+    Beep(freq, delay);
 }
 
 const uint8_t score[] = {0x90, 64, 1, 96,  0x90, 66, 1, 96,  0x90, 67, 4, 34,  0x90, 66, 1, 96,  0x90, 67,  2, 193,
@@ -154,12 +92,8 @@ void playScore()
     }
 }
 
-/* __TEST_COMMAND__START__ */
-#include "test_command.h"
-static int play(int argc, char *argv[])
+int main(int argc, char const *argv[])
 {
     playScore();
     return 0;
 }
-EXPORT_TEST_COMMAND(play, "play", "播放");
-/* __TEST_COMMAND__END__ */
