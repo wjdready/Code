@@ -3,6 +3,8 @@
 
 模块官方 [wiki](https://wiki.sipeed.com/hardware/zh/maixzero/m0s/m0s.html)
 
+[模块官方资料](https://dl.sipeed.com/shareURL/MAIX/M1s)
+
 [官方 MCU SDK](https://github.com/bouffalolab/bl_mcu_sdk)
 
 先下载编译器和官方 SDK 再说：

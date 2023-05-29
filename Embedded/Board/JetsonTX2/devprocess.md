@@ -641,14 +641,39 @@ cat /etc/X11/default-display-manager
 
 # 切换其他界面系统
 dpkg-reconfigure gdm3
-
 ```
-
 
 
 QT 开机启动 https://www.toradex.cn/pt-br/blog/arm-linux
 
 
+# [2023-05-09 14:08:39]
 
+按关机键立即关机问题一直都确实是 system 设置问题，[参考这个问题](https://unix.stackexchange.com/questions/50748/how-can-i-set-power-button-on-computer-case-to-power-off-system-with-systemd):
 
+打开 /etc/systemd/logind.conf
 
+```conf
+; HandlePowerKey：按下电源键的动作；
+; HandleSuspendKey：按下暂停键的动作。
+; HandleHibernateKey：按下休眠键上的动作。
+; HandleLidSwitch：盖子关闭时的动作。
+; 操作可以是 ignore, poweroff, reboot, halt, suspend, hibernate or kexec
+; 如果没有配置，则使用默认值：
+HandlePowerKey=poweroff
+HandleSuspendKey=suspend
+HandleHibernateKey=hibernate
+HandleLidSwitch=suspend
+```
+
+修改后执行 
+
+```sh
+systemctl restart systemd-logind.service
+```
+
+该配置是用来配置 systemd-logind.service 的行为，该服务是一个系统守护进程，用于管理用户登录会话和控制台的访问。
+
+怀疑正常使用时可能根本没执行该配置，因此也就不会按下就关机。但是加载程序登录进去就会，这一切都是 systemd-logind 这个守护进程导致的。
+
+> 从中了解到 systemd 目录中 .conf 是各种配置，可以看到常用的配置还有 system.conf、user.conf、journald.conf、resolved.conf 等
