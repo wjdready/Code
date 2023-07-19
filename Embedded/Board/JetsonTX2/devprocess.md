@@ -354,7 +354,7 @@ function main {
     UDC=$(cat /sys/kernel/config/usb_gadget/g1/UDC)
 
     if [ "$UDC" == "" ]; then
-        ls /sys/class/udc/ > /sys/kernel/config/usb_gadget/g1/UDC
+        ls /sys/class/udc/ > /sys/kernel/config/usb_gadget/l4t/UDC
     fi
 
     echo "MTP Started!"
@@ -677,3 +677,8 @@ systemctl restart systemd-logind.service
 怀疑正常使用时可能根本没执行该配置，因此也就不会按下就关机。但是加载程序登录进去就会，这一切都是 systemd-logind 这个守护进程导致的。
 
 > 从中了解到 systemd 目录中 .conf 是各种配置，可以看到常用的配置还有 system.conf、user.conf、journald.conf、resolved.conf 等
+
+# 2023-06-16 15:47:30
+
+## 精简 system.img
+

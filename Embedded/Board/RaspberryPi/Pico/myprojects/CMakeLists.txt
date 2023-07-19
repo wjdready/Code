@@ -30,3 +30,4 @@ add_compile_options(-Wall
 add_subdirectory(template)
 add_subdirectory(pwm)
 add_subdirectory(arduboy)
+add_subdirectory(lvgl_test)
