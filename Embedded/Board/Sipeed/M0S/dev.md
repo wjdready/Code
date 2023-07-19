@@ -1,7 +1,7 @@
 
 # [2023-03-13 11:15:43]
 
-模块官方 [wiki](https://wiki.sipeed.com/hardware/zh/maixzero/m0s/m0s.html)
+模块官方 [wiki](https://wiki.sipeed.com/hardware/zh/maixzero/m0sa/m0s.html)
 
 [模块官方资料](https://dl.sipeed.com/shareURL/MAIX/M1s)
 
@@ -58,4 +58,8 @@ adc  cam  cks  csi  dac  dma  efuse  emac  flash  gpio  i2c  i2s  ir  iso11898  
 ```
 
 简直就是宝藏芯片啊，功能强大，外围硬件简单，非常适合做尺寸很小的产品。
+
+# 2023-05-29 11:28:11
+
+更新新版本后编译时不要 CPU_ID=m0，要不然生成带 m0, flash 都找不到文件.
 

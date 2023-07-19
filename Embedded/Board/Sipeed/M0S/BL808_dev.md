@@ -95,7 +95,4 @@ endif()
 export PATH=$PATH:/c/Users/shino/Desktop/CodeNote/Embedded/Board/Sipeed/M0S/tools/toolchain_gcc_t-head_windows/bin
 cd examples/helloworld
 make ninja CHIP=bl808 BOARD=bl808dk CPU_ID=m0
-make flash CHIP=bl808 COMX=COM71 CPU_ID=m0
 ```
-
-lcd_init
