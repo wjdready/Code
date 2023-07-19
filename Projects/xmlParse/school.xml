@@ -1,9 +1,0 @@
-<ZDU>
-    <class name="1" number="23">
-        <student name="Jim" age="23" number="12">
-            <email>JimWeiss@gmail.com</email>
-            <addr>HangZhou</addr>
-        </student>
-    </class>
-    <class name="2" number="34"></class>
-</ZDU>
