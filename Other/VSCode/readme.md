@@ -51,3 +51,10 @@ settings.json
     ]
 }
 ```
+
+
+#### 2. 使用 VSCode 开发 Linux 工程
+
+直接使用[项目](https://github.com/amezin/vscode-linux-kernel)
+[参考](https://stackoverflow.com/questions/49198816/how-to-use-the-visual-studio-code-to-navigate-linux-kernel-source)
+

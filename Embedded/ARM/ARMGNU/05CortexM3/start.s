@@ -1,11 +1,15 @@
 
+.syntax unified
+
+/* 代码段 */
 .section .text.reset
-.globl reset
 .type reset, %function
+.globl  reset
 
 /* 程序入口 */
 reset:
-gg_asdasasd:
+    b here
+here:
     ldr sp, =_estack
 
     /* 将 data 段从 flash 拷贝到 SRAM */
@@ -41,11 +45,13 @@ fill_zero_loop:
 
     /* 调用 libc 的静态初始化 */
     bl __libc_init_array
-
+    b before_entry
+before_entry:
     /* 调用应用入口点 */
     bl  main
     bx  lr
+.size  reset, .-reset
 
-stop:
-    b stop
-
+.section .isr_vector
+    .word _estack
+    .word reset
