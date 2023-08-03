@@ -11,7 +11,7 @@ mkdir $LFS/src $LFS/rootfs $LFS/dst -p
 # 构建 Kernel
 cd $LFS/src
 wget https://mirrors.tuna.tsinghua.edu.cn/kernel/v5.x/linux-5.18.2.tar.xz
-tar -xvf linux-5.18.2.tar.xz
+tar -xf linux-5.18.2.tar.xz
 cd linux-5.18.2
 export ARCH=arm
 export CROSS_COMPILE=arm-linux-gnueabi-
@@ -107,15 +107,24 @@ qemu-system-arm                                     \
 ssh root@localhost -p 10021
 scp -P 10021 xxx root@localhost:/root
 
+# 要在本机编译模块, 需拷贝整个源码 (此方法待商榷)
+sudo mount -o loop $LFS/dst/rootfs.img /mnt
+cd $LFS/src/linux-5.18.2
 make modules
 make modules_install INSTALL_MOD_PATH=./outlib
-
 make headers_install INSTALL_HDR_PATH=./outheader
+sudo cp -a outlib/lib/modules /mnt/lib
+sudo cp -a outheader/include /mnt/usr/include
+make clean
+sudo cp -r $LFS/src/linux-5.18.2 /mnt/usr/src
+# >>> 在新的 host 中重新生成脚本
+ln -s /usr/src/linux-5.18.2 /lib/modules/`uname -r`/build
+apt-get install flex bison bc
+make scripts
+make # 还是需要 make 一下的, 要生成一些 hostcc 的东西
 
-cp -a outlib/lib/modules $LFS/rootfs/lib 
-cp -a outheader/include $LFS/rootfs/usr/include
-
-# 要在本机编译模块, 需拷贝整个源码 (此方法待商榷)
-# 然后启动后将 /lib/modules/`uname -r`/build 软链接到 /usr/src/kernel_src
-# cp kernel_src /usr/src/kernel_src -r 
+# 可以直接从源代码中执行, 但是需要从之前编译中获取 .config 和 Module.symvers 放在源码目录中
+# 参考 https://unix.stackexchange.com/questions/270123/how-to-create-usr-src-linux-headers-version-files
+# 然后执行
+make modules_prepare
 ```

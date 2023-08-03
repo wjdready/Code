@@ -63,7 +63,6 @@ CONFIG_DRM_VIRTIO_GPU=y
 ##### 2.4 编译导出内核镜像
 
 ```sh
-make zImage
 cp arch/arm64/boot/Image $LFS/dst
 ```
 
@@ -74,7 +73,7 @@ cp arch/arm64/boot/Image $LFS/dst
 sudo apt-get install arch-install-scripts binfmt-support qemu-system-arm qemu-user-binfmt qemu-user-static
 
 # 制作镜像
-dd if=/dev/zero of=$LFS/dst/rootfs.img bs=1G count=2
+dd if=/dev/zero of=$LFS/dst/rootfs.img bs=1G count=4
 mkfs.ext4 $LFS/dst/rootfs.img
 sudo mount -o loop $LFS/dst/rootfs.img /mnt
 
@@ -99,6 +98,9 @@ ln -s /lib/systemd/system/getty@.service /etc/systemd/system/getty.target.wants/
 # 设置默认登录用户为 root 且免密登录
 vim /lib/systemd/system/getty@.service
 # 替换该行 ExecStart=-/sbin/agetty --autologin root --noclear %I $TERM
+
+vim /etc/hosts
+# 127.0.0.1     localhost
 
 # 离开 chroot <<<
 sudo umount /mnt
@@ -167,7 +169,33 @@ ssh-keygen
 vim authorized_keys
 ```
 
-### 6. 测试图形
+### 6. 本机模块编译
+
+```sh
+# 要在本机编译模块, 需拷贝整个源码 (此方法待商榷)
+sudo mount -o loop $LFS/dst/rootfs.img /mnt
+cd $LFS/src/linux-5.18.2
+make modules
+make modules_install INSTALL_MOD_PATH=./outlib
+make headers_install INSTALL_HDR_PATH=./outheader
+sudo cp -a outlib/lib/modules /mnt/lib
+sudo cp -a outheader/include /mnt/usr/include
+make clean
+sudo cp -r $LFS/src/linux-5.18.2 /mnt/usr/src
+# >>> 在新的 host 中重新生成脚本
+ln -s /usr/src/linux-5.18.2 /lib/modules/`uname -r`/build
+apt-get install flex bison bc
+make scripts
+# 还是需要 make 一下的, 要生成一些 hostcc 的东西, scripts 执行生成不全. 执行到内核源码编译时就可以直接停止掉了
+make
+
+# 可以直接从源代码中执行, 但是需要从之前编译中获取 .config 和 Module.symvers 放在源码目录中
+# 参考 https://unix.stackexchange.com/questions/270123/how-to-create-usr-src-linux-headers-version-files
+# 然后执行
+make modules_prepare
+```
+
+### 7. 测试图形
 
 ##### 1. 测试 libdrm
 ```shell
