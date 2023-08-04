@@ -17,3 +17,12 @@ here:
 CortexM3 使用的是 TI 的 lm3s6965evb 板子, 参考这个老哥的[博客记录](https://github.com/JiaminMa/write_rtos_in_3days.git) 以后就靠它了。
 
 [FreeRTOS](https://www.freertos.org/cortex-m3-qemu-lm3S6965-demo.html#build_instructions_1)
+
+
+# [2023-08-04 14:34:13]
+
+逆天！
+
+其实 VSCode 可以在汇编中打断点的，需要打开运行在任意文件中打断点:
+
+Setting-> Debug: Allow Breakpoints Everywhere
