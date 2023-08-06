@@ -1,5 +1,5 @@
 /* 程序入口 */
-ENTRY(reset)
+/* ENTRY(reset) */
 
 /* 栈指针初始位置 */
 _estack = ORIGIN(DTCMRAM) + LENGTH(DTCMRAM);
