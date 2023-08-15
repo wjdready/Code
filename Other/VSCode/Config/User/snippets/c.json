@@ -72,6 +72,18 @@
 		],
 		"description": ""
 	},
+    "快速定义函数": {
+    "prefix": "func",
+    "body": [
+        "${1:void} ${2:func}(int arg)",
+        "{",
+        "    ",
+        "    return $0;",
+        "}",
+        ""
+    ],
+    "description": ""
+    },
 	"头文件快速定义": {
 		"prefix": "#ifndef __",
 		"body": [
@@ -83,5 +95,20 @@
 			"#endif"
 		],
 		"description": ""
-	}
+	},
+    "RTThread MSH CMD": {
+		"prefix": "rtmsh",
+		"body": [
+			"#include <rtthread.h>",
+            "#include <stdio.h>",
+			"static int ${1}(void)",
+			"{",
+			"    ${4:printf(\"${5:Hello World\\n}\");}$0",
+			"    ",
+			"    return 0;",
+			"}",
+			"MSH_CMD_EXPORT($1, ${2:$1});",
+		], /* 找到区域: <start>[\w\W]*?(<end>) */
+		"description": ""
+	},
 }

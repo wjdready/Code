@@ -1,0 +1,329 @@
+/**
+    ----- 当前安装的插件 ------ 
+    * Arm Assembly              [++-] ARM 汇编支持
+    * background                [+--] 左边添加看板娘
+    * Bito AI                   [+++] 基于ChatGPT 的辅助AI
+    * C-mantic                  [+--] C/C++ 代码自动生成(主要是定义之类的)
+    * C/C++ IntelliSense        [+++] 官方 C/C++ 支持
+    * c/c++ definition gen...   [---] C 自动添加定义
+    * Chinese (Simplified)      [+++] 提供简体中文界面
+    * CMake                     [+--] CMake 支持 (2)
+    * Code Runner               [++-] 通过点击右上角按钮快速运行代码
+    * Command Runner            [++-] 通过快捷键快速运行一些自定义的命令
+    * comment aligner space     [+--] 注释 // 自动对齐
+    * Doxygen                   [++-] 注释和文档生成
+    * GitLens                   [++-] 提供 Git 实用工具大全
+    * Git Graph                 [+++] Git 图形化分析工具
+    * Hex Editor                [++-] 二进制文件修改和查看工具
+    * kconfig                   [+--] Kconfig 文件语法高亮支持
+    * Lex                       [+--] lex 命令的脚本语言支持
+    * LinkerScript              [++-] GNU Link Script 支持
+    * Markdown All in One       [+--] Markdown 支持
+    * Markdown Preview Enhanced [++-] Markdown 预览
+    * Markdown Table            [+--] 提供 Markdown 表格对齐
+    * Material Icon Theme       [+++] 提供文件图标
+    * One Monokai Theme         [+++] 个人喜欢的黑色主题
+    * Pangu-Markdown            [++-] 中英文之间自动添加空格 (对 Markdown 问题进行优化)
+    * Pylance                   [+--] Python 语言支持 (2)
+    * QSSEditor                 [---] Qss 编写时自动提示一些QT控件
+    * Remote - SSH              [+--] 远程 VSCode 连接 (3)
+    * Replace Rules             [---] 可用来快速对文件或选中的文本内容进行正则替换
+    * Run Terminal Command      [+--] 通过右击文件夹运行自定义命令
+    * shell-format              [+--] 对 shell 脚本进行格式化
+    * SystemVerilog             [+--] Verilog 格式化支持
+    * Verilog-HDL               [+--] Verilog 语法高亮
+    * Vim (VSCodeVim)           [+++] Vim 插件
+    * XML (Red Hat)             [+--] XML 支持
+    * XML Tools                 [+--] XML 格式化支持
+    
+    ----- 其他常用的插件 ------
+    * Arm Assembly              [+--] ARM 汇编支持
+    * DeviceTree                [+--] 设备树语法支持
+    * LinkerScript              [+--] GNU lds 文件支持
+    * Cortex-Debug              [---] 用来对 ARM 芯片 Debug
+    * GLSL Syntax for VS Code   [---] GLSL 支持, 写 OpenGL 着色器才使用, 平时用不到
+    * Shader languages support  [---] 支持更多的着色器语言, 写着色器才使用, 平时用不到
+    * Vala                      [---] Vala 语言支持, Vala 支持太烂, 不是很有热情去学
+
+    * RTThread Studio           [+--] RT 官方推出的 RT 项目管理插件, 依赖较多插件
+    * RTOS Views                [---] RTOS 调试时查看信息
+
+    * Dev-C++ Theme             [---] 主题插件, 我朋友特喜欢 Dev-C++, 记录一下
+    * Hop Light                 [---] 主题插件, 个人认为还行
+    * Theme (Mhammed Talhaouy)  [---] 主题插件, 用过一次似乎还不错, 记录一下
+
+    ----- 编程字体选择列表 ------
+    YaHei Consolas Hybrid, JetBrains Mono NL, Ubuntu Mono (中英文等宽对齐),  consolas, 
+    微软雅黑, 思源黑体, Menlo, Droid Sans Mono, monospace
+*/
+{
+    "editor.fontFamily": "JetBrains Mono NL, 思源黑体",
+    // "editor.fontFamily": "Ubuntu Mono, 思源黑体",
+    "files.encoding": "utf8",                                // 在读取和写入文件时使用的默认字符集编码
+    "files.autoGuessEncoding": true,                         // 自带猜测编码
+    "editor.mouseWheelZoom": true,                           // 鼠标控制缩放 
+    "debug.allowBreakpointsEverywhere": true,                // 运行在任何文件添加断点
+
+    "window.enableMenuBarMnemonics": false,                  // 不允许通过alt 控制菜单
+    "window.customMenuBarAltFocus": false,                   // 不允许通过alt 聚焦菜单
+    "editor.minimap.enabled": false, // Tab 大小 4
+    "editor.insertSpaces": true,                             // 按 Tab 时插入空格
+    "editor.detectIndentation": false,                       // 是否自动检测文件 Tab 大小并保留
+    "editor.suggest.snippetsPreventQuickSuggestions": false, // 进行代码片段时插入时开启代码提示
+    "[markdown]":  {                                         // Markdown 显示代码片段和上下文字符
+        "editor.quickSuggestions": { "other": "on", "comments": "on", "strings": "on" },
+    },
+    "files.associations": { "*.ui": "xml", "Makefile.*": "makefile", "*.include": "makefile"},                  // 自定义文件指定类型
+    "terminal.integrated.defaultProfile.windows": "MSYS2",
+    "C_Cpp.default.compilerPath": "C:\\ProgramFiles\\msys64\\ucrt64\\bin\\gcc.exe",
+    "terminal.integrated.profiles.windows": {                // 自定义终端
+        "MSYS2": { 
+            "path": [ "C:\\ProgramFiles\\Library\\Command\\msys.bat" ],
+            "args": [ "" ],
+            "icon": "terminal-cmd"
+        },
+    },
+    "background.enabled":false,                                             // 是否启用背景
+    "editor.rulers": [80,120],                                              // 启用代码换行分割线
+    "C_Cpp.clang_format_style": "Microsoft",
+    /* 排除文件 */
+    "files.exclude": {
+        // "**/.git": true,
+        "C:\\ProgramFiles\\msys64\\ucrt64\\include\\llvm\\TableGen\\Record.h": true
+    },
+
+    /* -------------------------- vim 插件 ----------------------------------  */
+    "vim.easymotion": true,                                      // 简易模式
+    "vim.foldfix": true,
+    "vim.useSystemClipboard": true,                              // 对未命名的寄存器使用系统剪贴板
+    "vim.leader": "<space>",                                     // 设置 leader 键
+    "vim.insertModeKeyBindings": [                               // 插入模式下的按键绑定
+        { "before": [ "j", "k" ], "after": [ "<Esc>" ] },
+        { "before": [ "j", "j" ], "after": [ "<Esc>" ] },
+        { "before": [ "<C-i>" ], "after": [ "<C-o>", "A" ]}
+    ],
+    "vim.normalModeKeyBindingsNonRecursive": [                   // Normal 模式下的快捷键绑定
+        { "before": [ "<leader>", "v" ], "after": [ "<C-v>" ] }, // 块编辑模式绑定为 leader + v
+        { "before": [ "<C-i>" ], "after": [ "$"]}
+    ],
+    "vim.visualModeKeyBindings": [
+        { "before": [ "<C-i>" ], "after": [ "$"]}
+    ],
+    "vim.handleKeys": {                                          // 禁用 vim 的某些快捷键
+        "<C-a>": false, "<C-f>": false, "<C-c>": false, "<C-v>": false,
+        "<C-x>": false, "<C-y>": false, "<C-k>": false, "<C-w>": true, "<C-b>": false,
+    },
+
+    /* --------------------------- Doxdocgen 插件 --------------------------- */
+    /* 函数功能描述中前缀由@改为\, 输入 /** 回车即触发 */
+    // "doxdocgen.generic.paramTemplate": "\\param {param} ",     
+    // "doxdocgen.generic.returnTemplate": "\\return {type} ",
+    // "doxdocgen.generic.briefTemplate": "\\brief {text}",
+    
+    /* --------------------------- Code Runner ------------------------------ */
+    "code-runner.runInTerminal": true,                                       // 是否在终端中运行
+    "code-runner.executorMap": {
+        "c": "make && make run",                                             // 运行工作目录下的构建脚本
+        "cpp": "make && make run",
+        "makefile": "make && make run",
+        // "c" : "cd $dir && msys -c \"gcc $fileName -o a && start ./a\""    // 运行单个文件
+    },                                                                       // start $fileNameWithoutExt
+
+    "custom-button.buttons": [
+        {
+            "name": "Matlab",
+            "position": "statusbar-right",
+            "priority": 100,
+            "command": "matlab-interactive-terminal.runMatlabScript",
+            "icon": "run"
+        }
+    ],
+
+    /* ---------------------------- LaTex ----------------------------------- */
+    "latex-workshop.latex.recipes": [ { "name": "xelatexmk 🔃", "tools": [ "xelatexmk" ] }, ],
+    "latex-workshop.latex.tools": [ { "name": "xelatexmk", "command": "echo", }, ],
+
+    /* ---------------------------- Verilog ----------------------------------- */
+    "systemverilogFormatter.commandLineArguments": "--indentation_spaces 4",
+
+    /* ---------------------------- Run Terminal Command 右击文件快速运行命令----------------------------------- */
+    "runTerminalCommand.commands": [ 
+        { "command": "make", "name": "构建", "auto": true, "preserve": false, },
+        { "command": "make && make run", "name": "构建并运行", "auto": true, "preserve": false, },
+        { "command": "make clean", "name": "清除", "auto": true, "preserve": false, },
+        { "command": "make flash_download", "name": "烧写到Flash", "auto": true}
+    ],
+
+    /* ---------------------------- Command Runner 实现通过快捷键快速运行命令 ----------------------------------- */
+    // 默认 Ctrl+Shift+R 显示所有可执行命令, 现也绑定到 alt+x
+    "command-runner.terminal.name": "runCommand",
+    "command-runner.terminal.autoClear": true,
+    "command-runner.terminal.autoFocus": true,
+    // [ alt+x ] 可以显示出所有定义的命令, 然后通过鼠标选择要运行的命令
+    "command-runner.commands": {
+        // [ alt+b ] 用来对工作区代码进行快速构建
+        "build": "cd '${workspaceFolder}' && make && make run",  
+        // 用来快速编译并运行单个 c 文件
+        "run simple file": "cd '${fileDirname}' && g++ '${file}' -o a && ./a",
+
+        // 用来快速编译并运行单个 c 文件
+        "在浏览器中打开文件": "cd '${fileDirname}' && chrome '${file}'",
+
+        //  用来快速生成 c 头文件的函数声明注释, 需要依赖 path 下的 c_header_func.py 以及源文件和头文件在同一路径
+        "c_header_func.py": "cd '${fileDirname}' && mypython_c_header_func.py '${fileBasenameNoExtension}.c' '${fileBasenameNoExtension}.h'",
+
+        // [ alt+e ] 用来实现 GTK UI 时, 快速生成预览
+        "gtk screenshot with css": "cd '${fileDirname}' && gtk4-builder-tool screenshot '${fileBasenameNoExtension}.ui' --css='${fileBasenameNoExtension}.css' --force"
+    },
+    
+    /* ---------------------- replacerules 快速正则替换------------------- */
+    "replacerules.rules": {
+        // 这里定义用来去除 C/C++ 中的定义部分, 直留声明部分
+        "Remove the definition": {
+            "find": "\\)\\n^\\{[\\W\\w]*?^\\}",
+            "replace": ");",
+            // "languages": [ "c" ]
+        },
+        // 这里定义根据上一步的输出再对静态部分的函数进行删除
+        "Remove static function": {
+            "find": "\\/\\*(?:(?!/\\*|\\*/)[\\w\\W])*?\\*\\/\\n+^static.*\\);[\\n]*",
+            "replace": "",
+            // "languages": [ "c" ]
+        },
+    },
+    "replacerules.rulesets": {
+        // 实现这个的目的是为了快速输出标准的头文件, 避免复制来复制去的, 
+        // 操作逻辑是: 核心内容在 .c 中写, 包括注释和代码, 头文件复制后直接快速正则删去不必要部分
+        "Header Builder": {
+            "rules": [
+                "Remove the definition",
+                "Remove static function",
+            ]
+        }
+    },
+    "matlab.matlabpath": "C:\\ProgramFiles\\MATLAB\\R2022b\\bin",
+    "matlab.mlintpath": "C:\\ProgramFiles\\MATLAB\\R2022b\\bin\\win64",
+    "matlab-interactive-terminal.pythonPath": "C:\\ProgramFiles\\Python\\Python39\\python.exe",
+
+    /* ---------------------- Automatic generation fucker ------------------- */
+
+    "workbench.colorTheme": "One Monokai",
+    "security.workspace.trust.untrustedFiles": "open",
+    "remote.SSH.remotePlatform": {
+        "Ubuntu20": "linux",
+        "172.16.189.128": "linux",
+        "172.16.91.129": "linux"
+    },
+    "vscode-office.openOutline": false,
+    "[xml]": {
+        "editor.defaultFormatter": "redhat.vscode-xml"
+    },
+    "RTT_Studio.SystemInfo.Push.Flag": true,
+    "RTT_Studio.Env_Location": "C:/ProgramFiles/Library/RTThread-env-tools-v1.3.5",
+    "RTT_Studio.Toolchain_Location": "C:/ProgramFiles/Library/RTThread-env-tools-v1.3.5/tools/gnu_gcc/arm_gcc/mingw/bin",
+    "cortex-debug.armToolchainPath": "C:/ProgramFiles/Library/RTThread-env-tools-v1.3.5/tools/gnu_gcc/arm_gcc/mingw/bin",
+    "[python]": {
+    },
+    "cmake.configureOnOpen": false,
+    "redhat.telemetry.enabled": true,
+    "workbench.iconTheme": "material-icon-theme",
+    "editor.lineNumbers": "on",
+    "diffEditor.ignoreTrimWhitespace": false,
+    "git.ignoreRebaseWarning": true,
+    "gitlens.views.worktrees.files.layout": "list",
+    "[verilog]": {
+        "editor.defaultFormatter": "bmpenuelas.systemverilog-formatter-vscode"
+    },
+    "editor.unicodeHighlight.includeStrings": false,
+    "terminal.integrated.tabStopWidth": 4,
+    "window.zoomLevel": 1,
+    "gitlens.views.commits.files.layout": "list",
+    "[matlab]": {
+        "editor.defaultFormatter": "AffenWiesel.matlab-formatter"
+    },
+    "editor.unicodeHighlight.ambiguousCharacters": false,
+}
+/**
+
+---------- C/C++ launch.json 模板, 需要 -g-------------------
+Debug 的使用详情: https://code.visualstudio.com/docs/editor/debugging
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "(gdb) 启动",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/a.exe",
+            "preLaunchTask": "Build",   // 开始前运行的 task
+            "args": [],
+            "stopAtEntry": false,       // 在进入debug 后暂停程序
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": true,    // * 调试对象启动控制台
+            "MIMode": "gdb",
+            "miDebuggerPath": "C:\\ProgramFiles\\msys64\\ucrt64\\bin\\gdb.exe",
+            "setupCommands": [
+                // 对于远程调试, 或者嵌入式调试
+                // {"text": "set remotetimeout 5"},
+                // {"text": "target extended-remote localhost:3333"},
+                // {"text": "monitor reset halt"},
+                // // {"text": "load"},
+                // {"text": "break main thread 1","ignoreFailures": true},
+            ]
+        }
+    ]
+}
+
+---------- C/C++ task.json 模板 (Ctrl+Shfit+B 启动任务) ------------
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build",
+            "type": "shell",
+            "command": "make",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
+
+---------- 舒服的快捷键 ------------
+* [默认] Ctrl+Shift+P       调出用于执行命令的输入框 (任何位置)
+* [默认] zz                 当前行对齐中心 (Vim Normal 模式)
+* [自定] Alt + j            转跳到某个 tag (vim Normal 模式 )
+* [自定] Alt + A/D          前进/后退   (任何位置)
+* [自定] Alt + N/M          文件左/右切换 (任何位置)
+
+* [自定] Alt + E            编写 GTK UI 时快速生成预览
+* [自定] Alt + X            显示自定义的命令, 通过鼠标选择后运行
+* [自定] Alt + B            构建当前工作目录代码
+* [自定] Alt + F            打开终端并定位到当前文件所在的目录
+* [自定] Alt + V            打开或隐藏终端, 终端默认路径为当前工作目录
+
+* [自定] Ctrl + j + j       进入禅模式, 再次操作可退出禅模式
+
+---------- 一些使用技巧 ------------
+* 代码片段配置: 
+  点击右边设置-> 配置用户代码片段, 生成网站 https://snippet-generator.app/
+  回到上一个片段: Shit+Tab, 从代码片段中退出Vim模式: A
+  更多信息参考: https://code.visualstudio.com/docs/editor/userdefinedsnippets
+
+* Debug 红色圆点右击可设置中断点属性
+* VSCode 所有可用变量 https://code.visualstudio.com/docs/editor/variables-reference
+* 同步的时候目前主要需要同步以下内容, 当不小心覆盖远程时可以依次复原最近历史配置
+  1. settings.json      设置               
+  2. keybindings.json   键盘快捷方式         
+  3. extensions.json    扩展
+  4. globalState.json   UI 状态
+  5. languagexx.json    用户代码片段
+  6. task.json          用户任务
+
+---------- 常用搜索正则 ----------------
+* 从源文件的函数信息快速更新到头文件
+第一步:     \)\n^\{[\W\w]*?^\}  -->  );                              // 快速替换掉定义部分
+第二步:     (/\*\*[\w\W]*?(^ \*\/[\n]*))*static.*\);[\n]* --> 空     // 对于静态定义的内部函数则替换为空, 即从头文件中去除
+*/
