@@ -1,0 +1,218 @@
+# SPDX-License-Identifier: GPL-2.0
+VERSION = 5
+PATCHLEVEL = 18
+SUBLEVEL = 2
+EXTRAVERSION =
+NAME = Superb Owl
+
+# *DOCUMENTATION*
+# 要查看典型目标的列表，请执行 "make help"
+# 有关更多信息，请访问 ./README
+# 此文件中的注释仅针对开发人员，不要期望阅读此文件的了解如何构建内核
+
+# 前缀为 __ 的目标仅供内部使用
+$(if $(filter __%, $(MAKECMDGOALS)), \
+	$(error targets prefixed with '__' are only for internal use))
+
+# 当命令行上没有给出任何信息时，这是我们的默认目标
+PHONY := __all
+__all:
+
+# 我们使用的是递归构建，因此我们需要进行一些思考以获得正确的排序。
+#
+# 最重要的是：sub-Makefiles 应该只修改自己目录中的文件。
+# 
+# 如果在某些目录中，我们对另一个目录中的文件有依赖关系 (这种情况并不经常发生，但是当我们
+# 链接到最终会内置到 vmlinux 的 built-in.a targets 时，这通常是不可避免的) 我们将调用
+# 该另一个目录中的 sub make，然后我们可以确定该另一个目录中的所有内容现在都是最新的。
+#
+# 唯一一个特殊情况是我们需要修改具有全局影响的文件的时候，但这种情况现在已经被分离开来，
+# 它们在递归开始之前就被已经执行完成了。因此它们现在被明确列为 prepare rule。
+# 
+# 在递归调用时, ifneq ($(sub_make_done),1) 内的代码可以确保只被执行一次, 
+# 因为执行第一次后 sub_make_done 变量就会被置 1 了
+ifneq ($(sub_make_done),1)
+
+# 不使用 make 的内置规则和变量(这样做可提高性能并避免难以调试的行为)
+MAKEFLAGS += -rR
+
+# 避免 funny 字符集依赖
+unexport LC_ALL
+LC_COLLATE=C
+LC_NUMERIC=C
+export LC_COLLATE LC_NUMERIC
+
+# 避免一些干扰 shell env 的设置
+unexport GREP_OPTIONS
+
+# 漂亮的输出
+# ---------------------------------------------------------------------------
+#
+# 通常，我们在执行命令之前 echo (回显) 整个命令。通过将 echo 内容设置为 $($(quiet)$(cmd)), 
+# 我们现在可以将 echo 的内容设置为其他的输出形式，例如
+#
+#         quiet_cmd_cc_o_c = Compiling $(RELDIR)/$@
+#         cmd_cc_o_c       = $(CC) $(c_flags) -c -o $@ $<
+#		  echo $($(quiet)$(cmd_cc_o_c))
+# 
+# 如果 $(quiet) 为空，则整个命令将会被打印
+# 如果其被设置为 "quiet_", 则输出简短的形式
+# 如果其被设置为 "silent_", 则什么都不会输出，因为变量 $(silent_cmd_cc_o_c) 根本就不存在
+# 
+# 一个简单的变体是在命令前面加上 $(Q) -- 这对于应该在 non-verbose (非详细输出) 模式下隐藏的命令很有用
+# 
+#	$(Q)ln $@ :<
+#
+# 如果 KBUILD_VERBOSE 等于 0, 则上述命令将被隐藏
+# 如果 KBUILD_VERBOSE 等于 1, 则上述命令将会显示
+# 如果 KBUILD_VERBOSE 等于 2, 则会给出每个目标被重建的原因
+#
+# 为了将更多的注意力放在警告上，默认情况下 verbose (详细输出模式) 将被关闭
+# 可通过 make V=1 来显示所有命令
+
+ifeq ("$(origin V)", "command line")
+  KBUILD_VERBOSE = $(V)
+endif
+
+ifndef KBUILD_VERBOSE
+  KBUILD_VERBOSE = 0
+endif
+
+ifeq ($(KBUILD_VERBOSE),1)
+  quiet =
+  Q =
+else
+  quiet=quiet_
+  Q = @
+endif
+
+# 如果用户以 make -s (静默模式) 的方式运行，则禁止回显命令
+ifneq ($(findstring s,$(filter-out --%,$(MAKEFLAGS))),)
+  quiet=silent_
+  KBUILD_VERBOSE = 0
+endif
+
+export quiet Q KBUILD_VERBOSE
+
+# Call a source code checker (by default, "sparse") as part of the
+# C compilation.
+#
+# Use 'make C=1' to enable checking of only re-compiled files.
+# Use 'make C=2' to enable checking of *all* source files, regardless
+# of whether they are re-compiled or not.
+#
+# See the file "Documentation/dev-tools/sparse.rst" for more details,
+# including where to get the "sparse" utility.
+
+ifeq ("$(origin C)", "command line")
+  KBUILD_CHECKSRC = $(C)
+endif
+ifndef KBUILD_CHECKSRC
+  KBUILD_CHECKSRC = 0
+endif
+
+export KBUILD_CHECKSRC
+
+# 使用 make M=dir 或设置环境变量 KBUILD_EXTMOD 来指定要构建的外部模块的目录,
+# 两者都都设置的情况下，优先采用 M=dir 的设置内容
+ifeq ("$(origin M)", "command line")
+  KBUILD_EXTMOD := $(M)
+endif
+
+# 不支持同时构建多个外部模块
+$(if $(word 2, $(KBUILD_EXTMOD)), \
+	$(error building multiple external modules is not supported))
+
+# 删除尾部斜杠
+ifneq ($(filter %/, $(KBUILD_EXTMOD)),)
+KBUILD_EXTMOD := $(shell dirname $(KBUILD_EXTMOD).)
+endif
+
+export KBUILD_EXTMOD
+
+# KBuild 将输出文件保存在当前工作目录中, 这不需要与内核源代码树的根路径匹配
+# 
+# 例如，你可以这样做
+#
+#  cd /dir/to/store/output/files; make -f /dir/to/kernel/source/Makefile
+#
+# 如果你想要将文件输出到另一个文件夹，这里有用两种语法来指定它
+#
+# 1) O=
+# 使用 "make O=dir/to/store/output/files/"
+#
+# 2) 设置 KBUILD_OUTPUT 变量
+# 将环境变量 KBUILD_OUTPUT 设置为指向输出目录
+# export KBUILD_OUTPUT=dir/to/store/output/files/; make
+#
+# O= 赋值优先于 KBUILD_OUTPUT 环境变量
+
+ifeq ("$(origin O)", "command line")
+  KBUILD_OUTPUT := $(O)
+endif
+
+# 如果设置了输出路径，则创建该路径并获取其绝对路径
+ifneq ($(KBUILD_OUTPUT),)
+# Make 的内置函数，如$(abspath...), $(realpath...), 无法展开 shell 特殊字符 '~', 
+# 我们在这里使用一种有点乏味的方式
+abs_objtree := $(shell mkdir -p $(KBUILD_OUTPUT) && cd $(KBUILD_OUTPUT) && pwd)
+$(if $(abs_objtree),, \
+     $(error failed to create output directory "$(KBUILD_OUTPUT)"))
+
+# $(realpath ...) 解析符号链接, 路径有可能是软连接, 通过 realpath 获取真实路径
+abs_objtree := $(realpath $(abs_objtree))
+else
+# 否则没有定义输出路径, 则使用执行 make 时所在的文件夹作为输出路径
+abs_objtree := $(CURDIR)
+endif # ifneq ($(KBUILD_OUTPUT),)
+
+ifeq ($(abs_objtree),$(CURDIR))
+# 禁止 make 提示: "进入目录...", 除非我们要更改了工作目录
+MAKEFLAGS += --no-print-directory
+else
+need-sub-make := 1
+endif
+
+# 通过 dir this-makefile 获取内核源码的真实绝对路径
+this-makefile := $(lastword $(MAKEFILE_LIST))
+abs_srctree := $(realpath $(dir $(this-makefile)))
+
+# 源码目录不能包含空格或冒号
+ifneq ($(words $(subst :, ,$(abs_srctree))), 1)
+$(error source directory cannot contain spaces or colons)
+endif
+
+ifneq ($(abs_srctree),$(abs_objtree))
+# 添加 --include-dir 是为了向后兼容，但你不能依赖它,
+# 在源码树中 include 其他 makefile 时请添加 $(srctree)/ 前缀
+MAKEFLAGS += --include-dir=$(abs_srctree)
+endif
+
+ifneq ($(filter 3.%,$(MAKE_VERSION)),)
+# 在 GNU Make 3.x, 'MAKEFLAGS += -rR' 不会立即生效, 
+# 我们需要调用 sub-make 来避免顶层 makefile 中的隐式规则
+need-sub-make := 1
+# 取消此生成文件的隐式规则
+$(this-makefile): ;
+endif
+
+export abs_srctree abs_objtree
+
+# 导出 sub_make_done := 1 的全局变量, 保证了该部分代码只执行一次
+export sub_make_done := 1
+
+ifeq ($(need-sub-make),1)
+
+PHONY += $(MAKECMDGOALS) __sub-make
+
+$(filter-out $(this-makefile), $(MAKECMDGOALS)) __all: __sub-make
+	@:
+
+# Invoke a second make in the output directory, passing relevant variables
+__sub-make:
+	$(Q)$(MAKE) -C $(abs_objtree) -f $(abs_srctree)/Makefile $(MAKECMDGOALS)
+
+endif # need-sub-make
+
+endif # sub_make_done
+
