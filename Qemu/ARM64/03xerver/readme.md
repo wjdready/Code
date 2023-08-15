@@ -64,6 +64,11 @@ if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
 fi
 ```
 
+sudo sed -i 's@//.*mirrors.ustc.edu.cn@//archive.ubuntu.com@g' /etc/apt/sources.list
+
+archive.ubuntu.com
+mirrors.ustc.edu.cn
+
 > 通过systemd 实现[自动登录](https://unix.stackexchange.com/questions/437809/start-x-server-on-login-with-systemd)
 
 # 登录管理器

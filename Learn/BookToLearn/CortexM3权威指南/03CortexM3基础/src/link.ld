@@ -1,7 +1,8 @@
 /* 程序入口 */
 /* ENTRY(reset) */
 
-/* 栈指针初始位置 */
+/* 主栈指针初始位置 */
+/* 在 ld 中定义的变量 比如 xxx = .; 其地址就是 . 所在的位置, 因此要获取 . 位置处的地址, 需要 int p = &xxx; */
 _estack = ORIGIN(DTCMRAM) + LENGTH(DTCMRAM);
 
 /* 用于预估堆栈大小 */
@@ -28,12 +29,13 @@ SECTIONS
     .text :
     {
         KEEP(*(.isr_vector))
+        _code_start = .;
         *(.text)
         *(.text.*)
 
         KEEP (*(.init))
         KEEP (*(.fini))
-
+        _code_end = .;
     } >FLASH
 
     /* 只读数据 */
@@ -85,6 +87,7 @@ SECTIONS
         . = . + _heap_size;
         _heap_end = .;
         . = . + _stack_size;
+        _estack_psp = .;        /* 用户堆栈 */
         . = ALIGN(8);
     } >DTCMRAM
 }
