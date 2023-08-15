@@ -15,6 +15,9 @@ def doProcessFile(filepath:str):
     with open(filepath, encoding="UTF-8") as f:
         line = f.readline()
 
+        if not line:
+            return
+
         if not line[0] == "#" or not "[MyProject]" in line:
             return
 
