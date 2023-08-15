@@ -70,7 +70,7 @@ void *serial_write_task(void * arg)
 
     while (1)
     {
-        gets(buf);
+        fgets(buf, sizeof(buf), stdin);
         int n = strlen(buf);
         buf[n++] = '\r';
         buf[n++] = '\n';
@@ -98,7 +98,7 @@ int main(int argc, char const *argv[])
     char buf[4096];
     int buf_len = sizeof(buf);
 
-    gets(buf);
+    fgets(buf, sizeof(buf), stdin);
 
     pthread_t t;
     pthread_create(&t, NULL, serial_write_task, NULL);
@@ -114,8 +114,11 @@ int main(int argc, char const *argv[])
                 connected = 0;
                 continue;
             }
-            printf("%.*s", n, buf);
-            fflush(stdout);
+            if(n > 0)
+            {
+                printf("%.*s", n, buf);
+                fflush(stdout);
+            }
         }
 
         else if(serialport_connect_to_available() == 0)

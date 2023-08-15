@@ -1,12 +1,16 @@
 
 CC = arm-none-eabi-gcc
 
-ARCH = -mcpu=cortex-m3
+ARCH = -mcpu=cortex-m3 -mthumb
 LDFLAGS = $(ARCH) -lc -lrdimon -Tlink.ld -Wl,--gc-sections
 CFLAGS = $(ARCH) -g 
 
 # AMS_SRCS = 入栈和出栈测试.s
-AMS_SRCS = 操作pc指针.s
+# AMS_SRCS = 操作pc指针.s
+# AMS_SRCS = 中断和异常.s
+# AMS_SRCS = uart.s
+# AMS_SRCS = 转跳指令.s
+AMS_SRCS = backtrace.s
 # AMS_SRCS = temp.s
 C_SRCS = main.c
 
@@ -25,7 +29,7 @@ build/%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 qemu:
-	qemu-system-arm -M lm3s6965evb -kernel build/demo.elf -semihosting -S -s
+	qemu-system-arm -M lm3s6965evb -kernel build/demo.elf -nographic -semihosting -S -s
 # stm32vldiscovery
 
 clean:
