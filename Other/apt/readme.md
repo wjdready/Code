@@ -61,17 +61,6 @@ apt-get remove hellopkg
 ```
 
 
-
-
-
-
-
-
-
-
-
-
-
 #### 更完整的包
 
 [参考](https://wiki.opf-labs.org/display/SP/The+Hello+World+Debian+Package)

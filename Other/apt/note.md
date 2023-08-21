@@ -10,3 +10,12 @@
 是不是可以使用 Windows 创建开发环境, pacman 来管理仓库, devkitpro 就是这样做的，但是需要维护自己的仓库。[archLinux](https://archlinuxarm.org/packages) 似乎是可以直接使用的吧...
 
 
+# download 
+
+下载某个包同时下载其所有依赖到本地
+
+```sh
+apt-get download $(apt-rdepends <package>|grep -v "^ ")
+# 安装所有包
+dpkg -i *.deb
+```
