@@ -625,13 +625,13 @@ sudo arch-chroot rootfs
 ## 精简 rootfs
 
 ```sh
-// 查看所有已安装的软件包
+# 查看所有已安装的软件包
 dpkg -l
 
-// 卸载 gnome 相关的东西
+# 卸载 gnome 相关的东西
 apt-get purge gnome*
 
-// 卸载不必要的软件
+# 卸载不必要的软件
 sudo apt-get autoremove
 
 # 桌面管理器 lightdm gdm3
