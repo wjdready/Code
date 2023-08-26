@@ -88,7 +88,7 @@ apt-get install sddm
 vim /etc/sddm.conf
 # 自动登录
 # [Autologin]
-# User=shion
+# User=shino
 # Session=i3
 
 # 4. 公共

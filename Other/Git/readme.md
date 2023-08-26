@@ -179,6 +179,12 @@ git stash list
 # 取回暂存代码
 git stash pop
 
+# 取回代码后删除某个缓存
+git stash drop stash@{0}
+
+# 清空全部缓存
+git stash clear 
+
 # 取消【取消暂存代码】 (慎用)
 git reset --hard
 

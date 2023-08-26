@@ -94,3 +94,46 @@ sudo vim /etc/default/locale
 # 常用软件包
 nautilus # 文件浏览
 ```
+
+# 2023-08-25 09:00:28
+
+发现屏幕没反应是因为启动器的原因? 太离谱了, 我一直以为是驱动的问题。
+
+通过安装 sddm 让其自动登录, 这时发现有鼠标了, 但是屏幕黑的, 使用 journalctl 查看日志
+
+```sh
+apt-get install sddm
+vim /etc/sddm.conf
+# 自动登录 i3 xfce (xfce4 但是必须要这么写 ?)
+# [Autologin]
+# User=shino
+# Session=i3
+
+# -u(--unit) 要显示的单元, -r(--reverse) 最新消息在前
+sudo journalctl -u sddm.service -r
+
+# 查看当前登录管理器
+cat /etc/X11/default-display-manager
+
+# 安装包可以重新配置
+dpkg-reconfigure sddm
+
+# lightdm 使用时提示 
+# PAM unable to dlopen(pam_kwallet.so): /lib/security/pam_kwallet.so: cannot open shared object f
+# ile: No such file or directory
+# 解决方法是查看 /lib/security/pam_kwallet.so 是否存在, 安装 
+sudo apt-get install kwalletmanager
+# 后依然存在问题, 通过查找
+find /lib -name "pam_kwallet.so"
+# 发现其位置在 /lib/aarch64-linux-gnu/security/pam_kwallet.so 于是通过软链接解决了
+sudo ln -s /lib/aarch64-linux-gnu/security/pam_kwallet.so /lib/security/pam_kwallet.so
+```
+
+# 更改屏幕参数
+
+```sh
+vim /etc/profile
+# 在 profile 中更改似乎不妥，有没有其他方法?
+# xrandr -o 3
+# xinput set-prop 7 'Coordinate Transformation Matrix' 1, 0, 0, 0, 1, 0, 0, 0, 1
+```
