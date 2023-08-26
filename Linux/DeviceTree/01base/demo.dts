@@ -1,0 +1,72 @@
+/dts-v1/;
+
+/ {
+    #address-cells = <1>;
+    #size-cells = <1>;
+
+    compatible = "acme,coyotes-revenge";
+
+    cpus {
+        #address-cells = <1>;
+        #size-cells = <0>;
+        cpu@0 {
+            compatible = "arm,cortex-a9";
+            reg = <0>;
+        };
+        cpu@1 {
+            compatible = "arm,cortex-a9";
+            reg = <1>;
+        };
+    };
+
+    serial@101f0000 {
+        compatible = "arm,pl011";
+        reg = <0x101f0000 0x1000>;
+    };
+
+    serial@101f2000 {
+        compatible = "arm,pl011";
+        reg = <0x101f2000 0x1000>;
+    };
+
+    gpio@101f3000 {
+        compatible = "arm,pl061";
+        reg = <0x101f3000 0x1000
+               0x101f4000 0x0010>;
+    };
+
+    interrupt-controller@10140000 {
+        compatible = "arm,pl190";
+        reg = <0x10140000 0x1000>;
+    };
+
+    spi@10115000 {
+        #address-cells = <1>;
+        #size-cells = <0>;
+        compatible = "arm,pl022";
+        reg = <0x10115000 0x1000>;
+
+        lcd: spi1@0 {
+            compatible = "spi-bus";
+            reg = <0>;
+        };
+    };
+
+    demo_bus@3000000 {
+        #address-cells = <1>;
+        #size-cells = <1>;
+        compatible = "simple-bus";
+        /* 地址映射, localaddr parentaddr len  */
+        ranges = <0x100 0x3000000 0x100>;
+
+        device1@100 {
+            compatible = "range";
+            reg = <0x100 0x100>;
+        };
+
+        device2@200 {
+            compatible = "range";
+            reg = <0x200 0x400>;
+        };
+    };
+};
