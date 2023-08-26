@@ -22,13 +22,16 @@ simple:
 cleanpath:
 	@Scripts/cleanpath.py .
 
-blog:
+$(BLOG_SOURCE_DIR):
+	git clone https://github.com/wjdready/wjdready.github.io.git $(BLOG_SOURCE_DIR)
+
+blog: $(BLOG_SOURCE_DIR)
 	@Scripts/generateblog.py . $(BLOG_SOURCE_DIR)
 
-blog_server:
+blog_server: $(BLOG_SOURCE_DIR)
 	make blog && cd $(BLOG_SOURCE_DIR) && hexo server
 
-blog_deploy:
+blog_deploy: $(BLOG_SOURCE_DIR)
 	make blog && cd $(BLOG_SOURCE_DIR) && hexo deploy
 
 blog_template:
