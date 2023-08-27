@@ -1,6 +1,7 @@
-BLOG_SOURCE_DIR = _myblog
+BLOG_SOURCE_DIR = __mylog
 
 GITEE_URL = https://gitee.com/wjundong/code.git
+MYBLOG_URL = https://github.com/wjdready/myblog.git
 
 help:
 	@echo "push                 -- 推送到远程仓库."
@@ -13,10 +14,9 @@ help:
 
 # 同时也 push 到 gitee
 push:
+	git push -u origin master
 	@if ! git remote | grep -q "gitee_origin"; then \
-		echo add gitee remote origin;			  \
-		git remote add gitee_origin $(GITEE_URL); \
-	fi
+		git remote add gitee_origin $(GITEE_URL); fi
 	git push -u gitee_origin master
 
 simple:
@@ -29,7 +29,8 @@ cleanpath:
 	@Scripts/cleanpath.py .
 
 $(BLOG_SOURCE_DIR):
-	git clone https://github.com/wjdready/wjdready.github.io.git $(BLOG_SOURCE_DIR)
+	git clone $(MYBLOG_URL) $(BLOG_SOURCE_DIR)
+	cd $(BLOG_SOURCE_DIR) && npm install
 
 blog: $(BLOG_SOURCE_DIR)
 	@Scripts/generateblog.py . $(BLOG_SOURCE_DIR)
