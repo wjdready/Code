@@ -1,4 +1,4 @@
-BLOG_SOURCE_DIR = __mylog
+BLOG_SOURCE_DIR = __myblog
 
 GITEE_URL = https://gitee.com/wjundong/code.git
 MYBLOG_URL = https://github.com/wjdready/myblog.git
