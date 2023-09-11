@@ -49,6 +49,22 @@ sudo find ./ -name "*p3310-1000-c03-00-base.dts"
 
 # 仅更新设备树, 根据提示, 需将编译好的设备树文件放到 kernel/dtb, 一直放到的是 kernel, 因为该目录下也有该文件, 一直被误导了
 # Copy /home/shino/TX2/dk/Linux_for_Tegra/kernel/dtb/tegra186-quill-p3310-1000-c03-00-base.dtb to /home/shino/TX2/dk/Linux_for_Tegra/kernel/dtb/tegra186-quill-p3310-1000-c03-00-base.dtb.rec
-
 ```
 
+
+# [2023-09-06 21:03:09]
+
+Nvidia Jetson Orin：[开发技巧](https://blog.csdn.net/u010018991/article/details/131092069)
+
+```sh
+
+# DTS很多，你要修改哪一个？
+sudo dmesg | grep dts
+
+# 设备树调试过程中，如何检查我的更改/补丁是否在dts中生效？
+cd /proc/device-tree
+xxd i2c@7000c000/status
+
+# 在 vim 中查看
+dtc -I fs -O dts /sys/firmware/devicetree/base >> ~/curent_device_tree.txt && vim ~/curent_device_tree.txt
+```
