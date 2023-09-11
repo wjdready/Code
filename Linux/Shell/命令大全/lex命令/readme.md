@@ -100,3 +100,5 @@ int main(int argc, char *argv[])
 
 [https://docs.oracle.com/cd/E88353_01/html/E37839/lex-1.html](https://docs.oracle.com/cd/E88353_01/html/E37839/lex-1.html)
 
+* https://blog.csdn.net/weixin_44007632/article/details/108666375
+* https://github.com/olierxleben/compilerconstruction.git

@@ -1,0 +1,35 @@
+from ubuntu:18.04
+SHELL ["/bin/bash", "-c"]
+
+RUN sed -i 's@//.*archive.ubuntu.com@//mirrors.ustc.edu.cn@g' /etc/apt/sources.list
+
+# 添加 arm64 仓库
+RUN if ! grep -q "arm64" /etc/apt/sources.list; then \
+    echo $' \n\
+    deb [arch=arm64] http://mirrors.ustc.edu.cn/ubuntu-ports/ bionic main restricted    \n\
+    deb [arch=arm64] http://mirrors.ustc.edu.cn/ubuntu-ports/ bionic-updates main restricted    \n\
+    deb [arch=arm64] http://mirrors.ustc.edu.cn/ubuntu-ports/ bionic universe             \n\
+    deb [arch=arm64] http://mirrors.ustc.edu.cn/ubuntu-ports/ bionic-updates universe   \n\
+    deb [arch=arm64] http://mirrors.ustc.edu.cn/ubuntu-ports/ bionic multiverse \n\
+    deb [arch=arm64] http://mirrors.ustc.edu.cn/ubuntu-ports/ bionic-updates multiverse \n\
+    deb [arch=arm64] http://mirrors.ustc.edu.cn/ubuntu-ports/ bionic-backports main restricted universe multiverse \n\
+    deb [arch=arm64] http://mirrors.ustc.edu.cn/ubuntu-ports/ bionic-security main restricted   \n\
+    deb [arch=arm64] http://mirrors.ustc.edu.cn/ubuntu-ports/ bionic-security universe  \n\
+    deb [arch=arm64] http://mirrors.ustc.edu.cn/ubuntu-ports/ bionic-security multiverse    \n\
+    ' >> /etc/apt/sources.list; fi
+
+RUN cat /etc/apt/sources.list
+
+RUN apt-get update
+# 使能 arm64 架构
+RUN dpkg --add-architecture arm64
+
+# 本机工具
+RUN apt install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu make git file -y
+
+# arm64 端库
+RUN apt install qtbase5-dev:arm64 qt5-qmake:arm64 libqt5svg5-dev:arm64 -y
+
+# 替换 qmake
+RUN rm /usr/bin/qmake
+RUN ln -s /usr/bin/aarch64-linux-gnu-qmake /usr/bin/qmake
