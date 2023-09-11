@@ -4,17 +4,17 @@ CPOY = objcopy
 AS = as
 
 ifeq ($(AS),as)
-    ASFLAG = --32 -g
-	AS_SRCS = src/start.s
+    ASFLAG = --32 -g -O0
+	AS_SRCS = src/循环显示.s
 else
 # nasm 似乎无法 debug
 	ASFLAG = -f elf32 -g
 	AS_SRCS = src/start_nasm.s
 endif
 
-CFLAGS = -m16 -ffreestanding -fno-PIE -nostartfiles -nostdlib -g
+CFLAGS = -m16 -ffreestanding -fno-PIE -nostartfiles -nostdlib -g -O0
 LDFLAGS = -Tlink.ld -m elf_i386 -g
-C_SRCS = 
+C_SRCS = src/main.c
 
 OBJS += $(addprefix build/, $(AS_SRCS:%.s=%.o))
 OBJS += $(addprefix build/, $(C_SRCS:%.c=%.o))
@@ -34,7 +34,7 @@ build/%.o: %.c
 qemu:
 	qemu-system-i386 -M pc -drive file=build/os.bin,format=raw 
 
-debug:
+debug: all
 	qemu-system-i386 -M pc -drive file=build/os.bin,format=raw -S -s
 
 clean:
