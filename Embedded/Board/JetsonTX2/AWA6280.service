@@ -1,0 +1,9 @@
+[Unit]
+Description=Xserver Autostart
+
+[Service]
+ExecStart=/usr/bin/startx
+User=root
+
+[Install]
+WantedBy=graphical.target
