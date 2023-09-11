@@ -1,0 +1,15 @@
+from ubuntu:18.04
+SHELL ["/bin/bash", "-c"]
+
+RUN sed -i 's@//.*archive.ubuntu.com@//mirrors.ustc.edu.cn@g' /etc/apt/sources.list
+RUN apt-get update
+
+# 安装工具
+RUN apt-get install git python3 curl vim -y
+
+# 构建 ASOP
+COPY build.sh /root
+
+RUN cd ~ && git clone https://github.com/wjdready/vim.git && cp ~/vim/.vim* . -rf
+
+# docker run --rm -it -v /c/Users/shino/Desktop/qdraw:/mnt ubuntu18 bash
