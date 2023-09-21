@@ -33,7 +33,7 @@ bin\openocd  ^
 
 调试的话也需要按下按键, 然后执行 openocd 让程序 uf2_boot 运行, 并通过 flash info 1 来获取信息, 之后再启动 VSCode 之类就可以运行 QSPI Flash 的程序了.
 
-```
+```sh
 # 设置使用 QSPI, 在 stm32h7x.cfg 根据会该变量添加外部 flash bank
 set QUADSPI 1
 

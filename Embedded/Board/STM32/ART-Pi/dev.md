@@ -126,6 +126,12 @@ if (data != RT_NULL)
 据我所知，SCB_CleanInvalidateDCache 是全局 clean 是不能随便用的, 我暂时把它注释掉就能运行了，不知会不会影响其他地方
 
 
-# [2023-03-29 11:36:15]
+# [2023-09-18 11:00:10]
 
+在 ART-PI 仓库查找下载 ART-PI 算法 `find ./ -name "*.FLM"`
 
+升级到 5.0.1 啦，
+
+```sh
+rt-thread-5.0.1\bsp\stm32\stm32h750-artpi>rtt.bat scons --dist
+```
