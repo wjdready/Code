@@ -49,6 +49,8 @@ sudo find ./ -name "*p3310-1000-c03-00-base.dts"
 
 # 仅更新设备树, 根据提示, 需将编译好的设备树文件放到 kernel/dtb, 一直放到的是 kernel, 因为该目录下也有该文件, 一直被误导了
 # Copy /home/shino/TX2/dk/Linux_for_Tegra/kernel/dtb/tegra186-quill-p3310-1000-c03-00-base.dtb to /home/shino/TX2/dk/Linux_for_Tegra/kernel/dtb/tegra186-quill-p3310-1000-c03-00-base.dtb.rec
+
+cp kernel/kernel-4.9/arch/arm64/boot/dts/tegra186-quill-p3310-1000-c03-00-base.dtb /home/shino/TX2/Linux_for_Tegra/kernel/dtb/tegra186-quill-p3310-1000-c03-00-base.dtb
 ```
 
 

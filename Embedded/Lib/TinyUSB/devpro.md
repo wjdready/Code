@@ -70,6 +70,8 @@ int main(void)
 
 先确保其他模块被加载进来:
 
+# 2023-09-21 08:57:47 (新的版本该方法已经废弃, 使用 get-deps)
+
 ```
 git submodule update --init lib
 ```
@@ -91,3 +93,10 @@ make BOARD=daisyseed
 
 编译输出到了 _build 文件夹, 那么怎么烧写呢?
 
+# [2023-09-21 08:58:07]
+
+通过 `get-deps` 获取构建所需依赖, 例如
+
+```sh
+make BOARD=daisyseed  get-deps
+```
