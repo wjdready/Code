@@ -20,7 +20,6 @@ push:
 	git push -u gitee_origin master
 
 simple:
-	make cleanpath
 	git add . && git commit -m "1"	|| true
 	make push
 	make blog_deploy
