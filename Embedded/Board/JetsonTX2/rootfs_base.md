@@ -49,15 +49,20 @@ xrandr -o right
 
 # 如果存在 .AWA6280_debug_mode 文件, 则开启 ssh 调试功能
 if [ -f "/home/AWA/data/.AWA6280_debug_mode" ]; then
-    systemctl start ssh
     /opt/nvidia/l4t-usb-device-mode/nv-l4t-usb-device-mode-start.sh
-else 
+else
     systemctl start usb-mtp.service
     service serial-getty@ttyGS0 stop
 fi
 
-/home/AWA/bin/Framework.sh
+# 运行 6280 的守护进程
+/home/AWA/6280/Daemon/Daemon &
 
+# 运行 6280 主程序
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-10.2/targets/aarch64-linux/lib
+/home/AWA/6280/App/run/Framework
+
+# 最后运行黑不溜秋的 i3 桌面
 i3
 ```
 
@@ -112,13 +117,34 @@ sudo cp system.img bootloader/system.img
 sudo ./flash.sh -r jetson-tx2-devkit mmcblk0p1
 
 # 打包生产
-wget -c https://developer.nvidia.com/embedded/l4t/r32_release_v6.1/t186/secureboot_r32.6.1_aarch64.tbz2
-tar -xf secureboot_r32.6.1_aarch64.tbz2 -C ..
+# wget -c https://developer.nvidia.com/embedded/l4t/r32_release_v6.1/t186/secureboot_r32.6.1_aarch64.tbz2
+# tar -xf secureboot_r32.6.1_aarch64.tbz2 -C ..
 
-# 将生成 mfi_jetson-tx2-devkit.tar.gz 这个过程会重新制作 system.img, 需要将自己的 system 过去
-sudo ./tools/kernel_flash/l4t_initrd_flash.sh --no-flash --massflash jetson-tx2-devkit mmcblk0p1
+# # 将生成 mfi_jetson-tx2-devkit.tar.gz 这个过程会重新制作 system.img, 需要将自己的 system 过去
+# sudo ./tools/kernel_flash/l4t_initrd_flash.sh --no-flash --massflash jetson-tx2-devkit mmcblk0p1
 
-sudo cp system.img ./mfi_jetson-tx2-devkit/tools/kernel_flash/images/internal/system.img
-tar -czf AWA6280_System_V1.0.0.tar.gz mfi_jetson-tx2-devkit
+# sudo cp system.img ./mfi_jetson-tx2-devkit/tools/kernel_flash/images/internal/system.img
+# tar -czf AWA6280_System_V1.0.0.tar.gz mfi_jetson-tx2-devkit
+
+mkdir -p AWA6280_System/rootfs
+cp -r bootloader kernel flash.sh AWA6280_System 
+cp jetson-tx2-devkit.conf l4t_sign_image.sh p2771-0000.conf.common AWA6280_System
+tar -czf AWA6280_System_V1.0.0.tar.gz AWA6280_Sys
 ```
 
+然后根目录下的系统烧录程序
+
+```sh
+#!/bin/bash
+
+function flash()
+{
+	sudo sudo ./flash.sh -r jetson-tx2-devkit mmcblk0p1
+}
+
+while true; do
+	flash
+	echo -e "\n按回车键继续...\n"
+	read 
+done
+```

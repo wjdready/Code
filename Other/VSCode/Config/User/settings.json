@@ -1,31 +1,31 @@
 /**
     ----- 当前安装的插件 ------ 
     * Arm Assembly              [++-] ARM 汇编支持
-    * background                [+--] 左边添加看板娘
-    * Bito AI                   [+++] 基于ChatGPT 的辅助AI
+    * AWS Toolkit               [+++] 亚马逊出品的免费的编程助手
     * C-mantic                  [+--] C/C++ 代码自动生成(主要是定义之类的)
     * C/C++ IntelliSense        [+++] 官方 C/C++ 支持
-    * c/c++ definition gen...   [---] C 自动添加定义
+    * ChatGPT GPT-4 - Bito      [+++] 基于ChatGPT 的辅助AI
     * Chinese (Simplified)      [+++] 提供简体中文界面
-    * CMake                     [+--] CMake 支持 (2)
     * Code Runner               [++-] 通过点击右上角按钮快速运行代码
     * Command Runner            [++-] 通过快捷键快速运行一些自定义的命令
     * comment aligner space     [+--] 注释 // 自动对齐
+    * Compare Folders           [---] 比较两个文件夹 (不太好用?)
+    * custom-button             [+--] 添加一个按钮, 可以点击后运行 VSCode 内置命令
+    * DeviceTree                [+--] 设备树语法支持
     * Doxygen                   [++-] 注释和文档生成
     * GitLens                   [++-] 提供 Git 实用工具大全
-    * Git Graph                 [+++] Git 图形化分析工具
     * Hex Editor                [++-] 二进制文件修改和查看工具
     * kconfig                   [+--] Kconfig 文件语法高亮支持
-    * Lex                       [+--] lex 命令的脚本语言支持
     * LinkerScript              [++-] GNU Link Script 支持
     * Markdown All in One       [+--] Markdown 支持
     * Markdown Preview Enhanced [++-] Markdown 预览
     * Markdown Table            [+--] 提供 Markdown 表格对齐
     * Material Icon Theme       [+++] 提供文件图标
+    * MemoryView                [+++] 调试时查看内存利器
     * One Monokai Theme         [+++] 个人喜欢的黑色主题
     * Pangu-Markdown            [++-] 中英文之间自动添加空格 (对 Markdown 问题进行优化)
+    * PDF Preview               [+--] 预览 PDF
     * Pylance                   [+--] Python 语言支持 (2)
-    * QSSEditor                 [---] Qss 编写时自动提示一些QT控件
     * Remote - SSH              [+--] 远程 VSCode 连接 (3)
     * Replace Rules             [---] 可用来快速对文件或选中的文本内容进行正则替换
     * Run Terminal Command      [+--] 通过右击文件夹运行自定义命令
@@ -35,22 +35,35 @@
     * Vim (VSCodeVim)           [+++] Vim 插件
     * XML (Red Hat)             [+--] XML 支持
     * XML Tools                 [+--] XML 格式化支持
-    
+
     ----- 其他常用的插件 ------
-    * Arm Assembly              [+--] ARM 汇编支持
-    * DeviceTree                [+--] 设备树语法支持
+    * Bash Debug                [+--] Bash 调试支持
+    * CMake                     [+--] CMake 支持 (2)
+    * background                [+--] 左边添加看板娘
     * LinkerScript              [+--] GNU lds 文件支持
     * Cortex-Debug              [---] 用来对 ARM 芯片 Debug
     * GLSL Syntax for VS Code   [---] GLSL 支持, 写 OpenGL 着色器才使用, 平时用不到
     * Shader languages support  [---] 支持更多的着色器语言, 写着色器才使用, 平时用不到
     * Vala                      [---] Vala 语言支持, Vala 支持太烂, 不是很有热情去学
-
+    * Git Graph                 [+++] Git 图形化分析工具
+    * Lex                       [+--] lex 命令的脚本语言支持
     * RTThread Studio           [+--] RT 官方推出的 RT 项目管理插件, 依赖较多插件
     * RTOS Views                [---] RTOS 调试时查看信息
-
+    * LaTeX Workshop            [+--] 写 Latex 必备吧
+    * LaTex Table Helper        [+--] Latex 表格生成助手
     * Dev-C++ Theme             [---] 主题插件, 我朋友特喜欢 Dev-C++, 记录一下
     * Hop Light                 [---] 主题插件, 个人认为还行
     * Theme (Mhammed Talhaouy)  [---] 主题插件, 用过一次似乎还不错, 记录一下
+    * Lua                       [---] Lua 语言支持
+    * view-in-browser           [+--] 写 HTML 时右击可快速在浏览器打开
+    * QSSEditor                 [---] Qss 编写时自动提示一些QT控件
+    * vscode-icons              [---] 文件图标
+    * MATLAB                    [+--] Matlab 语言支持
+    * Matlab Interactive Term   [++-] 直接提高 Matlab 在VSC终端运行 (需 Python 环境)
+    * matlab-formatter          [+--] Matlab 语言格式化
+    * RTOS Views                [+--] RTOS 调试查看? 好像不错
+    * systemd-unit-file         [+--] systemd 语言支持
+    * Tcl                       [---] TCL 语言支持
 
     ----- 编程字体选择列表 ------
     YaHei Consolas Hybrid, JetBrains Mono NL, Ubuntu Mono (中英文等宽对齐),  consolas, 
@@ -204,16 +217,7 @@
     "matlab.matlabpath": "C:\\ProgramFiles\\MATLAB\\R2022b\\bin",
     "matlab.mlintpath": "C:\\ProgramFiles\\MATLAB\\R2022b\\bin\\win64",
     "matlab-interactive-terminal.pythonPath": "C:\\ProgramFiles\\Python\\Python39\\python.exe",
-
-    /* ---------------------- Automatic generation fucker ------------------- */
-
-    "workbench.colorTheme": "One Monokai",
     "security.workspace.trust.untrustedFiles": "open",
-    "remote.SSH.remotePlatform": {
-        "Ubuntu20": "linux",
-        "172.16.189.128": "linux",
-        "172.16.91.129": "linux"
-    },
     "vscode-office.openOutline": false,
     "[xml]": {
         "editor.defaultFormatter": "redhat.vscode-xml"
@@ -236,7 +240,6 @@
     },
     "editor.unicodeHighlight.includeStrings": false,
     "terminal.integrated.tabStopWidth": 4,
-    "window.zoomLevel": 1,
     "gitlens.views.commits.files.layout": "list",
     "[matlab]": {
         "editor.defaultFormatter": "AffenWiesel.matlab-formatter"
