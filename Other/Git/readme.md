@@ -207,3 +207,13 @@ git tag -a v0.1.1 9fbc3d0
 [参考](https://zhuanlan.zhihu.com/p/455741996)
 
 
+### 重新提交某个版本
+
+有时候提交版本有问题，想做细微更改后重新提交；使用 commit --amend 就可以做到
+
+回退到刚提交的版本, 修改后执行:
+
+```sh
+git commit --amend
+```
+
