@@ -47,3 +47,15 @@ pacman -S mingw-w64-ucrt-x86_64-SDL2
 
 ```
 
+# pacman 
+
+#### 关于使用 pacman 搜索想要的程序技巧
+
+```sh
+# 通过 help 已经给出足够的信息, 可以自行摸索
+pacman --help
+pacman -F --help 
+
+# 但是 -Fx 真的太好用了, 特此记录一下, -x 使用正则
+pacman -Fx .*gendef.exe
+```
