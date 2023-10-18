@@ -131,6 +131,10 @@ exec_always --no-startup-id feh --bg-scale ~/bizhi.png
 * Mod + Shift + h 或者 l：将当前容器中的窗口分成左右两部分或者上下两部分
 * Mod + Shift + Control + h 或者 l：将当前容器中的窗口分成两列或者两行
 
+设置某个程序作为背景?
+
+for_window [title="myapp"] border none
+exec --no-startup-id bash -c "cd /home/shino/screen && ./main"
 
 # 其他应用收集
 

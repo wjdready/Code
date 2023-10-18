@@ -1,0 +1,5 @@
+
+
+
+all:
+	g++ demo.cpp
