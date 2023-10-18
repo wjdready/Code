@@ -35,9 +35,22 @@ touch /root/.config/i3/config
 
 # 修改关机键行为
 echo "HandlePowerKey=ignore" >> /etc/systemd/logind.conf
+
+# 设置网络, 防止自动设置 IP
+sudo vim /etc/NetworkManager/NetworkManager.conf
+# 改为 managed=true
+
+sudo vim /etc/network/interfaces
+# auto eth0
+# iface eth0 inet static
+# address 192.168.3.102
+# netmask 255.255.255.0
+
+# 直接复制 cuda 库到 /usr/lib 更简单直接
+cp /usr/local/cuda-10.2/targets/aarch64-linux/lib/* /usr/lib
 ```
 
-启动脚本
+#### 启动脚本
 
 ~/start.sh
 
@@ -46,6 +59,15 @@ echo "HandlePowerKey=ignore" >> /etc/systemd/logind.conf
 
 # 设置屏幕方向
 xrandr -o right
+
+# 禁用屏幕保护程序
+xset s off
+
+# 禁用屏幕电源管理功能
+xset -dpms
+
+# 配置网口信息
+ifconfig eth0 192.168.3.102 netmask 255.255.255.0
 
 # 如果存在 .AWA6280_debug_mode 文件, 则开启 ssh 调试功能
 if [ -f "/home/AWA/data/.AWA6280_debug_mode" ]; then
@@ -56,11 +78,8 @@ else
 fi
 
 # 运行 6280 的守护进程
-/home/AWA/6280/Daemon/Daemon &
+/home/AWA/6280/Daemon/Daemon
 
-# 运行 6280 主程序
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-10.2/targets/aarch64-linux/lib
-/home/AWA/6280/App/run/Framework
 
 # 最后运行黑不溜秋的 i3 桌面
 i3
@@ -87,7 +106,7 @@ apt-get install libcufft-10-2 libopencv libopencv-core3.2 libQt5Widgets libqt5sq
     libopencv-imgproc3.2 libopencv-videoio3.2 libopencv-highgui3.2 libqt5printsupport5 libfftw3-3
 ```
 
-调试用的
+# 调试用的
 
 ```sh
 # 重新配置 i3
