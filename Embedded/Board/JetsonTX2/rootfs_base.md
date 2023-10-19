@@ -40,6 +40,7 @@ echo "HandlePowerKey=ignore" >> /etc/systemd/logind.conf
 sudo vim /etc/NetworkManager/NetworkManager.conf
 # 改为 managed=true
 
+# 然鹅，设置这个后 usb 网络无法使用了(删掉就可以，但是 eth0 ip 会变, 故只能舍弃 rndis), 不知
 sudo vim /etc/network/interfaces
 # auto eth0
 # iface eth0 inet static
@@ -47,7 +48,7 @@ sudo vim /etc/network/interfaces
 # netmask 255.255.255.0
 
 # 直接复制 cuda 库到 /usr/lib 更简单直接
-cp /usr/local/cuda-10.2/targets/aarch64-linux/lib/* /usr/lib
+sudo mv /usr/local/cuda-10.2/targets/aarch64-linux/lib/* /usr/lib
 ```
 
 #### 启动脚本
@@ -80,24 +81,9 @@ fi
 # 运行 6280 的守护进程
 /home/AWA/6280/Daemon/Daemon
 
-
 # 最后运行黑不溜秋的 i3 桌面
 i3
 ```
-
-其中 Framework.sh
-
-```sh
-#!/bin/bash
-
-appname=$(basename $0 .sh)
-scriptpath=$(dirname $(readlink -f $0))
-
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$scriptpath:/usr/local/cuda-10.2/targets/aarch64-linux/lib
-
-$scriptpath/$appname
-```
-
 #### 安装依赖
 
 
@@ -126,6 +112,9 @@ sudo apt-get autoremove
 #### 克隆镜像与用于生产的系统包
 
 ```sh
+# 现在发现可以直接在系统中进入恢复模式
+sudo reboot --force forced-recovery
+
 # 进行克隆, 克隆完成后生产两个文件, 一个是原始分区文件 .raw 另一个是 Spare image 重整的大小后的
 sudo ./flash.sh -r -k APP -G system.img jetson-tx2-devkit mmcblk0p1
 
