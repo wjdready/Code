@@ -70,20 +70,30 @@ xset -dpms
 # 配置网口信息
 ifconfig eth0 192.168.3.102 netmask 255.255.255.0
 
-# 如果存在 .AWA6280_debug_mode 文件, 则开启 ssh 调试功能
-if [ -f "/home/AWA/data/.AWA6280_debug_mode" ]; then
-    /opt/nvidia/l4t-usb-device-mode/nv-l4t-usb-device-mode-start.sh
+mkdir /home/AWA/tfcard -p
+mount /dev/mmcblk2p1 /home/AWA/tfcard
+
+systemctl start usb-mtp.service
+
+# 进入恢复模式
+if [ -f "/home/AWA/data/.AWA6280_recovery_mode" ]; then
+    rm -f /home/AWA/data/.AWA6280_recovery_mode
+    reboot --force forced-recovery
+
+# 进入调试模式
+elif [ -f "/home/AWA/data/.AWA6280_debug_mode" ]; then
+    service serial-getty@ttyGS0 start
+
+# 正常启动
 else
-    systemctl start usb-mtp.service
     service serial-getty@ttyGS0 stop
+    # 运行 6280 的守护进程
+    /home/AWA/6280/Daemon/Daemon
 fi
 
-# 运行 6280 的守护进程
-/home/AWA/6280/Daemon/Daemon
-
-# 最后运行黑不溜秋的 i3 桌面
 i3
 ```
+
 #### 安装依赖
 
 
@@ -92,7 +102,7 @@ apt-get install libcufft-10-2 libopencv libopencv-core3.2 libQt5Widgets libqt5sq
     libopencv-imgproc3.2 libopencv-videoio3.2 libopencv-highgui3.2 libqt5printsupport5 libfftw3-3
 ```
 
-# 调试用的
+# 开发调试用的
 
 ```sh
 # 重新配置 i3
@@ -100,13 +110,45 @@ sudo su
 i3-config-wizard
 
 sudo apt-get install synergy
-synergyc -f --no-tray --debug INFO --name gogo 169.254.229.20:24800
+sudo synergyc -f --no-tray --debug INFO --name 6280 172.20.10.3:24800
 
 sudo apt-get remove gnome-terminal
 sudo apt-get autoremove
 
 # 安装一些实用的软件
 # xfce4-terminal nautilus gredit
+
+# 开发用到的库
+sudo apt-get install libqt5serialport5-dev qtmultimedia5-dev 
+
+sudo apt-get install libopencv-core-dev libopencv-calib3d-dev libopencv-objdetect-dev libopencv-photo-dev \
+    libopencv-shape-dev libopencv-stitching-dev libopencv-superres-dev libopencv-videostab-dev libopencv-viz-dev 
+
+vim /etc/apt/sources.list.d/nvidia-l4t-apt-source.list
+# deb https://repo.download.nvidia.com/jetson/common r32.7 main
+# deb https://repo.download.nvidia.com/jetson/<SOC> r32.7 main
+sudo apt-get update
+sudo apt-get install libcufft-dev-10-2
+
+# zsh
+sudo apt-get install zsh
+sudo chsh -s /usr/bin/zsh
+sh -c "$(wget -O- https://gitee.com/pocmon/ohmyzsh/raw/master/tools/install.sh)"
+
+# 中文支持
+vim /etc/default/locale
+LANG="zh_CN.UTF-8"
+LC_ALL="zh_CN.UTF-8"
+
+sudo apt-get install language-pack-zh-hans
+
+# 输入法, 其实自带输入法也够用, 配置在窗口共享状态后按 Shift 可以将输入一般的英文输入到当前文本，还是不错的
+sudo apt-get install fcitx fcitx-bin fcitx-table fcitx-table-all
+
+# 因为使用 root 进入桌面，希望打开终端默认进入的是 user, 那么可在进入终端时执行
+vim /root/entry_terminal.sh
+# cd /home/AWA
+# su AWA
 ```
 
 #### 克隆镜像与用于生产的系统包
@@ -137,7 +179,7 @@ sudo ./flash.sh -r jetson-tx2-devkit mmcblk0p1
 mkdir -p AWA6280_System/rootfs
 cp -r bootloader kernel flash.sh AWA6280_System 
 cp jetson-tx2-devkit.conf l4t_sign_image.sh p2771-0000.conf.common AWA6280_System
-tar -czf AWA6280_System_V1.0.0.tar.gz AWA6280_Sys
+tar -czf AWA6280_System_V1.0.1.tar.gz AWA6280_System
 ```
 
 然后根目录下的系统烧录程序

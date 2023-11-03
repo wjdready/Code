@@ -1,0 +1,119 @@
+{
+  "design": {
+    "design_info": {
+      "boundary_crc": "0x0",
+      "device": "xc7z010clg400-1",
+      "gen_directory": "../../../../temp.gen/sources_1/bd/demo",
+      "name": "demo",
+      "rev_ctrl_bd_flag": "RevCtrlBdOff",
+      "synth_flow_mode": "Hierarchical",
+      "tool_version": "2022.2"
+    },
+    "design_tree": {
+      "led_flash_0": "",
+      "connnect_0": "",
+      "top_0": "",
+      "top_1": "",
+      "top_2": ""
+    },
+    "components": {
+      "led_flash_0": {
+        "vlnv": "xilinx.com:user:led_flash:1.0",
+        "xci_name": "demo_led_flash_0_0",
+        "xci_path": "ip\\demo_led_flash_0_0\\demo_led_flash_0_0.xci",
+        "inst_hier_path": "led_flash_0"
+      },
+      "connnect_0": {
+        "vlnv": "xilinx.com:user:connnect:1.0",
+        "xci_name": "demo_connnect_0_0",
+        "xci_path": "ip\\demo_connnect_0_0\\demo_connnect_0_0.xci",
+        "inst_hier_path": "connnect_0"
+      },
+      "top_0": {
+        "vlnv": "xilinx.com:module_ref:top:1.0",
+        "xci_name": "demo_top_0_0",
+        "xci_path": "ip\\demo_top_0_0\\demo_top_0_0.xci",
+        "inst_hier_path": "top_0",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "top",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "in1": {
+            "direction": "I"
+          },
+          "out1": {
+            "direction": "I"
+          }
+        }
+      },
+      "top_1": {
+        "vlnv": "xilinx.com:module_ref:top:1.0",
+        "xci_name": "demo_top_0_1",
+        "xci_path": "ip\\demo_top_0_1\\demo_top_0_1.xci",
+        "inst_hier_path": "top_1",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "top",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "in1": {
+            "direction": "I"
+          },
+          "out1": {
+            "direction": "I"
+          }
+        }
+      },
+      "top_2": {
+        "vlnv": "xilinx.com:module_ref:top:1.0",
+        "xci_name": "demo_top_1_0",
+        "xci_path": "ip\\demo_top_1_0\\demo_top_1_0.xci",
+        "inst_hier_path": "top_2",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "top",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "in1": {
+            "direction": "I"
+          },
+          "out1": {
+            "direction": "I"
+          }
+        }
+      }
+    },
+    "nets": {
+      "Net": {
+        "ports": [
+          "top_0/out1",
+          "connnect_0/rst_n1",
+          "top_1/out1",
+          "top_2/out1"
+        ]
+      },
+      "connnect_0_clk2": {
+        "ports": [
+          "connnect_0/clk2",
+          "led_flash_0/clk"
+        ]
+      },
+      "connnect_0_rst_n2": {
+        "ports": [
+          "connnect_0/rst_n2",
+          "led_flash_0/rst_n"
+        ]
+      },
+      "led_flash_0_led": {
+        "ports": [
+          "led_flash_0/led",
+          "connnect_0/led1"
+        ]
+      }
+    }
+  }
+}

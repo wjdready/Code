@@ -117,7 +117,7 @@ vim /etc/sddm.conf
 # Session=i3
 
 # -u(--unit) 要显示的单元, -r(--reverse) 最新消息在前
-sudo journalctl -u sddm.service -r
+sudo journalctl -u lightdm.service -r
 
 # 查看当前登录管理器
 cat /etc/X11/default-display-manager
@@ -131,9 +131,9 @@ dpkg-reconfigure sddm
 # 解决方法是查看 /lib/security/pam_kwallet.so 是否存在, 安装 
 sudo apt-get install kwalletmanager
 # 后依然存在问题, 通过查找
-find /lib -name "pam_kwallet.so"
+find /lib -name "pam_kwallet*.so"
 # 发现其位置在 /lib/aarch64-linux-gnu/security/pam_kwallet.so 于是通过软链接解决了
-sudo ln -s /lib/aarch64-linux-gnu/security/pam_kwallet.so /lib/security/pam_kwallet.so
+sudo ln -s /lib/aarch64-linux-gnu/security/pam_kwallet5.so /lib/security/pam_kwallet.so
 ```
 
 # 更改屏幕参数
@@ -203,7 +203,6 @@ barrier [开源地址](https://github.com/debauchee/barrier)， 提供 win 和 m
 似乎发现 lcd 无法显示的原因是因为lcd驱动问题。无法二次初始化，到第二次启动 startx 就失败了
 
 而且这个文件 /etc/X11/xorg.conf 关系着驱动的加载，不能去掉。hdmi 的时候可以直接删除是因为 hdmi 更通用一些。
-
 
 # [2023-09-05 17:42:42]
 

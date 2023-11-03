@@ -48,6 +48,7 @@ apt-get install xorg
 # 用户可自己设置要启动应用, 比如桌面系统 i3, 甚至是自己的程序 sdl2demo.
 # 不论是 root 还是普通用户, 都可以启动. 不过非 root 用户需在屏幕终端中启动, 无法通过 ssh 启动 ？
 vim ~/.xsession
+# i3 xfce4-session gnome-session
 i3
 
 # 然后启动 xserver
@@ -100,6 +101,9 @@ dpkg-reconfigure sddm
 
 # 停止或启动登录管理器
 systemctl stop sddm.service
+
+# 远程桌面配置启动时登录
+vim /etc/xrdp/startwm.sh
 ```
 
 # 桌面管理器

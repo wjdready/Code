@@ -47,8 +47,12 @@ make -j8
 # 系统加载
 
 ```sh
-fatload mmc 0:1  0x21000000 uImage
+fatload mmc 0:1 0x21000000 uImage
 fatload mmc 0:1 0x22000000 infinity2m-spinand-ssc011a-s01a-display.dtb
-setenv bootargs "console=ttyS0,115200 root=/dev/mmcblk0p2"
+setenv bootargs "console=ttyS0,115200 root=/dev/mmcblk0p2 rw"
 bootm 0x21000000 - 0x22000000
+
+# 上面直接加载怎么都不行，kernel 总是没法解析 root (显示为 null), 只有设置后 saveenv 才行，真是日狗
+setenv bootcmd 'fatload mmc 0:1 0x21000000 uImage;fatload mmc 0:1 0x22000000 infinity2m-spinand-ssc011a-s01a-display.dtb;bootm 0x21000000 - 0x22000000;'
+setenv bootargs 'root=/dev/mmcblk0p2 rw console=ttyS0,115200'
 ```
