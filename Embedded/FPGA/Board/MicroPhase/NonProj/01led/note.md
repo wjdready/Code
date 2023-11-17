@@ -69,6 +69,3 @@ do_create_bitstream
 
 ## 如何仿真
 
-
-
-

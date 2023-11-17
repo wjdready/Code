@@ -79,3 +79,17 @@ endmodule
 
 每次编译过后都要重新打开仿真?
 
+## 自动仿真
+
+Makefile
+
+```makefile
+export PATH := $(PATH):/c/ProgramFiles/Modelsim/win64/vsim
+
+test:
+	vlog -work work test.v not_module.v
+	vsim -voptargs=+acc work.test -do "add wave sim:/test/a sim:/test/b; run 10ms;"
+```
+
+添加波形可先在图形界面添加，下方会有对应的 tcl 脚本，从而能够直接复制粘贴
+

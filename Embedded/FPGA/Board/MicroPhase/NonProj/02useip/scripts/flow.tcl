@@ -23,8 +23,15 @@ set_property ip_repo_paths [ concat [get_property ip_repo_paths [current_project
 # 刷新 IP
 update_ip_catalog -rebuild -scan_changes
 
-# 生成 IP
-create_ip -name led -vendor xilinx.com -library user -version 1.0 -module_name led_0 -dir $output_path
+# 创建 IP
+# create_ip -name led -vendor xilinx.com -library user -version 1.0 -module_name led_0 -dir $output_path
+
+# 导入 IP
+set ip_files [glob src/ip/*.xci]
+foreach file $ip_files {
+    import_ip $file
+}
+
 generate_target all [get_ips]
 
 # 添加 hdl 文件
@@ -57,7 +64,7 @@ add_files -norecurse -fileset $src_fileset $top_wrapper
 # set_property -name top -value led_tb -objects $sim_fileset
 
 # 设置顶层模块为 system_wrapper
-set_property top system_wrapper [current_fileset]
+set_property top top [current_fileset]
 
 update_compile_order -fileset sources_1
 
