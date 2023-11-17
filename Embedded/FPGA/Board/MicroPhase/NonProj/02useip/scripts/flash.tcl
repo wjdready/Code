@@ -1,6 +1,6 @@
 
 # 要烧录的文件路径
-set bit_file build/proj/proj.runs/impl_1/system_wrapper.bit
+set bit_file build/proj/proj.runs/impl_1/top.bit
 
 open_hw_manager
 connect_hw_server 

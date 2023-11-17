@@ -44,36 +44,56 @@ create_ip  [-vlnv <arg>] -module_name <arg> [-dir <arg>] [-force]
            [-version <arg>] [-revision <arg>] [-quiet] [-verbose]
 ```
 
-create_ip -name led -vendor lucasbrasilino.com -library AXIS -version 1.0 -module_name led_0
+> 生成 ip 的麻烦所在
+> 比较麻烦的问题在于当我自定义一个 custom_ip，该 custom_ip 用到了另一个 anthor_ip, 那么导出的这个 custom_ip 还需要包含引用到的 anthor_ip 实例
+> 而调用者无法通过 custom_ip 来生成其依赖的 ip 实例。 这就导致 custom_ip 库必须已经包含 anthor_ip, 而 anthor_ip 可能是库 ip，且很可能很大。
+> 为了不将库 ip 也放在一起，只能每次重新生成 custom_ip, 并且不把生成的 custom_ip 引入版本管理，而只把其源码引入。
 
+## 使用 ip 的两种方法
+
+##### 1. create_ip 
+
+在 tcl 中使用 create_ip 动态创建 ip 并配置, 生成 xci 输出到 build, 可使用 gui 生成后复制其生成脚本和配置参数
 
 ```sh
-if { $::argc != 1 } {
-    puts "ERROR: Program \"$::argv0\" requires 1 arguments!\n"
-    puts "Usage: $::argv0 <ip_dir>\n"
-    exit
-}
-
-set ip_dir [lindex $::argv 0]
-
-# IP folder does not exist. Create IP folder
-file mkdir ${ip_dir}
-
-# create_ip requires that a project is open in memory.
-# Create project but don't do anything with it
-create_project -in_memory
-
-create_ip -name floating_point -vendor xilinx.com -library ip -version 7.1 -module_name xil_fdiv -dir ${ip_dir}
-set_property -dict [list CONFIG.Component_Name {xil_fdiv} CONFIG.Operation_Type {Divide} CONFIG.Flow_Control {NonBlocking} CONFIG.Has_ACLKEN {true} CONFIG.C_Has_UNDERFLOW {true} CONFIG.C_Has_OVERFLOW {true} CONFIG.C_Has_INVALID_OP {true} CONFIG.C_Has_DIVIDE_BY_ZERO {true} CONFIG.A_Precision_Type {Single} CONFIG.C_A_Exponent_Width {8} CONFIG.C_A_Fraction_Width {24} CONFIG.Result_Precision_Type {Single} CONFIG.C_Result_Exponent_Width {8} CONFIG.C_Result_Fraction_Width {24} CONFIG.C_Mult_Usage {No_Usage} CONFIG.Has_RESULT_TREADY {false} CONFIG.C_Latency {28} CONFIG.C_Rate {1}] [get_ips xil_fdiv]
-
-create_ip -name floating_point -vendor xilinx.com -library ip -version 7.1 -module_name xil_fsqrt -dir ${ip_dir}
-set_property -dict [list CONFIG.Component_Name {xil_fsqrt} CONFIG.Operation_Type {Square_root} CONFIG.Flow_Control {NonBlocking} CONFIG.Has_ACLKEN {true} CONFIG.C_Has_INVALID_OP {true} CONFIG.A_Precision_Type {Single} CONFIG.C_A_Exponent_Width {8} CONFIG.C_A_Fraction_Width {24} CONFIG.Result_Precision_Type {Single} CONFIG.C_Result_Exponent_Width {8} CONFIG.C_Result_Fraction_Width {24} CONFIG.C_Mult_Usage {No_Usage} CONFIG.Has_RESULT_TREADY {false} CONFIG.C_Latency {28} CONFIG.C_Rate {1}] [get_ips xil_fsqrt]
-
-create_ip -name floating_point -vendor xilinx.com -library ip -version 7.1 -module_name xil_fma -dir ${ip_dir}
-set_property -dict [list CONFIG.Component_Name {xil_fma} CONFIG.Operation_Type {FMA} CONFIG.Add_Sub_Value {Add} CONFIG.Flow_Control {NonBlocking} CONFIG.Has_ACLKEN {true} CONFIG.C_Has_UNDERFLOW {true} CONFIG.C_Has_OVERFLOW {true} CONFIG.C_Has_INVALID_OP {true} CONFIG.Has_A_TUSER {false} CONFIG.A_Precision_Type {Single} CONFIG.C_A_Exponent_Width {8} CONFIG.C_A_Fraction_Width {24} CONFIG.Result_Precision_Type {Single} CONFIG.C_Result_Exponent_Width {8} CONFIG.C_Result_Fraction_Width {24} CONFIG.C_Mult_Usage {Medium_Usage} CONFIG.Has_RESULT_TREADY {false} CONFIG.C_Latency {16} CONFIG.C_Rate {1} CONFIG.A_TUSER_Width {1}] [get_ips xil_fma]
-
+create_ip -name mult_gen -vendor xilinx.com -library ip -version 12.0 -module_name mult_ratio -dir $output_path/ip_gen
+set_property -dict [list \
+    CONFIG.PortAWidth {31} \
+    CONFIG.PortBWidth {26} \
+    CONFIG.Multiplier_Construction {Use_Mults} \
+    CONFIG.PipeStages {6} \
+    CONFIG.PortAType {Unsigned} \
+] [get_ips mult_ratio]
 generate_target all [get_ips]
+```
 
-close_project -delete
 
+##### 2. import_ip
+
+通过 gui 生成 xci 后复制 xci 到工程然后复用，或者直接使用被人项目中生成的 xci, 使用 import_ip 读入 ip，这会将 xci 复制到 proj 中并进行处理，而我们的 proj 在 build 中
+因此这种方法也是非常适合版本管理的。对于生成的 xci ip 芯片不匹配的情况只需 upgrade ip 即可
+
+```sh
+set ip_files [glob src/ip/*.xci]
+foreach file $ip_files {
+    import_ip $file
+}
+# generate_target all [get_ips]
+```
+> 需要注意的是不要使用 read_ip，因为那样会在当前 xci 源文件中生成很多临时文件
+
+## 使用 bd 文件
+
+在 gui 中创建 bd 好后，点击 File->Export 从而导出 bd.tcl，使用时只需 soruce bd.tcl 就可以重新生成 bd 文件了
+
+同时 wrapper 也是可以通过脚本动态创建的
+
+```sh
+# 添加 bd 和 wrapper
+create_bd_design system
+source src/system_bd.tcl
+make_wrapper -files [get_files $project_dir/$project_name.srcs/sources_1/bd/system/system.bd] -top
+
+set top_wrapper $project_dir/$project_name.srcs/sources_1/bd/system/hdl/system_wrapper.v
+add_files -norecurse -fileset $src_fileset $top_wrapper
 ```
