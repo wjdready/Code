@@ -6,7 +6,7 @@
 
 目前广泛使用的第三方是 hekate https://github.com/CTCaer/hekate
 
-作为第一个从 sd 卡加载的 bootloader 功能很多，而且还可以加载其他的 payload.bin, 下面是其用到的 bootloader 目录的详细介 (摘自 github) 
+CTCaer 的这个 payload.bin 作为第一个从 sd 卡加载的 bootloader, 其功能很多，而且它还可以加载其他的 payload.bin, 下面是其用到的 bootloader 目录的详细介 (摘自 github) 
 
 ## Bootloader folders and files
 
@@ -45,7 +45,7 @@
 # 但 synergy 似乎仍然存在问题，所以以后可能用 barrier 比较多，这里是 ubuntu 下 barrier 源码安装的一些必须步骤
 git clone https://github.com/debauchee/barrier.git
 git submodule init
-sudo apt install libcurl4-openssl-dev libavahi-compat-libdnssd-dev libxtst-dev qt5-default libssl-dev
+sudo apt install libcurl4-openssl-dev libavahi-compat-libdnssd-dev libxtst-dev qtbase5-dev libssl-dev
 mkdir build -p && cd build && cmake ..
 make -j8 
 sudo make install

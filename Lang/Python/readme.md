@@ -17,3 +17,7 @@ export PATH=$PATH:$PYTHONHOME/Scripts
 ```
 python -m pip install --upgrade pip
 ```
+
+# 更换镜像源
+
+https://mirrors.tuna.tsinghua.edu.cn/help/pypi/

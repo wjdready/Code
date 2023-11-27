@@ -1,6 +1,7 @@
 
 # [2023-04-22 21:18:49]
 
+[模块官方资料](https://dl.sipeed.com/shareURL/MAIX/M1s)
 
 官方 [sdk](https://github.com/bouffalolab/bl_mcu_sdk) 中包含了 BL616，BL618，BL808 等芯片, 操作流程基本都一样，因此直接参照 BL618 即可。
 
@@ -96,3 +97,13 @@ export PATH=$PATH:/c/Users/shino/Desktop/CodeNote/Embedded/Board/Sipeed/M0S/tool
 cd examples/helloworld
 make ninja CHIP=bl808 BOARD=bl808dk CPU_ID=m0
 ```
+
+
+# [2023-11-17 19:36:56]
+
+[BL808 运行 Linux ](https://github.com/bouffalolab/bl808_linux)
+
+也可[参考](https://zhuanlan.zhihu.com/p/599085018?utm_id=0) 
+
+https://www.elecfans.com/d/2205879.html
+

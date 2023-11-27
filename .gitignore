@@ -7,3 +7,8 @@ _*/
 node_modules/
 *.elf
 *.bin
+*.lib
+*.obj
+*.dll
+*.so
+*.class
