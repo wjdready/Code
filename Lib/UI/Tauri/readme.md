@@ -1,6 +1,4 @@
 
-
-
 ```sh
 npm create tauri-app
 cnpm install
@@ -15,4 +13,5 @@ sudo apt-get install rust-all libwebkit2gtk-4.0-dev librsvg2-dev
 ```
 
 参考
-https://www.psvmc.cn/article/2023-02-10-tauri-start-01.html
+官方入门文档 https://tauri.app/zh-cn/v1/guides/getting-started/setup/
+个人博客 https://www.psvmc.cn/article/2023-02-10-tauri-start-01.html

@@ -1,33 +1,30 @@
 
-
-
-# 创建一个 npm 包
+## 常用命令
 
 ```sh
+# 创建一个 npm 包
 mkdir demo && cd demo
 npm init -y
-```
 
-
-```sh
+# 设置镜像, 恢复回默认, 获取当前镜像
 npm set registry https://registry.npm.taobao.org
 npm config set registry https://registry.npmjs.org
 npm get registry 
 
+# 或者直接使用 cnpm
 npm install -g cnpm --registry=https://registry.npmmirror.com
-cnpm install --save-dev electron
-cnpm sync express
 
-npm install --save-dev electron
+# 安装 cgr 来快速切换源
+npm install -g cgr
+cgr ls
+cgr use taobao
 
 # 查看某个包的历史版本
 npm view <package-name> versions
 npm info <package-name> 
 ```
 
-
 node 模块安装位置不在 nodejs 安装目录，而是默认在 `C:\Users\shino\AppData\Roaming` 
-
 
 ## npm 版本快速切换
 
@@ -61,15 +58,6 @@ nvm node_mirror https://npmmirror.com/mirrors/node
 # 腾讯云镜像
 nvm npm_mirror http://mirrors.cloud.tencent.com/npm/
 nvm node_mirror http://mirrors.cloud.tencent.com/nodejs-release/
-```
-
-## npm 快速切换源
-
-```sh
-# 安装 cgr 来快速切换源
-npm install -g cgr
-cgr ls
-cgr use taobao
 ```
 
 ## nodejs 版本 与 NODE_MODULE_VERSION 的关系
