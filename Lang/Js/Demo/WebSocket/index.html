@@ -1,0 +1,16 @@
+<script>
+    var ws = new WebSocket('ws://172.20.10.7:8080/');
+
+    ws.onopen = function () {
+        console.log('Connection opened');
+        ws.send('Hello world!');
+    };
+
+    ws.onmessage = function (message) {
+        console.log('Received message: ' + message.data);
+    };
+
+    ws.onclose = function () {
+        console.log('Connection closed');
+    };
+</script>

@@ -1,5 +1,7 @@
 
 
+官方资料:
+http://www.openedv.com/docs/boards/arm-linux/zdyzmp157.html
 
 ```sh
 load mmc 0:1 0XC2000040 uImage
