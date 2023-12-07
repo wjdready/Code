@@ -66,3 +66,8 @@ Soong 采用了 Go 语言作为实现语言，它的运行机制可以简单地�
 3. 生成Build.ninja文件：Soong 将构建图转换为 Build.ninja 文件，该文件是 Ninja 构建系统的输入文件。Build.ninja文件描述了每个模块的编译命令和依赖关系
 4. Ninja构建：使用生成的Build.ninja文件，Soong调用Ninja构建系统来执行实际的编译过程。Ninja会根据依赖关系和编译命令来并行地构建各个模块
 
+
+# [2023-11-29 14:40:06]
+
+各项模块都输出到了 `out/soong/.intermediates`
+
