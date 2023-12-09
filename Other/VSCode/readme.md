@@ -58,3 +58,9 @@ settings.json
 直接使用[项目](https://github.com/amezin/vscode-linux-kernel)
 [参考](https://stackoverflow.com/questions/49198816/how-to-use-the-visual-studio-code-to-navigate-linux-kernel-source)
 
+
+
+## 插件种草
+
+* drawio 方便绘制流程图
+* github repo 方便通过远程查看各种开源项目源码，不需要下载下来
