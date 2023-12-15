@@ -131,7 +131,7 @@ app
   "tauri": {
     "allowlist": {
       "fs": {
-        "scope": ["$APPDATA/*"]
+        "scope": ["$APPDATA/**"]
       }
     }
   }
