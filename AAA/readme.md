@@ -15,5 +15,8 @@ npm get registry
 # 下载 cnpm
 npm install -g cnpm --registry=https://registry.npmmirror.com
 
+# 查看某个包的历史版本
+npm view <package-name> versions
+npm info <package-name> 
 ```
 

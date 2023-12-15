@@ -39,6 +39,17 @@ ls
 
 可在 rs 中直接定义 `#[link(name = "lib/add", kind = "static")]` 即可直接编译运行
 
+## 指定 target
+
+cargo 命令行中
+
+```makefile
+all:
+	RUSTFLAGS="-Clink-arg=User32.lib" \
+	cargo build	--release	\
+	--target i686-pc-windows-msvc
+```
+
 还可以自定义 build 过程
 
 build.rs

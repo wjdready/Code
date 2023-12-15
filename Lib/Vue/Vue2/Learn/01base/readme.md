@@ -203,6 +203,7 @@ vue 中用到的修饰符有:
 4. capture：使用事件的捕获模式
 5. self：只有 event.target 是当前操作的元素时才触发事件
 6. passive：事件的默认行为立即执行，无需等待事件回调执行完毕
+7. native: 使用DOM原生事件
 
 ```html
 <a href="http://www.baidu.com" @click.prevent="showInfo">show</a>
