@@ -60,6 +60,17 @@ fn main() {
 }
 ```
 
+也可以定义在 `.cargo/config.toml` 中:
+
+```ini
+[target.i686-pc-windows-msvc]
+rustflags = [
+    "-C", "link-lib=static=add",
+    "-C", "link-search=native=lib",
+    "-C", "-Clink-arg=User32.lib"
+]
+```
+
 该文件会在编译阶段被编译并执行，然后输出到中间文件 output，该文件在编译时被读取，从而对编译过程进行配置
 
 更多信息和编译选项[参考](https://doc.rust-lang.org/cargo/reference/build-scripts.html)
