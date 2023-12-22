@@ -1,0 +1,89 @@
+$date
+	Fri Dec 22 13:18:08 2023
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1s
+$end
+$scope module top $end
+$var wire 8 ! c [7:0] $end
+$var parameter 32 " WIDTH $end
+$var reg 8 # a [7:0] $end
+$var reg 8 $ b [7:0] $end
+$var reg 1 % clk $end
+$scope module u_add $end
+$var wire 8 & a [7:0] $end
+$var wire 8 ' b [7:0] $end
+$var wire 8 ( c [7:0] $end
+$var parameter 32 ) WIDTH $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+b1000 )
+b1000 "
+$end
+#0
+$dumpvars
+b1 (
+b1 '
+b0 &
+0%
+b1 $
+b0 #
+b1 !
+$end
+#10
+b10 $
+b10 '
+b11 !
+b11 (
+b1 #
+b1 &
+1%
+#20
+0%
+#30
+b11 $
+b11 '
+b101 !
+b101 (
+b10 #
+b10 &
+1%
+#40
+0%
+#50
+b100 $
+b100 '
+b111 !
+b111 (
+b11 #
+b11 &
+1%
+#60
+0%
+#70
+b101 $
+b101 '
+b1001 !
+b1001 (
+b100 #
+b100 &
+1%
+#80
+0%
+#90
+b110 $
+b110 '
+b1011 !
+b1011 (
+b101 #
+b101 &
+1%
+#100
+0%
+#110
