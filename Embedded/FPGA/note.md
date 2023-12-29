@@ -17,3 +17,8 @@ VSCode 上的 verilog 插件支持的不是很好, 较为不错的应该是 `Ver
 
 svlangserve 只需安装即可使用, 但是发现效果依然不佳，文件内变量转跳是可以的，模块间转跳不识别. 但是打开文件后偶尔又可以转跳.
 
+## 学习
+
+通过示例学习:
+https://www.chipverify.com/verilog/verilog-arrays-memories
+
