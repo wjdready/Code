@@ -232,3 +232,50 @@ $(BUILD_DIR) :
 clean:
 	rm -fR build
 ```
+
+## VPATH 的使用
+
+VPATH 直接指定一个搜索目录, 而 vpath 可以对搜索路径加入指定的过滤器，用于筛选指定文件名
+
+src/Makefile
+
+```
+SRCS += a.c
+```
+
+顶层 Makefile
+
+```makefile
+include src/Makefile
+
+# VPATH = ./src
+vpath %.c ./src
+
+SRCS += main.c
+OBJS = $(SRCS:%.c=%.o)
+
+CFLAGS += -I./src
+
+all: $(OBJS)
+	CC $(OBJS) -o a.exe
+```
+
+OBJS 中的对象由 Makefile 自动推导，自动推导时 CFLAGS 可用于指定生成 .o 文件时的编译器参数
+
+当然也可以自定义生成 OBJS 目标, 这时 CFLAGS 就可有可无了
+
+```makefile
+include src/Makefile
+
+# VPATH = ./src
+vpath %.c ./src
+
+SRCS += main.c
+OBJS = $(SRCS:%.c=%.o)
+
+all: $(OBJS)
+	CC $(OBJS) -o a.exe
+
+%.o: %.c
+	$(CC) -I./src -c $<
+```
