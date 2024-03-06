@@ -380,6 +380,7 @@ mmc0 为 sd 卡, 假设启动第一个设备即成功时，其启动流程为:
     source ${scriptaddr}
 ```
 
+说白了就是扫描各个存储器的所有分区中的文件系统，识别 / 或 /boot 目录下是否存在 `extlinux/extlinux.conf` 或 `boot.scr.uimg` `boot.scr` 脚本文件，存在则加载并执行
 
 ## initfs
 

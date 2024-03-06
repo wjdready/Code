@@ -217,3 +217,9 @@ git tag -a v0.1.1 9fbc3d0
 git commit --amend
 ```
 
+## 撤销最新提交并放回到缓存中
+
+```sh
+git reset HEAD^
+```
+
