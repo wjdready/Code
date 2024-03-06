@@ -100,6 +100,9 @@ i3
 ```sh
 apt-get install libcufft-10-2 libopencv libopencv-core3.2 libQt5Widgets libqt5sql5 \
     libopencv-imgproc3.2 libopencv-videoio3.2 libopencv-highgui3.2 libqt5printsupport5 libfftw3-3
+
+# 支持 ntfs 和 exfat 文件系统
+sudo apt-get install ntfs-3g exfat-fuse exfat-utils
 ```
 
 # 开发调试用的

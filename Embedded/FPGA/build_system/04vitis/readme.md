@@ -49,10 +49,15 @@ IDE.log
 
 这个过程中发现 flash 没下载成功，竟是平台设计时没有正确配置好 SPI Flash 外设，看来下载用的 fsbl 中的 外设也是和平台设计息息相关。
 
-同时根据 vitis 下载 flash 时的提示信息得出自动化下载脚本如下:
+实用程序 program_flash 可以直接快速下载，想把 program_flash 单独拿出来用于生产下载，但是 vitis 太大了，想要从 vitis 提取出来
 
+主要提取目录:
 ```sh
-program_flash -f bin/BOOT.bin -offset 0 -flash_type qspi-x4-single -fsbl bin/fsbl.elf -url TCP:127.0.0.1:3121 
+# 最顶层目录
+bin  data  lib  scripts  tps
+
+# 根据 vitis 下载 flash 时的提示信息得出自动化下载脚本如下:
+Vitis/2022.2/bin/program_flash -f data/BOOT.bin -offset 0 -flash_type qspi-x4-single -fsbl data/fsbl.elf -url TCP:127.0.0.1:3121 
 ```
 
 另外希望使用 openocd 进行 flash 一直没有进展, 虽然可以进入调试模式，并使用 gdb 进行加载程序到内存了:
