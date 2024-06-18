@@ -27,50 +27,44 @@ int main(int argc, char const *argv[])
 {
     int fd;
 
-    if (argc < 2)
-    {
-        fprintf(stderr, "Example: %s /dev/ttyGS0\n", argv[0]);
-        return -1;
-    }
-
-    fd = open(argv[1], O_RDWR);
-    if (fd < 0)
-    {
-        fprintf(stderr, "Can't open file %s: %s\n", argv[1], strerror(errno));
-        return -1;
-    }
-
     while (1)
     {
-        char buf[64];
-        int n = read(fd, buf, sizeof(buf));
 
-        /* 数据正常 */
-        if (n > 0)
+        if (check_usb_connected()) 
         {
-            printf("get %.*s\n", n, buf);
-            continue;
+            if (fd <= 0)
+            {
+                printf("usb connected, file open\n");
+                fd = open(argv[1], O_RDWR);
+                if (fd < 0)
+                {
+                    fprintf(stderr, "Can't open file %s: %s\n", argv[1], strerror(errno));
+                    sleep(1);
+                }
+            }
+
+            else 
+            {
+                char buf[64];
+                int n = read(fd, buf, sizeof(buf));
+
+                /* 数据正常 */
+                if (n > 0)
+                {
+                    printf("get %.*s\n", n, buf);
+                }
+            }
         }
 
-        if (check_usb_connected())
-            continue;
-
-        /* usb 已经断开, 等待 usb 连接 */
-        while (!check_usb_connected())
+        else
         {
-            printf("wait usb connected\n");
+            printf("usb disconnected, file close\n");
+            if (fd > 0)
+                close(fd);
+            fd = 0;
             sleep(1);
         }
 
-        /* 重新打开 */
-        printf("usb reopen\n");
-        close(fd);
-        fd = open(argv[1], O_RDWR);
-        if (fd < 0)
-        {
-            fprintf(stderr, "Can't open file %s: %s\n", argv[1], strerror(errno));
-            sleep(1);
-        }
     }
 
     return 0;

@@ -23,6 +23,9 @@ sudo vim /etc/systemd/system/AWA6280.service
 
 sudo systemctl enable AWA6280
 
+# tf 插入检测服务
+sudo systemctl enable tf-state.service
+
 # 希望进入命令行后能自动导出 DISPLAY 变量
 echo "export DISPLAY=:0" >> ~/.bashrc
 
@@ -70,10 +73,8 @@ xset -dpms
 # 配置网口信息
 ifconfig eth0 192.168.3.102 netmask 255.255.255.0
 
-mkdir /home/AWA/tfcard -p
-mount /dev/mmcblk2p1 /home/AWA/tfcard
-
-systemctl start usb-mtp.service
+# 隐藏鼠标
+unclutter -idle 0.01 -root
 
 # 进入恢复模式
 if [ -f "/home/AWA/data/.AWA6280_recovery_mode" ]; then
@@ -87,22 +88,41 @@ elif [ -f "/home/AWA/data/.AWA6280_debug_mode" ]; then
 # 正常启动
 else
     service serial-getty@ttyGS0 stop
-    # 运行 6280 的守护进程
-    /home/AWA/6280/Daemon/Daemon
 fi
 
+# 设置背景图片
+feh --bg-fill /home/AWA/background.png
+
 i3
+```
+
+其中 i3 配置如下 /root/.config/i3/config
+
+```sh
+# i3 config file (v4)
+
+font pango:monospace 8
+
+bar {
+    mode hide
+}
+
+exec --no-startup-id /home/AWA/6280/Daemon/Daemon
+exec --no-startup-id i3-msg fullscreen enable
 ```
 
 #### 安装依赖
 
 
 ```sh
-apt-get install libcufft-10-2 libopencv libopencv-core3.2 libQt5Widgets libqt5sql5 \
+apt-get install libcufft-10-2 libopencv libopencv-core3.2 libQt5Widgets libqt5sql5 libqt5charts5 \
     libopencv-imgproc3.2 libopencv-videoio3.2 libopencv-highgui3.2 libqt5printsupport5 libfftw3-3
 
 # 支持 ntfs 和 exfat 文件系统
-sudo apt-get install ntfs-3g exfat-fuse exfat-utils
+sudo apt-get install ntfs-3g exfat-fuse exfat-utils 
+
+# 添加 ffmpeg 工具
+sudo apt-get install ffmpeg
 ```
 
 # 开发调试用的

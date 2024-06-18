@@ -22,3 +22,17 @@ svlangserve 只需安装即可使用, 但是发现效果依然不佳，文件内
 通过示例学习:
 https://www.chipverify.com/verilog/verilog-arrays-memories
 
+## FPGA 厂商
+
+1. Altera
+
+2. Xilinx
+
+    * ZYNQ 7020
+
+3. LatTIce 
+  上海莱迪思
+  官网 https://www.latticesemi.com/
+
+
+

@@ -68,5 +68,5 @@ cd /proc/device-tree
 xxd i2c@7000c000/status
 
 # 在 vim 中查看
-dtc -I fs -O dts /sys/firmware/devicetree/base >> ~/curent_device_tree.txt && vim ~/curent_device_tree.txt
+dtc -I fs -O dts /sys/firmware/devicetree/base > ~/curent_device_tree.txt && vim ~/curent_device_tree.txt
 ```

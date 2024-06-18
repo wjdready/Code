@@ -424,6 +424,10 @@ MX_USART1_UART_Init();
 
 但是, 如果你真的不小心忘记配置 DMA 就先输出工程也是可以重新设置初始化顺序的, 可在 Project Manager 下的 Advanced Settings 中重新设置顺序.
 
+# 2024-05-30 09:52:25
+
+需要勾选 Use MicroLib ?
+
 ### 参考文献
 
 程序中使用到了开源的环形缓冲器的实现 [lwrb](https://github.com/MaJerle/lwrb.git)

@@ -60,7 +60,7 @@ sudo dtc -I dtb -O dts /sys/firmware/fdt | grep dummy-codec -C 20
 ```
 
 ```sh
-
+mount -t debugfs none /sys/kernel/debug
 cd /sys/kernel/debug/pinctrl/pinctrl-rockchip-pinctrl
 group: i2s0-pins
 pin 65 (gpio2-1) LRCK

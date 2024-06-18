@@ -7,6 +7,7 @@
 关于动态库的几个比较重要的点:
 
 * 要导出动态库, 源文件对需要导出的函数使用 `__declspec(dllexport)` 修饰.
+* cl -I include 用来添加头文件路径
 * cl -c 表示仅编译不链接
 * cl -link 表示进行链接
 * -out:out/path 是链接后输出的目录
