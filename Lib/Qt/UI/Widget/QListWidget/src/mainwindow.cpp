@@ -54,6 +54,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         ui->listWidget->setItemWidget(item1, listitem);
 
     });
+
+
+    connect(ui->listWidget, QListView::clicked, this, [this](const QModelIndex& index) {
+
+        int row = index.row();
+        int column = index.column();
+        // 使用行数和列数进行进一步处理
+
+        qDebug() << "List Clicked " << row << " " << column;
+    });
 }
 
 MainWindow::~MainWindow()

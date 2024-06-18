@@ -7,8 +7,9 @@ CC = cl
 OBJS = $(addprefix $(BUILD_DIR)/, $(SRCS:%.c=%.obj))
 
 LIBS += 
+INCLUDE_DIR += 
 
-CFLAGS += -nologo -wd4819 -Zi -EHsc -DEBUG
+CFLAGS += -nologo -wd4819 -Zi -EHsc -DEBUG -I $(INCLUDE_DIR)
 LDFLAGS += -nologo -DEBUG
 
 ifndef BUILD_DIR_EXISTS

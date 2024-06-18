@@ -1,0 +1,10 @@
+[Unit]
+Description=TF CARD CHECK
+
+[Service]
+ExecStart=/home/AWA/6280/tf-state/start.sh
+ExecStopPost=/home/AWA/6280/tf-state/start.sh
+User=root
+
+[Install]
+WantedBy=multi-user.target

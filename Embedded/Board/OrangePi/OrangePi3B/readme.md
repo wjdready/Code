@@ -385,3 +385,182 @@ mmc0 为 sd 卡, 假设启动第一个设备即成功时，其启动流程为:
 ## initfs
 
 https://wiki.gentoo.org/wiki/Custom_Initramfs#:~:text=initramfs%20is%20for%20users%20with,or%20otherwise%20special%20root%20partition
+
+
+# 2024-03-15 13:06:25
+
+## 基于官方框架编译
+
+
+首先 ./build.sh 使用 GUI 方式进行配置，编译完成后会提示刚才的配置等效的命令行编译:
+
+```sh
+
+sudo ./build.sh  BOARD=orangepi3b BRANCH=current BUILD_OPT=kernel KERNEL_CONFIGURE=no
+
+# 另外还有一些附加的选项:
+OFFLINE_WORK=yes    # 离线编译
+
+```
+
+## 适配 SPI 屏幕
+
+#### fbtft
+
+官方 Image 已经把 tinydrm 和 fbtft fbtft 都编译进去了，所以可以直接使用，只需添加 overlay 的设备树即可。
+
+dtc -@ fbtft_lcd.dts -o fbtft_lcd.dtob
+sudo cp fbtft_lcd.dtob /boot/dtb/rockchip/overlay/rk356x-fbtft.dtbo
+
+export QT_QPA_PLATFORM=linuxfb:tty=/dev/fb0
+/usr/lib/aarch64-linux-gnu/qt5/examples/widgets/animation/moveblocks/moveblocks
+
+```c
+/dts-v1/;
+/plugin/;
+/ {
+    compatible = "rockchip,rk3566-orangepi-3b";
+
+    fragment@0 {
+        target = <&spi3>;
+        __overlay__ {
+            /* needed to avoid dtc warning */
+            #address-cells = <1>;
+            #size-cells = <0>;
+            status = "okay";
+            pinctrl-names = "default";
+
+            // ili9341@0 {
+            //     compatible = "ilitek,ili9341";
+            //     reg = <0>;
+            //     spi-max-frequency = <50000000>;
+            //     rotate = <270>;
+            //     bgr;
+            //     fps = <30>;
+            //     buswidth = <8>;
+            //     // reset = <&gpio2 5 GPIO_ACTIVE_LOW>;
+            //     // dc = <&gpio2 4 GPIO_ACTIVE_LOW>;
+            //     reset-gpios = <&gpio1 0 1>;
+            //     dc-gpios = <&gpio4 5 0>;
+            //     led-gpios = <&gpio3 28 0>;
+            //     debug = <1>;
+            // };
+
+            st7789v@0{
+                compatible = "sitronix,st7789v";
+                reg = <0>;
+                spi-max-frequency = <50000000>;
+                buswidth = <8>;
+                debug = <0>;
+                height = <240>;
+                width = <240>;
+                fps = <30>;
+                reset-gpios = <&gpio1 0 1>;
+                dc-gpios = <&gpio4 5 0>;
+                led-gpios = <&gpio3 28 0>;
+                rotation = <0>;
+                spi-cpol;
+                spi-cpha;
+            };
+        };
+    };
+};
+```
+
+st7789v 卡在 spi 的 cpol 和 cpha 没设置，后来参考了以前的代码才设置成功。
+
+#### tinydrm
+
+```sh
+modinfo ili9341
+cat /sys/kernel/debug/device_component/display-subsystem
+```
+
+tinydrm 和 panel 是一样的，两个效果一样，现在的问题在于驱动加载后 modetest 无法显示 connectors 和 modes 信息
+
+也不知道怎么路由系统界面到 lcd 屏幕上，下面设备树 port 节点写了但是没有用，只是作为参考，去掉和加上区别不大。
+
+不过值得一提的是我的 sdl-shader-toy 代码编译后能跑，但是不知道 opengl 调用是软件模拟还是硬件加速
+
+```c
+/dts-v1/;
+/plugin/;
+/ {
+    compatible = "rockchip,rk3566-orangepi-3b";
+
+    fragment@0 {
+        target = <&spi3>;
+        __overlay__ {
+            /* needed to avoid dtc warning */
+            #address-cells = <1>;
+            #size-cells = <0>;
+            status = "okay";
+            pinctrl-names = "default";
+
+            // ====> panel
+            display@0{
+                status = "okay";
+                compatible = "adafruit,yx240qv29";
+                reg = <0>;
+                spi-max-frequency = <50000000>;
+                dc-gpios = <&gpio4 5 0>;
+                reset-gpios = <&gpio1 0 0>;
+                rotation = <0>;
+
+                port {
+                    panel_in: endpoint {
+                        remote-endpoint = <&vp0_out_spi>;
+                        status = "okay";
+                    };
+                };
+            };
+        };
+    };
+
+    fragment@1 {
+        target = <&hdmi>;
+        __overlay__ {
+            status = "disabled";
+        };
+    };
+
+    fragment@2 {
+        target = <&vop>;
+        __overlay__ {
+            status = "okay";
+            ports {
+                #address-cells = <1>;
+                #size-cells = <0>;
+                port@1 {
+                    reg = <1>;
+                    vp0_out_spi: endpoint {
+                        remote-endpoint = <&panel_in>;
+                        status = "okay";
+                    };
+                };
+            };
+        };
+    };
+};
+
+// sudo cp fbtft_lcd.dtob /boot/dtb/rockchip/overlay/rk356x-fbtft.dtbo
+// dtc -I fs -O dts /sys/firmware/devicetree/base > ~/curent_device_tree.txt && vim ~/curent_device_tree.txt
+```
+
+#### panel
+
+
+怎么关闭控制台: https://www.cnblogs.com/yddeboke/p/15246900.html
+
+
+## VTCONSOLE 
+
+很关键的一点是 vtconsole 默认就加载并绑定到 tty0, 然后似乎屏幕默认就是作为 vtconsole
+
+```sh
+# 查看 vtconsole 设备名称, 显示 frame buffer
+cat /sys/class/vtconsole/vtcon1/name
+cat /proc/fb
+# 取消绑定到 tty 
+echo 0 > /sys/class/vtconsole/vtcon1/bind
+```

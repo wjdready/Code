@@ -55,8 +55,11 @@ vlib work
 # 编译, 默认 work 文件夹, 不存在时会自动创建, 可指定 -work mywork
 vlog test.v
 
-# 运行仿真程序并指明 top 层
+# 运行仿真程序并指明 top 层, =r 表示只观察 reg 类型的信号
 vsim -voptargs=+acc=r top
+
+# 去掉 =r 则可以显示所有信号
+vsim -voptargs=+acc top
 
 # 运行地同时执行 tcl 指令, 可在 GUI 界面观察然后粘贴到此
 vsim -voptargs=+acc=r work.top -do "add wave sim:/top/a sim:/top/b sim:/top/clk; run 10ms;"
