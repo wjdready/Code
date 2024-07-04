@@ -30,8 +30,7 @@ fn output_batch(map: &HashMap<String, Vec<String>>) {
 
     for (key, value) in map {
         let format = format!(
-            "{}if \"%1\" == \"{index}\" (\n",
-            if index == 0 { "@" } else { "else " }
+            "for %%A in (\"{index}\" \"{key}\") do if \"%1\"==%%A (\n"
         );
         contant.push_str(format.as_str());
 
@@ -50,7 +49,7 @@ fn output_batch(map: &HashMap<String, Vec<String>>) {
         let format = format!("    @echo {index}.{key}\n");
         menu.push_str(format.as_str());
 
-        contant.push_str(") ");
+        contant.push_str(")\n");
         index += 1;
         println!("{} {:?}", key, value);
     }
@@ -75,7 +74,7 @@ fn output_shell(map: &HashMap<String, Vec<String>>) {
 
     for (key, value) in map {
         let format = format!(
-            "{}if [ \"$1\" == \"{index}\" ]; then\n",
+            "{}if [ \"$1\" == \"{index}\" ] || [ \"$1\" == \"{key}\" ]; then\n",
             if index == 0 { "" } else { "el" }
         );
         contant.push_str(format.as_str());

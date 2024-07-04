@@ -10,3 +10,8 @@ QMAKE_CXXFLAGS += -Wno-unused-function
 
 选布局方式时, 里面至少包含一个控件才可点击布局方式
 
+Ubuntu 编译 Qt 缺失 qml 
+
+```sh
+apt-get install qtdeclarative5-dev
+```

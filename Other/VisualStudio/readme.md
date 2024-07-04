@@ -24,3 +24,28 @@ call vcvars64.bat & msys.bat
 
 https://learn.microsoft.com/en-us/cpp/build/reference/linker-options?view=msvc-170
 
+## lib 转 dll
+
+参考 https://blog.csdn.net/qq_28249373/article/details/77373503/
+
+```sh
+# 首先创建 def 文件，mydef.def 列出需要导出的函数名
+# LIBRARY "awalib"
+# EXPORTS
+# read_cpuid
+
+# 若没有头文件，不知道 lib 中有哪些函数可导出, 可使用 dumpbin 获取函数名
+dumpbin -all lib/awalib/MakeAWALib.lib
+
+# 然后链接即可
+link awalib.lib User32.lib -dll -def:mydef.def -out:awalib.dll
+```
+
+
+## cl 简单使用
+
+```sh
+# 编译链接到自定义库，系统库，以及设置头文件路径, -c 输出 Obj 文件
+cl -nologo main.c lib/awalib.lib User32.lib -I lib/awalib
+
+```

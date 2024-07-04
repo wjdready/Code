@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file recursive="true">content</file>
+        <file recursive="true">content/image</file>
+    </qresource>
+</RCC>
