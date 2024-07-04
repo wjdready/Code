@@ -42,10 +42,10 @@ module top (
             cnt_send <= cnt_send + 12'd1;
 
             if (cnt_send == 72) begin
-                tx_enable = 0;
+                tx_enable <= 0;
                 tx_data <= 8'd0;
             end else if (cnt_send < 72) begin
-                tx_enable = 1;
+                tx_enable <= 1;
                 tx_data <= lut[ ((72 - cnt_send) * 8 - 1) -: 8];
             end
         end

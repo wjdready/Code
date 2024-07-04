@@ -7,7 +7,7 @@
 bootloader--->|-->kernel
               |-->recovery
 
-> 按上下键+开机键强制关机和进入 fastboot
+> 按上下键+开机键强制关机和进入 fastboot (不连着 USB)
 
 ```sh
 # adb 进入 fastboot 

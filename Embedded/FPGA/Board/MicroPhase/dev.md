@@ -2,7 +2,7 @@
 
 # [2023-04-27 11:31:36]
 
-[Z7-Lite-7010 板卡资料和教程](https://pan.baidu.com/s/1s9o3pKul2eTkDvlHvv3tog)，提取码：h49u
+[Z7-Lite-7010 板卡资料和教程](https://pan.baidu.com/s/1J9yJ184t-8XOs_vqPJtqyQ?pwd=0h9c)
 
 [ZYNQ开发视频教程](https://pan.baidu.com/s/13AkvW0DD1VyU1PcfRlYvxQ) 提取码：9fmh
 

@@ -10,6 +10,7 @@
 #include <QSerialPort>
 #include <QSerialPortInfo>
 #include <QThread>
+#include "mainwindow.h"
 
 static void boxset(QWidget *par, QComboBox *comboBox, bool editable, const QStringList &list, const char *initstr);
 static void uiStyleInit(MainWidget *self, Ui::MainWidget *ui);
