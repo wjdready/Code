@@ -4,7 +4,8 @@ project(app VERSION 1.0)
 
 set(CMAKE_BUILD_TYPE "Debug")
 
-find_package(Qt5 REQUIRED COMPONENTS Core Widgets)
+find_package(QT NAMES Qt6 REQUIRED COMPONENTS Core)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Widgets)
 set(QT "Qt${QT_VERSION_MAJOR}")
 
 set(CMAKE_AUTOUIC ON)

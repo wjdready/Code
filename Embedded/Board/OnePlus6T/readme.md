@@ -35,3 +35,49 @@ fastboot boot twrp.img
 
 定制的安卓系统 Omnirom, CM/LineageOS
 
+
+## 刷入 PostmarketOS
+
+参考: https://blog.csdn.net/tyler880/article/details/139610132
+官方讲的就比较复杂: https://wiki.postmarketos.org/wiki/OnePlus_6_(oneplus-enchilada)/Dual_Booting_and_Custom_Partitioning
+
+PostmarketOS镜像地址: https://images.postmarketos.org/bpo/v24.06/oneplus-fajita/plasma-mobile/
+
+刷入方法
+
+```sh
+fastboot getvar current-slot
+fastboot set_active b
+
+fastboot erase dtbo
+fastboot flash boot 下载的xxx-fajita-boot.img
+fastboot flash userdata 系统镜像xxx-fajita.img
+```
+
+默认用户名: user
+默认密码: 147147
+
+##### 捣鼓 PostmarketOS
+
+```sh
+sudo service sshd start
+sudo rc-update add sshd
+
+sudo apk add chromium g++ xhost qt6-qtbase kdeconnect
+
+
+######################
+# 安装其他桌面 xfce4
+# 参考: https://ivonblog.com/posts/postmarketos-multiple-des/
+sudo apk add gdm
+#或是LightDM
+sudo apk add lightdm lightdm-gtk-greeter
+sudo rc-update del tinydm
+sudo rc-update add gdm
+
+# 开启蓝牙键盘和鼠标
+# 参考: https://unix.stackexchange.com/questions/736814/enable-bluetooth-keyboard-for-pinephone-running-postmarketos
+sudo modprobe uhid
+# 开机自动加载驱动
+echo uhid > /etc/modules-load.d/uhid.conf
+```

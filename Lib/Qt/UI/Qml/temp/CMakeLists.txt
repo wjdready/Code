@@ -4,7 +4,8 @@ project(app VERSION 1.0)
 
 set(CMAKE_BUILD_TYPE "Debug")
 
-find_package(Qt6 REQUIRED COMPONENTS Core Quick)
+find_package(QT NAMES Qt6 REQUIRED COMPONENTS Core)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Quick)
 set(QT "Qt${QT_VERSION_MAJOR}")
 
 set(CMAKE_AUTOUIC ON)
@@ -13,7 +14,7 @@ set(CMAKE_AUTORCC ON)
 
 file(GLOB_RECURSE SOURCES  
     "src/*.cpp"
-    "resource/res.qrc"
+    "res/res.qrc"
 )
 
 add_executable(app ${SOURCES})
