@@ -1,0 +1,7 @@
+<RCC>
+  <qresource prefix="/">
+    <file>qml/main.qml</file>
+    <file>qml/qmldir</file>
+    <file>qml/custom/CButton.qml</file>
+  </qresource>
+</RCC>
