@@ -1,0 +1,3 @@
+module App
+
+CButton 1.0 custom/CButton.qml

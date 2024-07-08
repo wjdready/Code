@@ -4,6 +4,11 @@
 QMAKE_CXXFLAGS += -Wno-unused-parameter
 QMAKE_CXXFLAGS += -Wno-unused-function
 
+## QT API 
+
+https://felgo.com/doc/felgo-qt-overview/
+
+
 # 布局心得
 
 #### 布局方式无法选择?
