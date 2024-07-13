@@ -45,3 +45,8 @@ kirigami -- KDE 之作
 fluid    -- Material Design 风格
 FluentUI -- FluentUI 风格
 
+
+
+## 自定义模块
+
+参考 qt-everywhere-src-6.6.0\qtdeclarative\examples\quickcontrols\wearable\Wearable
