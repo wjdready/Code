@@ -412,6 +412,8 @@ OFFLINE_WORK=yes    # 离线编译
 dtc -@ fbtft_lcd.dts -o fbtft_lcd.dtob
 sudo cp fbtft_lcd.dtob /boot/dtb/rockchip/overlay/rk356x-fbtft.dtbo
 
+还需改 /boot/orangepiEnv.txt 添加 overlays=fbtft
+
 export QT_QPA_PLATFORM=linuxfb:tty=/dev/fb0
 /usr/lib/aarch64-linux-gnu/qt5/examples/widgets/animation/moveblocks/moveblocks
 
@@ -430,38 +432,38 @@ export QT_QPA_PLATFORM=linuxfb:tty=/dev/fb0
             status = "okay";
             pinctrl-names = "default";
 
-            // ili9341@0 {
-            //     compatible = "ilitek,ili9341";
-            //     reg = <0>;
-            //     spi-max-frequency = <50000000>;
-            //     rotate = <270>;
-            //     bgr;
-            //     fps = <30>;
-            //     buswidth = <8>;
-            //     // reset = <&gpio2 5 GPIO_ACTIVE_LOW>;
-            //     // dc = <&gpio2 4 GPIO_ACTIVE_LOW>;
-            //     reset-gpios = <&gpio1 0 1>;
-            //     dc-gpios = <&gpio4 5 0>;
-            //     led-gpios = <&gpio3 28 0>;
-            //     debug = <1>;
-            // };
-
-            st7789v@0{
-                compatible = "sitronix,st7789v";
+            ili9341@0 {
+                compatible = "ilitek,ili9341";
                 reg = <0>;
                 spi-max-frequency = <50000000>;
-                buswidth = <8>;
-                debug = <0>;
-                height = <240>;
-                width = <240>;
+                rotate = <270>;
+                bgr;
                 fps = <30>;
+                buswidth = <8>;
+                // reset = <&gpio2 5 GPIO_ACTIVE_LOW>;
+                // dc = <&gpio2 4 GPIO_ACTIVE_LOW>;
                 reset-gpios = <&gpio1 0 1>;
                 dc-gpios = <&gpio4 5 0>;
                 led-gpios = <&gpio3 28 0>;
-                rotation = <0>;
-                spi-cpol;
-                spi-cpha;
+                debug = <1>;
             };
+
+            // st7789v@0{
+            //     compatible = "sitronix,st7789v";
+            //     reg = <0>;
+            //     spi-max-frequency = <50000000>;
+            //     buswidth = <8>;
+            //     debug = <0>;
+            //     height = <240>;
+            //     width = <240>;
+            //     fps = <30>;
+            //     reset-gpios = <&gpio1 0 1>;
+            //     dc-gpios = <&gpio4 5 0>;
+            //     led-gpios = <&gpio3 28 0>;
+            //     rotation = <0>;
+            //     spi-cpol;
+            //     spi-cpha;
+            // };
         };
     };
 };

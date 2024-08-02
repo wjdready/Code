@@ -94,8 +94,11 @@ add_custom_command(TARGET add_static POST_BUILD
 CMAKE_BINARY_DIR 是顶层 build 目录
 CMAKE_CURRENT_BINARY_DIR 是自身当前 build 目录, 若是通过 add_subdirectory 引入, 则在顶层 build 目录下的子目录中
 CMAKE_CURRENT_SOURCE_DIR 自身当前的源文件目录
+CMAKE_CURRENT_LIST_FILE 当前文件路径, 包括 .cmake 文件
+# 然后通过以下获取当前文件所在目录
+get_filename_component(CURRENT_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH) 
 
-# 设置运行时 dll 或 exe 的输出路径
+# 设置运行时 dll 或 exe 的输出路径, 需在 add_executable 之前定义有效
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 # 设置静态库的输出路径
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
