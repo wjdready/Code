@@ -53,7 +53,6 @@ sudo find ./ -name "*p3310-1000-c03-00-base.dts"
 cp kernel/kernel-4.9/arch/arm64/boot/dts/tegra186-quill-p3310-1000-c03-00-base.dtb /home/shino/TX2/Linux_for_Tegra/kernel/dtb/tegra186-quill-p3310-1000-c03-00-base.dtb
 ```
 
-
 # [2023-09-06 21:03:09]
 
 Nvidia Jetson Orin：[开发技巧](https://blog.csdn.net/u010018991/article/details/131092069)

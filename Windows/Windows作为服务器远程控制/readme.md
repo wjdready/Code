@@ -6,6 +6,22 @@ categories: [Windows, 实践]
 tags: [SSH, 远程控制]
 ---
 
+## 开启 SSH 服务
+
+```sh
+# 查询是否安装
+Get-WindowsCapability -Online | ? Name -like 'OpenSSH*'
+
+# 安装
+Add-WindowsCapability -Online -Name OpenSSH.Server*
+
+# 启动服务，或者 net start sshd
+Start-Service sshd
+
+# 开机自启
+Set-Service -Name sshd -StartupType 'Automatic'
+```
+
 #### 安装 SSH 和 WSL
 修改 C:/ProgramData/ssh/sshd_config
 ```shell

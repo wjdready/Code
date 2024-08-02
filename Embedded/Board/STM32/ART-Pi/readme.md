@@ -8,3 +8,8 @@
 
     PI9     ------> UART4_RX
     PA0     ------> UART4_TX
+
+LED
+
+    PI8     ------> LED_BLUE
+    PC15    ------> LED_RED
