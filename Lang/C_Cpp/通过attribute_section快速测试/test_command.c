@@ -3,21 +3,29 @@
 #include <string.h>
 
 #ifdef __ARMCC_VERSION /* ARM C Compiler */
-extern test_command_t test_command_section$$Base;
-extern test_command_t test_command_section$$Limit;
-test_command_t *test_command_section_begin = &(test_command_section$$Base);
-test_command_t *test_command_section_end = &(test_command_section$$Limit);
+extern test_command_t *test_command_section$$Base;
+extern test_command_t *test_command_section$$Limit;
+test_command_t **test_command_section_begin = &(test_command_section$$Base);
+test_command_t **test_command_section_end = &(test_command_section$$Limit);
 #elif defined(__GNUC__)
-extern test_command_t __start_test_command_section;
-extern test_command_t __stop_test_command_section;
-test_command_t *test_command_section_begin = &__start_test_command_section;
-test_command_t *test_command_section_end = &__stop_test_command_section;
+extern test_command_t *__start_test_command_section;
+extern test_command_t *__stop_test_command_section;
+test_command_t **test_command_section_begin = &__start_test_command_section;
+test_command_t **test_command_section_end = &__stop_test_command_section;
+#elif defined(_MSC_VER)
+#pragma section(".test_command_section$a", read)
+__declspec(allocate(".test_command_section$a")) test_command_t*__start_test_command_section;
+#pragma section(".test_command_section$m", read)
+#pragma section(".test_command_section$z", read)
+__declspec(allocate(".test_command_section$z")) test_command_t*__stop_test_command_section;
+test_command_t **test_command_section_begin = &__start_test_command_section + 1;
+test_command_t **test_command_section_end = &__stop_test_command_section;
 #else
 #error "The platform is not supported"
 #endif
 
 #define foreach_command(item)                                                                                          \
-    for (test_command_t *item = test_command_section_begin; item != test_command_section_end; item++)
+    for (test_command_t **item = test_command_section_begin; item != test_command_section_end; item++)
 
 /* 快速定义内部命令, 内部命令什么也不做只是用来显示和提供帮助 */
 #define TEST_FUN_ADD_INTERNAL(label, n, d)                                                                             \
@@ -26,6 +34,7 @@ test_command_t *test_command_section_end = &__stop_test_command_section;
         return 0;                                                                                                      \
     }                                                                                                                  \
     EXPORT_TEST_COMMAND(_##label, n, d)
+
 
 /* 添加内部命令 */
 TEST_FUN_ADD_INTERNAL(last_result, "r", "Get last command exec result");
@@ -69,7 +78,13 @@ int test_command(char *input_string)
 
     if (strcmp(argv[0], "a") == 0 || strcmp(argv[0], "help") == 0)
     {
-        foreach_command(entry) test_command_printf("    %-15s\t -- %s\n", entry->name, entry->desc);
+        foreach_command(entry)
+        {
+            test_command_t *item = *entry;
+            if (item->startflag != 0xdeadbeef || item->endflag != 0xdeadc0de)
+                continue;
+            test_command_printf("    %-15s\t -- %s\n", item->name, item->desc);
+        }
 
         return 0;
     }
@@ -83,9 +98,13 @@ int test_command(char *input_string)
 
     foreach_command(entry)
     {
-        if (strcmp(entry->name, argv[0]) == 0)
+        test_command_t *item = *entry;
+        if (item == NULL || item->startflag != 0xdeadbeef || item->endflag != 0xdeadc0de)
+            continue;
+
+        if (strcmp(item->name, argv[0]) == 0)
         {
-            result = entry->fun(argc, argv);
+            result = item->fun(argc, argv);
             return result;
         }
     }

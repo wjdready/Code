@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __TEST_COMMAND_H__
+#define __TEST_COMMAND_H__
 
 typedef int (*command_func_t)(int, char **);
 
@@ -6,15 +7,21 @@ typedef int (*command_func_t)(int, char **);
 
 typedef struct
 {
+    unsigned int startflag;
     int (*fun)(int, char **);
     const char *name;
     const char *desc;
-    char _tmp[8]; /* 32 位对齐 */
+    unsigned int endflag;
 } test_command_t;
 
 #define TEST_COMMAND_FUNC_DEFINE(f) int f(int argc, char **argv)
 
+#ifdef _MSC_VER
+#pragma section(".test_command_section$m", read)
+#define SECTION __declspec(allocate(".test_command_section$m"))
+#else
 #define SECTION __attribute((used, section("test_command_section")))
+#endif
 
 /**
  * @brief 导出一个标准的测量命令
@@ -32,18 +39,21 @@ typedef struct
  *
  * 一般来说, 我们可以通过定义一个标准测试命令, 并处理输入的参数来对某一个上下文定义的函数进行测试
  */
-#define EXPORT_TEST_COMMAND(f, n, d)                                                                                   \
-    static test_command_t _##f SECTION = {                                                                             \
-        .fun = f,                                                                                                      \
-        .name = n,                                                                                                     \
-        .desc = d,                                                                                                     \
-    }
+#define EXPORT_TEST_COMMAND(f, n, d)                \
+    static test_command_t _##f = {          \
+        .startflag = 0xdeadbeef,                    \
+        .fun = f,                                   \
+        .name = n,                                  \
+        .desc = d,                                  \
+        .endflag = 0xdeadc0de                       \
+    };                                              \
+    static SECTION test_command_t *_##f##_s = &_##f;
 
 /**
  * @brief 将一个已有的函数添加到测量命令里
  *  即对一个已有的函数进行快速测试, 需要显式提供被测函数的参数
  *
- * 例如: 现有一个函数 add(int a, int b);
+ * 例如: 现有一个函数 int add(int a, int b);
  *
  *      那么其导出到测试命令的写法为:
  *
@@ -51,12 +61,12 @@ typedef struct
  *
  *      其中, 1, 2 是我们希望对函数进行测试的参数
  */
-#define TEST_FUN_ADD(f, n, d, ...)                                                                                     \
-    static int _##f(int argc, char **argv)                                                                             \
-    {                                                                                                                  \
-        f(__VA_ARGS__);                                                                                                \
-        return 0;                                                                                                      \
-    }                                                                                                                  \
+#define TEST_FUN_ADD(f, n, d, ...)                  \
+    static int _##f(int argc, char **argv)          \
+    {                                               \
+        f(__VA_ARGS__);                             \
+        return 0;                                   \
+    }                                               \
     EXPORT_TEST_COMMAND(_##f, n, d)
 
 /* -- function prototypes -- */
@@ -73,3 +83,5 @@ typedef struct
 int test_command(char *input_string);
 
 /* -- END OF function prototypes -- */
+
+#endif
