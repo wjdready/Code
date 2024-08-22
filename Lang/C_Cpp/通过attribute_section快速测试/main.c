@@ -9,7 +9,7 @@ int main(int argc, char const *argv[])
     while (1)
     {
         printf("\n#sh ");
-        gets(input_string);
+        fgets(input_string, sizeof(input_string), stdin);
     
         test_command(input_string);
     }
