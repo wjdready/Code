@@ -4,7 +4,7 @@
 
 首先当然是从看[官方文档](https://mangopi.org/)开始啦. 
 
-进入后需要选择 T113-S3 的型号，这里直接给出 [T113-S3 型号软硬件相关文档全在这里](https://mangopi.org/mangopi_mq).
+进入后需要选择 T113-S3 的型号，这里直接给出 [T113-S3 型号软硬件相关文档全在这里](https://mangopi.org/mqr).
 
 发现在官方文档里面有一篇[T113-S3入门资料汇总（避坑指南）](https://bbs.aw-ol.com/topic/2495) 是个人写的, 可以作为参考...
 
@@ -49,6 +49,9 @@ pack
 正如上面那篇避坑指南，应该先拿编译好的[固件 mq-r-t113-rtl8723ds-5135-dns-uart0.zip](https://mangopi.org.cn/_media/undefined/mq-r-t113-rtl8723ds-5135-dns-uart0.zip)测试一下烧写 
 
 使用 [PhoenixCard](https://www.aw-ol.com/downloads?cat=5) 进行烧写。
+
+选择制作卡的种类: 启动卡， 然后插入 SD 卡进行烧录
+
 ## boot 流程
 
 全志 boot 版本历史:

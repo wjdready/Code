@@ -93,8 +93,7 @@ mkdir /sys/kernel/config/usb_gadget/rockchip/configs/b.1/strings/0x409 -m 0770
 echo 500 > /sys/kernel/config/usb_gadget/rockchip/configs/b.1/MaxPower
 echo "uac1" > /sys/kernel/config/usb_gadget/rockchip/configs/b.1/strings/0x409/configuration
 mkdir /sys/kernel/config/usb_gadget/rockchip/functions/uac1.gs0
-ln -s /sys/kernel/config/usb_gadget/rockchip/functions/uac1.gs0
-/sys/kernel/config/usb_gadget/rockchip/configs/b.1/uac1.gs0
+ln -s /sys/kernel/config/usb_gadget/rockchip/functions/uac1.gs0 /sys/kernel/config/usb_gadget/rockchip/configs/b.1/uac1.gs0
 echo ff400000.usb > /sys/kernel/config/usb_gadget/rockchip/UDC
 
 ln -s 

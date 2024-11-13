@@ -1,10 +1,12 @@
 
-
+## 官方文档
+https://source.android.google.cn/
 
 root 之后装 termux 后支持下载大量工具，这时通过  adb shell 进入后导出 termux 的环境即可在 adb 中执行 termux 下载的命令:
 
 ```sh
 export PATH=$PATH:/data/data/com.termux/files/usr/bin/
+# export PATH=$PATH:/data/user/0/com.termux/files/usr/bin
 
 # 创建一个目录并设置为 HOME，如此一来就可以用
 mkdir /mnt/home && cd /mnt/home

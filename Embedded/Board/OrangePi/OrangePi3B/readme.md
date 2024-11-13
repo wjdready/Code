@@ -417,6 +417,13 @@ sudo cp fbtft_lcd.dtob /boot/dtb/rockchip/overlay/rk356x-fbtft.dtbo
 export QT_QPA_PLATFORM=linuxfb:tty=/dev/fb0
 /usr/lib/aarch64-linux-gnu/qt5/examples/widgets/animation/moveblocks/moveblocks
 
+# [2024-10-10 16:07:39]
+
+发现 /boot/orangepiEnv.txt 添加 raspi-7inch-touchscreen 但是不接 mipi 屏时， fbtft 就可以正常显示屏幕内容了
+
+overlays=fbtft raspi-7inch-touchscreen
+
+
 ```c
 /dts-v1/;
 /plugin/;
@@ -460,9 +467,25 @@ export QT_QPA_PLATFORM=linuxfb:tty=/dev/fb0
             //     reset-gpios = <&gpio1 0 1>;
             //     dc-gpios = <&gpio4 5 0>;
             //     led-gpios = <&gpio3 28 0>;
-            //     rotation = <0>;
+            //     rotate = <0>;
             //     spi-cpol;
             //     spi-cpha;
+            // };
+
+            // ssd1306@0 {
+            //     compatible = "solomon,ssd1306";
+            //     reg = <0>;
+            //     spi-max-frequency = <1000000>;
+            //     buswidth = <8>;
+            //     debug = <1>;
+            //     height = <64>;
+            //     width = <128>;
+            //     fps = <30>;
+            //     reset-gpios = <&gpio1 RK_PC4 1>;
+            //     dc-gpios = <&gpio1 RK_PC5 0>;
+            //     led-gpios = <&gpio1 RK_PD0 0>;
+            //     rotate = <0>;
+            //     bgr;
             // };
         };
     };

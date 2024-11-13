@@ -72,6 +72,10 @@ int main()
         return -1;
     }
 
+    printf("GL_VENDOR  : %s\n", glGetString(GL_VENDOR) );
+    printf("GL_RENDERER : %s\n", glGetString(GL_RENDERER) );
+    printf("GL_VERSION : %s\n", glGetString(GL_VERSION) );
+
     // 编译着色器程序
 
     // 1. vertex shader

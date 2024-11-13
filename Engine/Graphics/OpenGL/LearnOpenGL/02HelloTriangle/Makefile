@@ -7,7 +7,7 @@ INCS += -I$(GLAD_DIR)/include
 SRCS += demo.cpp
 
 # -lmingw32 -lSDL2main -lSDL2 -lglmf32 -lgdi32 -static
-LIBS += -lopengl32 -lglfw3
+LIBS += -lglfw3 
 
 INCS  += -I.
 

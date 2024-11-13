@@ -31,7 +31,7 @@ make ninja CHIP=bl616 CPU_ID=m0
 
 ```
 git clone https://gitee.com/bouffalolab/toolchain_gcc_t-head_windows.git
-export PATH=$PATH:/c/Users/shino/Desktop/CodeNote/Embedded/Board/Sipeed/M0S/tools/toolchain_gcc_t-head_windows/bin
+export PATH=$PATH:/c/Users/shino/Desktop/CodeNote/Embedded/Board/Sipeed/M0S/_tmp/toolchain_gcc_t-head_windows/bin
 where riscv64-unknown-elf-gcc
 ```
 
@@ -40,7 +40,7 @@ where riscv64-unknown-elf-gcc
 
 ```
 # chip_name should be bl602/bl702/bl616/bl808/bl606p, COMX in Windows, /dev/ttyxxx in Linux
-make flash CHIP=bl616 COMX=COM44
+make flash CHIP=bl616 CPU_ID=m0 COMX=COM56
 ```
 
 下载成功, 感叹现在的开发真是越来越方便了，和 ESP32、RaspberryPi Pico 一样的开发编译方式, 开发起来真的很舒服...
