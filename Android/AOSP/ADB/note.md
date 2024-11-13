@@ -20,4 +20,9 @@ adb shell pm list packages -3    # 列出除了系统应用的第三方应用包
 
 adb install test.apk             # 安装应用, -r 安装到 SD 卡
 adb uninstall cn.com.test.mobile # 卸载应用，需要指定包
+
+# 启动某个应用
+pm list packages | grep launcher3
+dumpsys package com.android.launcher3
+am start -n com.android.launcher3/.Launcher
 ```

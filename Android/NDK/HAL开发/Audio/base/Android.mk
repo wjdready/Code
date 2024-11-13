@@ -1,0 +1,18 @@
+LOCAL_PATH := $(call my-dir)
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := audio.primary.$(TARGET_BOARD_HARDWARE)
+LOCAL_PROPRIETARY_MODULE := true
+LOCAL_MODULE_RELATIVE_PATH := hw
+LOCAL_SRC_FILES := \
+	audio_hw.c
+
+LOCAL_HEADER_LIBRARIES += libhardware_headers
+LOCAL_CFLAGS := -Wno-unused-parameter
+LOCAL_CFLAGS += -DLIBTINYALSA_ENABLE_VNDK_EXT
+
+LOCAL_CFLAGS += -Wno-error
+LOCAL_SHARED_LIBRARIES := liblog
+
+include $(BUILD_SHARED_LIBRARY)
