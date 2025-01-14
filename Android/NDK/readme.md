@@ -61,3 +61,9 @@ LOCAL_SRC_FILES := ../main.cpp
  
 include $(BUILD_EXECUTABLE) # BUILD_SHARED_LIBRARY
 ```
+
+要在编译系统时自动添加比如 my_executable 则需要添加在相应的地方添加
+
+PRODUCT_PACKAGES += my_executable
+
+从而在编译时自动将命令添加到 system/bin
