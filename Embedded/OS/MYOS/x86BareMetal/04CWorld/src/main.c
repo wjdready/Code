@@ -27,9 +27,16 @@ void puts(uint8_t x, uint8_t y, enum color fg, enum color bg, const char *s)
 
 int main(void)
 {
+    /* 
+        注意 link 中要添加     
+            .data : { *(.data) }
+            .rodata : { *(.rodata) }
+            字符串常量才能包含进来
+     */
     const char *s = "Hello World";
 
     // 512 Byte 代码空间, 只写一个 for 就快用没了
+    // 为了精简 text 部分的使用,应当尽量避免使用函数和循坏,而是使用 goto
     for(int i = 0; i < 25; i++)
         puts(0, i, BRIGHT, BLACK, s);
 

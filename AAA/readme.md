@@ -18,5 +18,10 @@ npm install -g cnpm --registry=https://registry.npmmirror.com
 # 查看某个包的历史版本
 npm view <package-name> versions
 npm info <package-name> 
+
+# 系统时间同步网络时钟, 然后同步到硬件时钟
+sudo ntpdate cn.pool.ntp.org
+sudo hwclock --systohc 
+
 ```
 
