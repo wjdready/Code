@@ -1,48 +1,63 @@
 .code16
 .section .text
+.global loadbin
+
+INIT_SS_REG = 0x9000
+INIT_SP_REG = 0xff00
 
 _start:
-
-    # 设置段地址
-    mov $0xb800, %ax
-    mov %ax, %es        # 不能将立即数写入段地址, 所以需要先放到 ax 再放到 ds
-
-    # 写数据到显存
-    movb $'-', %es:0    # 默认段地址是 ds, 因此等效于 %ds:0 若使用 es 则需指明 %es:0
-    movb $'>', %es:2
-
-    # 将数据段和代码段公用
-    mov %cs, %cx
-    mov %cx, %ds
-
-    mov $_start, %ax        # ax 是被除数, 也是商放的位置
-    mov $10, %si            # 除数
-    mov $5, %cx             # 循环次数
-    mov $0, %bx
-
-/* cal:
-    xor %dx, %dx            # 清空余数
-    div %si                 # 除数16位, 执行的是 16 位除法
-    add $'0', %dl           # 转成 ascii
-    movb %dl, result(%bx)   # 将结果放到内存
-    add $2, %bx
-    loop cal */
-
     mov $0xb800, %ax
     mov %ax, %es
 
-    mov $str, %si           # 源地址 ds:si
-    mov $0, %di             # 目的地址 es:di
-    mov $str_len, %cx    # 数量
-    rep movsw
+    mov $INIT_SS_REG, %ax
+    mov %ax, %ss
 
-here:
-    jmp here
+    mov $INIT_SP_REG, %ax
+    mov %ax, %sp
 
-str:
-    .byte 'H', 4, 'e', 4, 'l', 4, 'l', 4, 'o', 4, ',', 4
-    .byte 'W', 4, 'o', 4, 'r', 4, 'l', 4, 'd', 4, '!', 4
-str_len = (. - str) / 2
+    # 设置完堆栈后直接进入 C 的世界
+    call main
 
-    .fill 510 - (. - _start), 1, 0
-    .word 0xaa55
+loadbin:
+
+    # 设置驱动器号，读取第一个扇区
+    movb $0x02, %ah         # 功能码：读取扇区
+    movb 4(%esp), %cl       # 扇区号 (第一个参数)
+    movb 8(%esp), %al       # 读取 n 个扇区 (第二个参数)
+    movb $0, %ch            # 气缸号
+    movb $0, %dh            # 磁头号
+    movb $0x80, %dl         # 驱动器号（0x80 表示第一个硬盘）
+
+    # 设置内存地址
+    movw 12(%esp), %bx       # 数据存储的缓冲区地址
+    movw %bx, %es            # 将 ES 设置为缓冲区的段地址
+    movw 16(%esp), %bx       # BX 指向缓冲区的偏移
+
+    # 调用中断
+    int $0x13
+
+    ret
+
+# display_char 函数
+# 参数：偏移地址在 %rdi 中，字符在 %esi 中
+# display_char:
+
+#    # 设置段寄存器
+#    movl $0xb800, %eax      # 将显存段地址加载到 EAX
+#    movw %ax, %es           # 将 AX 复制到 ES
+
+#    # 获取参数
+#    movw 4(%esp), %di       # 获取偏移地址 (offset)，在 %esp + 4
+#    movb 8(%esp), %al        # 获取字符 (c)，在 %esp
+#    # 显示字符
+#    mov %al, %es:(%di)      # 将字符存储到显存偏移地址
+#    add $1, %di
+
+#    # 颜色
+#    movb 12(%esp), %al        # 获取字符 (c)，在 %esp
+#    # movb $0x03, %al         # 设置字符属性（白色字符，黑色背景）
+#    movb %al, %es:(%di)       # 将属性存储到显存偏移地址 + 1
+#    ret                       # 返回到调用者
+
+.section .boot_end,"a"
+.word 0xaa55

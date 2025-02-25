@@ -10,7 +10,12 @@ SECTIONS
      其标签都会在当前地址的基础上累加
     */
     . = 0x7c00;
-    .text : {
-        *(.text)
+    .text : { *(.text) }
+    .data : { *(.data) }
+    .rodata : { *(.rodata) }
+
+    . = 0x7dfe;
+    .boot_end : {
+        *(.boot_end)
     }
 }
