@@ -7,6 +7,8 @@
 struct sp_port *port = NULL;
 int connected = 0;
 
+char port_to_connect[64];
+
 int serialport_connect(const char *port_name)
 {
     if(port != NULL)
@@ -44,11 +46,14 @@ const int serialport_connect_to_available(void)
         return -1;
     }
 
+    int wish_port_len = strlen(port_to_connect);
+
     for (int i = 0; port_list[i] != NULL; i++) 
     {
         struct sp_port *port = port_list[i];
         char *port_name = sp_get_port_name(port);
-        
+        if (wish_port_len > 0 && strcmp(port_name, port_to_connect) != 0)
+            continue;
         int r = serialport_connect(port_name);
         if(r == 0)
         {
@@ -72,7 +77,7 @@ void *serial_write_task(void * arg)
     {
         fgets(buf, sizeof(buf), stdin);
         int n = strlen(buf);
-        buf[n++] = '\r';
+        // buf[n++] = '\r';
         buf[n++] = '\n';
         if(connected)
         {
@@ -88,6 +93,11 @@ int main(int argc, char const *argv[])
     // SetConsoleMode(hInput, ENABLE_VIRTUAL_TERMINAL_INPUT);
     HANDLE hOutput = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleMode(hOutput, ENABLE_PROCESSED_OUTPUT | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
+
+    if (argc > 1) {
+        strcpy(port_to_connect, argv[1]);
+        printf("Will connect to %s\n", port_to_connect);
+    }
 
     int res = serialport_connect_to_available();
     if(res != 0)
