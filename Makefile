@@ -25,14 +25,14 @@ simple:
 	make blog_deploy
 
 cleanpath:
-	@Scripts/cleanpath.py .
+	@python3 Scripts/cleanpath.py .
 
 $(BLOG_SOURCE_DIR):
 	git clone $(MYBLOG_URL) $(BLOG_SOURCE_DIR)
 	cd $(BLOG_SOURCE_DIR) && npm install
 
 blog: $(BLOG_SOURCE_DIR)
-	@Scripts/generateblog.py . $(BLOG_SOURCE_DIR)
+	@python3 Scripts/generateblog.py . $(BLOG_SOURCE_DIR)
 
 blog_server: $(BLOG_SOURCE_DIR)
 	make blog && cd $(BLOG_SOURCE_DIR) && hexo server
