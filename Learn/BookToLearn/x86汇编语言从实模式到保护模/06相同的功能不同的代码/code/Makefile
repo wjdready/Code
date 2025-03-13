@@ -5,7 +5,7 @@ AS = as
 
 ifeq ($(AS),as)
     ASFLAG = --32 -g -O0
-	AS_SRCS = src/循环显示.s
+	AS_SRCS = src/start.s
 else
 # nasm 似乎无法 debug
 	ASFLAG = -f elf32 -g
@@ -32,10 +32,10 @@ build/%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 qemu:
-	qemu-system-i386 -M pc -drive file=build/os.bin,format=raw 
+	qemu-system-i386 -M pc -drive file=build/out.bin,format=raw 
 
 debug: all
-	qemu-system-i386 -M pc -drive file=build/os.bin,format=raw -S -s
+	qemu-system-i386 -M pc -drive file=build/out.bin,format=raw -S -s
 
 clean:
 	rm -rf build

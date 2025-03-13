@@ -14,29 +14,42 @@ enum size
 
 uint16_t *const video = (uint16_t *)0xB8000;
 
-void putc(uint8_t x, uint8_t y, enum color fg, enum color bg, char c)
-{
-    video[y * COLS + x] = (bg << 12) | (fg << 8) | c;
-}
+#define PUTC(x, y, fg, bg, c) \
+    video[(y) * COLS + (x)] = ((bg) << 12) | ((fg) << 8) | (c)
 
-void puts(uint8_t x, uint8_t y, enum color fg, enum color bg, const char *s)
-{
-    for (; *s; s++, x++)
-        putc(x, y, fg, bg, *s);
-}
 
-void clear(enum color bg)
-{
-    uint8_t x, y;
-    for (y = 0; y < ROWS; y++)
-        for (x = 0; x < COLS; x++)
-            putc(x, y, bg, bg, ' ');
-}
+extern void loadbin(uint8_t sector, uint8_t number, uint16_t segaddr, uint16_t offset);
+
+uint32_t bootaddr = (uint32_t)0x90000;
 
 int __attribute__((noreturn)) main()
 {
-    clear(BLACK);
-    puts(0, 0, BRIGHT, BLACK, "hello world");
+    int i = 0;
+    const char *str = "Hello World";
+
+loop:
+    video[i] = 0x00;
+    i ++;
+    if (i < COLS * ROWS)
+        goto loop;
+
+    i = 0;
+
+printStr:
+    PUTC(i, 0, BRIGHT, BLACK, str[i]);
+    i++;
+    if (i < 10)
+        goto printStr;
+
+    // loadbin(1, 5, 0x9000, 0x00);
+
+    // ((void (*)(void)) bootaddr)();
+
+    for (int i = 0; i < 100; i++)
+    {
+        PUTC(i, 0, BRIGHT, BLACK, 'A');
+    }
+    
     while (1)
         ;
 }
