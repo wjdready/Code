@@ -35,6 +35,14 @@ fullclean:
 
 ## 博客自动生成系统
 
+依赖安装
+
+```sh
+npm install -g hexo-cli
+# 下载最新版的 pandoc 并导出到环境变量
+https://pandoc.org/installing.html
+```
+
 执行 `make blog` 可自动生成博客网站, `make blog_server` 在本地查看, `make blog_deploy` 则发布更新的博客网站，
 执行 `make blog` 之后会自动扫描目录下所有的 Markdown 并输出到博客网站, 为了格式的统一, 每篇 Markdown 都应遵循如下格式
 
