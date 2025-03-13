@@ -14,7 +14,7 @@ _start:
 
     mov $boot_message, %bp     # es:bp 字符串地址
     mov $0x1301, %ax           # 功能码
-    mov $0x0c, %bx             # 字符属性
+    mov $0xcc, %bx             # 字符属性
     mov $16, %cx               # 字符串长度
     mov $0, %dx                # 显示位置 (dh:行，dl:列)
     int $0x10
