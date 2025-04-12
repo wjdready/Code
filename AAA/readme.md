@@ -33,3 +33,63 @@ git clone -b master https://mirrors.tuna.tsinghua.edu.cn/git/flutter-sdk.git
 FLUTTER_STORAGE_BASE_URL=https://mirrors.tuna.tsinghua.edu.cn/flutter
 PUB_HOSTED_URL=https://mirrors.tuna.tsinghua.edu.cn/dart-pub
 ```
+
+
+
+## 配置 Gradle 镜像源
+
+gradle 添加下载地址前缀 `mirrors.huaweicloud.com/gradle`
+
+参考: https://www.cnblogs.com/Chary/articles/18657340
+
+```groovy
+
+allprojects {
+    repositories {
+        maven { url 'https://maven.aliyun.com/repository/central/' }
+        maven { url 'https://maven.aliyun.com/repository/google/' }
+        maven { url 'https://maven.aliyun.com/repository/public/' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin/' }
+        mavenLocal()
+        // ... 各个模块里面的 build.gradle 里面 implementation 之类的依赖, 就是从这里的仓库查找的.
+    }
+}
+
+buildscript {
+    repositories {
+        maven { url 'https://maven.aliyun.com/repository/public/' }
+        maven { url 'https://maven.aliyun.com/repository/google/' }
+        maven { url 'https://maven.aliyun.com/repository/central/' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin/' }
+        mavenLocal()
+        // ...
+    }
+    dependencies {
+        // ... 这里的库是就是从buildscript里的仓库找的.
+    }
+}
+```
+
+build.gradle.kts
+
+```kt
+repositories {
+    maven { url = uri("https://maven.aliyun.com/repository/public") }
+    maven { url = uri("https://maven.aliyun.com/repository/google") }
+    maven { url = uri("https://maven.aliyun.com/repository/central") }
+    maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
+    mavenCentral()
+}
+```
+
+## git 自动替换
+
+```sh
+# 配置git自动替换
+git config --global url."https://gh-proxy.com/github.com".insteadOf https://github.com 
+
+# 查看git配置信息 
+git config --global --list 
+# 取消设置 
+git config --global --unset url."https://gh-proxy.com/github.com".insteadOf
+```
