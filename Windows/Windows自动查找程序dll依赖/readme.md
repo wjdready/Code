@@ -86,6 +86,83 @@ function main
 main $@
 ```
 
+V2?
+
+```sh
+#!/bin/bash
+
+# 系统DLL白名单(无需复制)
+system_dlls='KERNEL32.dll|USER32.dll|ADVAPI32.dll|WS2_32.dll|GDI32.dll|SHELL32.dll|OLE32.dll|OPENGL32.dll|api-ms-win-.*'
+
+# 搜索路径(根据CMakeLists.txt中的设置调整)
+dllbase=(
+    "/mingw64/bin"
+    "/usr/x86_64-w64-mingw32/bin"
+    "C:/Program Files/CURL/bin"
+    "C:/Program Files (x86)/CURL/bin"
+    "${MINGW_PREFIX}/bin"
+)
+
+function find_dll {
+    [ -z "$1" ] && return
+    
+    local path="$1"
+    local nc=1
+    
+    echo "正在分析目录: $path"
+    
+    while [ $nc -gt 0 ]; do
+        nc=0
+        for f in "$path"/*.{exe,dll}; do
+            [ ! -f "$f" ] && continue
+            
+            echo "分析文件: $(basename "$f")"
+            
+            # 使用更可靠的依赖分析方式
+            for dep in $(ldd "$f" 2>/dev/null | grep -i '\.dll' | awk '{print $3}'); do
+                [ -z "$dep" ] && continue
+                
+                local dllname=$(basename "$dep" | tr '[:upper:]' '[:lower:]')
+                echo "检查依赖: $dllname"
+                
+                # 跳过系统DLL
+                echo "$dllname" | grep -Eiw "$system_dlls" >/dev/null && continue
+                [ -f "$path/dll/$dllname" ] && continue
+                
+                # 在搜索路径中查找DLL
+                for base in "${dllbase[@]}"; do
+                    if [ -f "$base/$dllname" ]; then
+                        echo "复制: $base/$dllname -> $path/dll/"
+                        mkdir -p "$path/dll"
+                        cp -v "$base/$dllname" "$path/dll/"
+                        nc=$((nc + 1))
+                        break
+                    fi
+                done
+            done
+        done
+    done
+}
+
+function main {
+    local path="${1:-$PWD}"
+    [ ! -d "$path" ] && echo "目录不存在: $path" && exit 1
+    
+    echo "开始处理目录: $path"
+    find_dll "$path"
+    
+    # 检查结果
+    if [ -d "$path/dll" ]; then
+        echo "找到的DLL:"
+        ls -l "$path/dll"
+    else
+        echo "警告: 没有找到任何DLL依赖"
+    fi
+}
+
+main "$@"
+```
+
 #### 参考文献
 
 [Finding DLLs required of a Win exe on Linux (cross-compiled with mingw)?](https://stackoverflow.com/questions/11703000/finding-dlls-required-of-a-win-exe-on-linux-cross-compiled-with-mingw)
