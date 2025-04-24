@@ -35,6 +35,29 @@ PUB_HOSTED_URL=https://mirrors.tuna.tsinghua.edu.cn/dart-pub
 ```
 
 
+## NPM
+
+```sh
+# 设置镜像, 恢复回默认, 获取当前镜像
+npm config set registry https://registry.npmmirror.com/
+npm config set registry https://registry.npmjs.org
+npm get registry 
+
+# --registry=https://mirrors.cloud.tencent.com/npm/ 腾讯镜像源
+# --verbose 可以看到详细的日志
+
+# 或者直接使用 cnpm
+npm install -g cnpm --registry=https://registry.npmmirror.com
+
+# 安装 cgr 来快速切换源
+npm install -g cgr
+cgr ls
+cgr use taobao
+
+# 查看某个包的历史版本
+npm view <package-name> versions
+npm info <package-name> 
+```
 
 ## 配置 Gradle 镜像源
 
@@ -85,7 +108,7 @@ repositories {
 ## git 自动替换
 
 ```sh
-# 配置git自动替换
+# 配置git自动替换 https://gh-proxy.com/github.com
 git config --global url."https://gh-proxy.com/github.com".insteadOf https://github.com 
 
 # 查看git配置信息 
