@@ -49,4 +49,22 @@ adb uninstall cn.com.test.mobile # 卸载应用，需要指定包
 pm list packages | grep launcher3
 dumpsys package com.android.launcher3
 am start -n com.android.launcher3/.Launcher
+
+################# 手动安装 ##########################
+# 1.挂载 /system 分区为可读写模式
+mount -o remount,rw /system
+
+# 2.创建应用目录（如果不存在）
+mkdir -p /system/priv-app/YourAppName
+
+# 3.将 APK 文件移动到系统应用目录
+mv /sdcard/app.apk /system/priv-app/YourAppName/YourAppName.apk
+
+# 4.设置文件权限
+chmod 644 /system/priv-app/YourAppName/YourAppName.apk
+
+# 5.挂载 /system 分区为只读模式
+mount -o remount,ro /system
+
+# 如何查看包名: aapt2 dump badging app.apk
 ```

@@ -12,9 +12,9 @@ pip install some-package -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 # 系统时间同步网络时钟, 然后同步到硬件时钟
 sudo ntpdate cn.pool.ntp.org
-sudo hwclock --systohc 
+sudo hwclock --systohc
 
-# 安卓 repo 
+# 安卓 repo
 curl https://mirrors.tuna.tsinghua.edu.cn/git/git-repo -o repo
 export REPO_URL='https://mirrors.tuna.tsinghua.edu.cn/git/git-repo'
 
@@ -41,7 +41,7 @@ PUB_HOSTED_URL=https://mirrors.tuna.tsinghua.edu.cn/dart-pub
 # 设置镜像, 恢复回默认, 获取当前镜像
 npm config set registry https://registry.npmmirror.com/
 npm config set registry https://registry.npmjs.org
-npm get registry 
+npm get registry
 
 # --registry=https://mirrors.cloud.tencent.com/npm/ 腾讯镜像源
 # --verbose 可以看到详细的日志
@@ -56,7 +56,7 @@ cgr use taobao
 
 # 查看某个包的历史版本
 npm view <package-name> versions
-npm info <package-name> 
+npm info <package-name>
 ```
 
 ## 配置 Gradle 镜像源
@@ -109,10 +109,19 @@ repositories {
 
 ```sh
 # 配置git自动替换 https://gh-proxy.com/github.com
-git config --global url."https://gh-proxy.com/github.com".insteadOf https://github.com 
+git config --global url."https://gh-proxy.com/".insteadOf https://
 
-# 查看git配置信息 
-git config --global --list 
-# 取消设置 
+# 查看git配置信息
+git config --global --list
+# 取消设置
 git config --global --unset url."https://gh-proxy.com/github.com".insteadOf
 ```
+
+
+## 必知
+
+```sh
+# 显示进程网络使用情况
+nethogs
+```
+
