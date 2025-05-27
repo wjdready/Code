@@ -49,4 +49,11 @@ net start sshd
 netsh interface ip set address "以太网" static 192.168.137.100 255.255.255.0 192.168.137.1
 # 设置 DNS
 netsh interface ip set dns "以太网" static 8.8.8.8
+
+# 接收主机是 Linux 设备嵌入式设备
+
+# 设置 IP 地址和子网掩码
+ifconfig usb0 192.168.137.100 netmask 255.255.255.0
+# 设置网关 (关键)
+route add default gw 192.168.137.1
 ```

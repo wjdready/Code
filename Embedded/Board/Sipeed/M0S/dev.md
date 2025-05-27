@@ -31,7 +31,7 @@ make ninja CHIP=bl616 CPU_ID=m0
 
 ```
 git clone https://gitee.com/bouffalolab/toolchain_gcc_t-head_windows.git
-export PATH=$PATH:/c/Users/shino/Desktop/CodeNote/Embedded/Board/Sipeed/M0S/_tmp/toolchain_gcc_t-head_windows/bin
+export PATH=$PATH:/c/Users/shino/Desktop/Code/Embedded/Board/Sipeed/M0S/_tmp/toolchain_gcc_t-head_windows/bin
 where riscv64-unknown-elf-gcc
 ```
 
