@@ -31,3 +31,7 @@ rufus 可用来制作启动盘，轻巧实用
 #### 5. scrcpy
 
 安卓手机投屏
+
+#### 6. Enigma Virtual Box
+
+windows 打包工具

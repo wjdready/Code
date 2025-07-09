@@ -67,3 +67,34 @@ include $(BUILD_EXECUTABLE) # BUILD_SHARED_LIBRARY
 PRODUCT_PACKAGES += my_executable
 
 从而在编译时自动将命令添加到 system/bin
+
+## 使用 Cmake 构建
+
+```sh
+# 需要使用 Ninja 构建, cmake -B build -G ninja
+cmake_minimum_required(VERSION 3.22.1)
+
+# 最低支持 API 级别
+set(ANDROID_PLATFORM android-21)
+
+# 设置目标平台 armeabi-v7a/arm64-v8a/x86/x86_64
+set(ANDROID_ABI armeabi-v7a)
+
+# 设置 ndk 路径:
+if(NOT DEFINED ANDROID_NDK)
+    set(ANDROID_NDK ${CMAKE_CURRENT_SOURCE_DIR}/../../ndk/26.3.11579264)
+endif()
+
+set(CMAKE_TOOLCHAIN_FILE ${ANDROID_NDK}/build/cmake/android.toolchain.cmake)
+
+project(mylib)
+
+add_library(${CMAKE_PROJECT_NAME} SHARED
+    add.cpp
+)
+
+target_link_libraries(${CMAKE_PROJECT_NAME}
+    android
+    log
+)
+```
