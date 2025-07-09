@@ -63,7 +63,10 @@ npm info <package-name>
 
 gradle 添加下载地址前缀 `mirrors.huaweicloud.com/gradle`
 
-参考: https://www.cnblogs.com/Chary/articles/18657340
+flutter 目前配置
+
+distributionUrl=https\://mirrors.huaweicloud.com/gradle/gradle-8.10.2-all.zip
+
 
 ```groovy
 
@@ -109,12 +112,12 @@ repositories {
 
 ```sh
 # 配置git自动替换 https://gh-proxy.com/github.com
-git config --global url."https://gh-proxy.com/".insteadOf https://
+git config --global url.https://gh-proxy.com/github.com.insteadOf https://github.com
 
 # 查看git配置信息
 git config --global --list
 # 取消设置
-git config --global --unset url."https://gh-proxy.com/github.com".insteadOf
+git config --global --unset url.https://gh-proxy.com/github.com.insteadOf
 ```
 
 
@@ -123,5 +126,8 @@ git config --global --unset url."https://gh-proxy.com/github.com".insteadOf
 ```sh
 # 显示进程网络使用情况
 nethogs
-```
 
+# windows 修改终端编码
+chcp 65001
+chcp 936
+```
