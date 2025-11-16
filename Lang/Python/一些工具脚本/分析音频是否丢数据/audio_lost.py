@@ -65,7 +65,7 @@ def seconds_to_min_sec(seconds):
 
 # 主函数
 def main():
-    file_path = '../audio/未命名 1.wav'  # 替换为实际的 WAV 文件路径
+    file_path = 'C:/Users/shino/Desktop/未命名 1.wav'  # 替换为实际的 WAV 文件路径
     audio_data, frame_rate = read_wav_file(file_path)
     fluctuation_times, t, f, magnitude = detect_spectrum_fluctuations(audio_data, frame_rate)
 

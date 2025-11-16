@@ -35,3 +35,7 @@ rufus 可用来制作启动盘，轻巧实用
 #### 6. Enigma Virtual Box
 
 windows 打包工具
+
+#### 7. DriverStoreExplorer
+
+驱动管理工具

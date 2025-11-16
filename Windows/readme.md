@@ -30,6 +30,9 @@ net start sshd
 
 目前尚不知如何在当前系统中删除，只能通过另一个系统进入磁盘进行删除。例如进入另一个系统，管理员打开 msys2 然后执行 `rm DSOC -rf`
 
+## 下载 Windows 10 专业工作站版 22H2
+
+magnet:?xt=urn:btih:6616eadd69cb418fdfbaf5f697de6320c714e25c&dn=zh-cn_windows_10_business_editions_version_22h2_updated_nov_2024_x64_dvd_c850f3d7.iso&xl=7008780288
 
 激活 https://www.cnblogs.com/w205066376/p/18736604
 
@@ -56,4 +59,6 @@ netsh interface ip set dns "以太网" static 8.8.8.8
 ifconfig usb0 192.168.137.100 netmask 255.255.255.0
 # 设置网关 (关键)
 route add default gw 192.168.137.1
+# 设置 DNS
+echo "nameserver 8.8.8.8" > /etc/resolv.conf
 ```
