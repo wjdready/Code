@@ -32,6 +32,8 @@ PUB_HOSTED_URL=https://pub.flutter-io.cn
 git clone -b master https://mirrors.tuna.tsinghua.edu.cn/git/flutter-sdk.git
 FLUTTER_STORAGE_BASE_URL=https://mirrors.tuna.tsinghua.edu.cn/flutter
 PUB_HOSTED_URL=https://mirrors.tuna.tsinghua.edu.cn/dart-pub
+# Linux 需要安装的依赖
+apt install git curl unzip cmake pkg-config ninja-build clang  libgtk-3-dev
 ```
 
 
@@ -118,16 +120,22 @@ git config --global url.https://gh-proxy.com/github.com.insteadOf https://github
 git config --global --list
 # 取消设置
 git config --global --unset url.https://gh-proxy.com/github.com.insteadOf
+
+GIT_AUTHOR_DATE="2025-07-21 16:13:23" GIT_COMMITTER_DATE="2025-07-21 16:13:23" git commit
+
 ```
 
 
 ## 必知
 
 ```sh
-# 显示进程网络使用情况
+# 1. linux 显示进程网络使用情况
 nethogs
 
-# windows 修改终端编码
+# 2. windows 修改终端编码
 chcp 65001
 chcp 936
+
+# 3. windows 查看文件被哪个进程占用
+# 按 Win 键搜 `资源监视器` 并打开, 切换到 CPU 栏搜索文件名即可
 ```

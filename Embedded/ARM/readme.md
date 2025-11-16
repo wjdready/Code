@@ -6,3 +6,5 @@
 对于 老版本 从[这里](https://developer.arm.com/downloads/-/gnu-a)下载
 
 注意 .tar.xz 解压用 tar -xf 不要用 360 
+
+阿里云镜像: https://mirrors.aliyun.com/armbian-releases/_toolchain/

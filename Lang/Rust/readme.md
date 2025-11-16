@@ -18,14 +18,17 @@ https://rustwiki.org/zh-CN/rust-by-example/custom_types/structs.html
 ```sh
 # 1. 下载 rustup-init
 # https://mirrors.aliyun.com/rustup/rustup/dist/x86_64-pc-windows-msvc/rustup-init.exe
+# 对于 linux, 直接执行如下命令
+# sudo curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf > rustup.sh && chmod +x rustup.sh
 
 # 2. 在终端中运行， 为了方便增加环境变量
 set RUSTUP_DIST_SERVER=https://mirrors.ustc.edu.cn/rust-static
 set RUSTUP_UPDATE_ROOT=https://mirrors.ustc.edu.cn/rust-static/rustup
 
-# 3. 然后再运行 rustup-init
+# 3. 然后再运行 rustup-init 或 rustup.sh
 # 完成会自动创建 C:\Users\shino\.cargo 和 C:\Users\shino\.rustup 文件夹
 # 只需将 C:\Users\shino\.cargo\bin 导出环境即可
+# Linux 则在 ~/.bashrc 中添加 source ~/.cargo/env 
 
 # 4. 配置 cargo 用于下载依赖包时加速
 # 当然也可以直接将上面两个环境变量 RUSTUP_DIST_SERVER 和 RUSTUP_UPDATE_ROOT 默认导出即可
@@ -35,6 +38,9 @@ replace-with = 'ustc'
 
 [source.ustc]
 registry = "sparse+https://mirrors.ustc.edu.cn/crates.io-index/"
+
+# 新版本需要改为 config.toml 所以创建软连接，兼容旧版本
+ln -s ~/.cargo/config ~/.cargo/config.toml
 ```
 
 

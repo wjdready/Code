@@ -319,7 +319,7 @@ exit $?
 
 ```shell 
 #! /bin/sh
-mount none /sys/kernel/config -t configfs
+mount -t configfs none /sys/kernel/config
 
 mkdir /sys/kernel/config/usb_gadget/g2
 cd /sys/kernel/config/usb_gadget/g2

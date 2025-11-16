@@ -10,3 +10,8 @@ Sfc /scannow
 # 现在让扫描过程自行完成。然后，需要键入以下命令并按 Enter
 DISM /Online /Cleanup-Image /restorehealth
 ```
+
+## 查看文件被哪个进程占用
+
+Win 搜索 `资源监视器`
+
