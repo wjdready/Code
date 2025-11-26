@@ -74,6 +74,9 @@ class Program
 
 从 https://dotnet.microsoft.com/zh-cn/ 下载 .NET SDK 安装包，安装后配置环境变量
 
+
+
+
 ```sh
 # 首先查看帮助，即可知道怎么使用
 dotnet -h
@@ -94,6 +97,14 @@ dotnet publish -c Release -f net8.0 -r win-x64
 # 添加依赖
 dotnet add package Newtonsoft.Json
 dotnet add package System.IO.Ports
+
+# 安装多个版本sdk 5，6，7
+winget install Microsoft.DotNet.SDK.6
+
+# 列出当前安装的 sdk 版本
+dotnet --list-sdks
+# 列出当前安装的 runtime 版本
+dotnet --list-runtimes
 ```
 
 
