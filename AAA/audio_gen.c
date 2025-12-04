@@ -7,6 +7,7 @@ typedef enum {
     LSE_32
 } audio_format_t;
 
+// 【注意】 BUF 似乎不能太大，太大就不连续了, 48000, 长度 480 * 4 为宜
 void audio_gen(int fs, int freq, audio_format_t format, int channel, void *buffer, int len)
 {
     if (buffer == NULL || len <= 0 || fs <= 0 || freq <= 0 || channel <= 0) {
@@ -27,14 +28,14 @@ void audio_gen(int fs, int freq, audio_format_t format, int channel, void *buffe
         x += step;
 
         if (format == LSE_16) {
-            int16_t value = (int16_t)(sample * (INT16_MAX >> 1)); // 转换为有符号 16 位整数
+            int16_t value = (int16_t)(sample * (INT16_MAX >> 4)); // 转换为有符号 16 位整数
             for (int ch = 0; ch < channel; ch++) {
                 // *buffer_16++ = value;
                 pbuf[ch * 2 + i * 2] = value & 0xFF;
                 pbuf[ch * 2 + i * 2 + 1] = (value >> 8) & 0xFF;
             }
         } else {
-            int32_t value = (int32_t)(sample * (INT32_MAX >> 1)); // 转换为有符号 32 位整数
+            int32_t value = (int32_t)(sample * (INT32_MAX >> 4)); // 转换为有符号 32 位整数
             for (int ch = 0; ch < channel; ch++) {
                 // *buffer_32++ = value;
                 pbuf[ch * 4 + i * 4] = value & 0xFF;
@@ -56,15 +57,15 @@ int main(int argc, char const *argv[])
     }
 
     // 定义缓冲区 - 使用与LSE_32匹配的int32_t类型
-    int32_t buf[80];  // 32位缓冲区，保持总字节数不变
+    int16_t buf[48000];  // 32位缓冲区，保持总字节数不变
 
     // 生成音频数据
-    audio_gen(16000, 1000, LSE_32, 1, buf, sizeof(buf));
+    audio_gen(48000, 1000, LSE_16, 1, buf, sizeof(buf));
 
     // 打印生成的数据（调试用）
-    for (int i = 0; i < (sizeof(buf) / 4); i++) {
-        printf("%ld ,", (long)buf[i]);
-    }
+    // for (int i = 0; i < (sizeof(buf) / 4); i++) {
+    //     printf("%ld ,", (long)buf[i]);
+    // }
 
     // 将缓冲区数据写入文件
     size_t bytes_written = fwrite(buf, sizeof(unsigned char), sizeof(buf), fp);
