@@ -35,10 +35,10 @@ blog: $(BLOG_SOURCE_DIR)
 	@python3 Scripts/generateblog.py . $(BLOG_SOURCE_DIR)
 
 blog_server: $(BLOG_SOURCE_DIR)
-	make blog && cd $(BLOG_SOURCE_DIR) && hexo server
+	make blog && cd $(BLOG_SOURCE_DIR) && npm run server
 
 blog_deploy: $(BLOG_SOURCE_DIR)
-	make blog && cd $(BLOG_SOURCE_DIR) && hexo deploy
+	make blog && cd $(BLOG_SOURCE_DIR) && npm run deploy
 
 blog_template:
 	@Scripts/blogtemplate.sh
