@@ -74,7 +74,9 @@ class Program
 
 从 https://dotnet.microsoft.com/zh-cn/ 下载 .NET SDK 安装包，安装后配置环境变量
 
+或者
 
+winget install Microsoft.DotNet.SDK.8
 
 
 ```sh
