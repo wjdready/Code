@@ -1,6 +1,6 @@
 ---
 mytags: myblog
-title: 
+title: Windows 安装
 date: 2025-12-26 10:59:41
 categories: [windows]
 tags: [windows install, 手册]
