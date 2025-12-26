@@ -125,6 +125,33 @@ GIT_AUTHOR_DATE="2025-07-21 16:13:23" GIT_COMMITTER_DATE="2025-07-21 16:13:23" g
 
 ```
 
+## cmake
+
+```sh
+find_package(SDL2 REQUIRED)
+
+if (SDL2_FOUND)
+    message(STATUS "SDL2_LIBRARY: ${SDL2_LIBRARY}")
+    message(STATUS "SDL2_INCLUDE_DIR: ${SDL2_INCLUDE_DIR}")
+endif()
+
+# For windows release
+cmake --build build --config Release
+```
+
+
+## mise
+
+```sh
+# 激活环境
+mise activate pwsh  | Out-String | Invoke-Expression
+
+# 添加自定插件 file
+mise plugin install file https://github.com/wjdready/mise_file_backend_plugin.git
+mise link file:vcpkg@current --force D:\ProgramFiles\Library\vcpkg
+mise ls
+mise use file:vcpkg@current
+```
 
 ## 必知
 
