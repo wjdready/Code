@@ -3,7 +3,7 @@
 https://visualstudio.microsoft.com/visual-cpp-build-tools/
 
 旧版本生成工具, 2022 为 17, 2019 为 16, 2017 为 15
-https://aka.ms/vs/17/release/vs_buildtools.exe
+https://aka.ms/vs/16/release/vs_buildtools.exe
 
 community IDE 版本:
 https://search.ddooo.com/search.html?wd=visual%20studio%20community

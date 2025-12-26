@@ -19,6 +19,8 @@ mise 工作目录是 C:\Users\shino\AppData\Local\mise
 
 而全局配置文件是 `C:\Users\shino\.config\mise\config.toml`, 用于各个工具的全局配置.
 
+可以设置 MISE_DATA_DIR, MISE_CACHE_DIR, MISE_CONFIG_DIR, MISE_STATE_DIR
+
 ## 设计理念
 
 mise 之所以能够动态更改工具版本，是通过导出一个公共文件夹到 PATH, 
@@ -37,3 +39,12 @@ mise x -- node %*
 只要工作目录下包含 mise.toml 文件, 系统或命令行尝试调用该工具时, 会先调用导出的包装脚本，
 而该脚本使用 mise x 运行该工具，这就使得 mise 有机会检测工作目录下 mise.toml 并根据情况调用指定版本的工具
 
+## 使用本地包
+
+```sh
+# 添加自定插件 file
+mise plugin link --force file .
+mise link file:vcpkg@current --force D:\ProgramFiles\Library\vcpkg
+mise ls
+mise use file:vcpkg@current
+```
