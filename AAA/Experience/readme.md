@@ -29,3 +29,25 @@
    尝试使用 Cubemx 生成 Makefile 的工程时, 在 ART-PI 上使用串口 DMA 发送, 但一直没有进入 DMA 发送完成中断, 单步进入 HAL_DMA_IRQHandler()，发现进入了错误处理分支，可是工程代码完全是
    和 Keil工程一样。排查很久，才发现生成的 ld 脚本默认使用了 DTCMRAM，而不是 512KB 的 RAM_D1，这部分内存是不支持 DMA 的，所以出现总线错误。修改 ld 脚本后正常触发DMA完成中断。
    其实如果最开始注册了DMA错误中断，或许就能及时发现问题。
+
+## build
+
+1. 2026-01-22 11:21:25 (耗时半天)
+  编译时发现多个函数 undefined reference, 全局查找定位到 .c 文件, 然后根据该 .c 文件名查找是否在 Makefile 中引用
+  然后发现 Makefile 中有条件编译, ifeq ($(CONFIG_BT_EN), y)  条件为真才添加该 Makefile, 然后 make menuconfig 配置后, 一些 undefined reference 消失, 但仍有一些还存在
+  并且通过 find 查找确实是有该 .c 文件对应的 .o 文件, 说明确实是编译输出了, 并且最后链接时, 链接脚本确实包含该 .o 文件, 问题可能处在 .o 文件.
+  利用编辑器或命令, 查看 .o 文件是否有该函数的名称 `nm -C myfile.o` 发现是空的, 检查 .c 文件发现在顶部有一个宏定义 `#ifdef CONFIG_BT_CONFIG` 
+  全局查找 CONFIG_BT_CONFIG 在哪配置, 根据 config.in 里面列出的位置, 顺利通过 menuconfig 定位到配置的位置, 从而配置成功, 重新编译后错误消失了
+
+## debug
+
+1. gdb 连接 JLink GDB Server 出现, Truncated register 16 in remote 'g' packet
+   如果启动 gdb 时指定打开 elf 文件, 则不会出现该问题了, 说明给定文件会自动识别架构, 避免这种错误可以事先指定架构, 如 `set architecture armv8-m.main`
+   然而即使指定架构了, JLink GDB Server 还是要 gdb 打开时必须指定 elf 文件, 否则 JLink 就会 `GDB closed TCP/IP connection (Socket 1516)` 可能 GDB 自己退出
+   尚未解决如何在不指定 elf 文件的情况下, 也能正常进入。目前用的是 gdb-multiarch 换其他版本是否就不会
+
+2. 使用 openocd daplink 调试 rtl8720d, 最开始设置 -ap-num 0, 然后一直报错  Cortex-M PARTNO 0x0 is unrecognized, 网上有使用其他芯片的人也反馈这个问题, 但是都没有解决.
+   后来又换成 JLink, 则报错 Cortex-M CPUID: 0x0 is unrecognized, 可是使用 JLink GDB Server 是能正常识别并调试的,
+   本来想着后面用 JLink 调试算了, 后来自己编译 openocd, 打开工程发现最新版本新增了 rtl872xd.cfg, 从这个配置文件中得知 -ap-num 只有设置为 1 或 2 才能正常识别 CPU
+   而且 1 对应的是 Cortex-M23 核, 2 对应的是 Cortex-M33 核, 看来 PARTNO 0x0 is unrecognized 很可能已经提示 -ap-num 0 设置的有问题了
+   另外也不是版本的问题, 设置 -ap-num 1 后使用之前旧版本也能识别了

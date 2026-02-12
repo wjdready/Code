@@ -64,6 +64,36 @@ Windows 新安装时需要的操作
    @="\"D:\\ProgramFiles\\Dev\\Code\\Code.exe\" \"%V\""
    ```
 
+   Trae
+
+   ```
+   Windows Registry Editor Version 5.00
+
+   ; 打开文件
+   [HKEY_CLASSES_ROOT\*\shell\Trae]
+   @="Open with Trae"
+   "Icon"="D:\\ProgramFiles\\Dev\\TraeCN\\Trae CN.exe"
+
+   [HKEY_CLASSES_ROOT\*\shell\Trae\command]
+   @="\"D:\\ProgramFiles\\Dev\\TraeCN\\Trae CN.exe\" \"%1\""
+
+   ; 打开文件夹
+   [HKEY_CLASSES_ROOT\Directory\shell\Trae]
+   @="Open with Trae"
+   "Icon"="D:\\ProgramFiles\\Dev\\TraeCN\\Trae CN.exe"
+
+   [HKEY_CLASSES_ROOT\Directory\shell\Trae\command]
+   @="\"D:\\ProgramFiles\\Dev\\TraeCN\\Trae CN.exe\" \"%V\""
+
+   ; 空白处打开
+   [HKEY_CLASSES_ROOT\Directory\Background\shell\Trae]
+   @="Open with Trae"
+   "Icon"="D:\\ProgramFiles\\Dev\\TraeCN\\Trae CN.exe"
+
+   [HKEY_CLASSES_ROOT\Directory\Background\shell\Trae\command]
+   @="\"D:\\ProgramFiles\\Dev\\TraeCN\\Trae CN.exe\" \"%V\""
+   ```
+
 5. 安装最新 pwsh 并设置终端默认为 pwsh
    ```bat
    winget install --id Microsoft.PowerShell --source winget
@@ -76,4 +106,14 @@ Windows 新安装时需要的操作
    ```
 
 7. 设置->系统->开启开发者选项 (flutter编译需要)
+
+### --------------- 新增 ---------------
+
+8. 设置 FTP
+
+9. keil 授权
+
+10. 常用字体安装
+
+11. 360zip 关联
 

@@ -1,0 +1,7 @@
+
+
+## AKM5572
+
+DR: 124dB
+THD+N: -112dB
+Power: 148mW@48kHz

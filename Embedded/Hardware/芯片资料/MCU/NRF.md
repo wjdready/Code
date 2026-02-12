@@ -1,0 +1,10 @@
+
+
+# NRF9160
+
+ARM Cortex -M33
+1 MB flash + 256K SRAM
+Cat-M1/Cat-NB1/Cat-NB2
+1x I2S
+1x DMIC
+RTC

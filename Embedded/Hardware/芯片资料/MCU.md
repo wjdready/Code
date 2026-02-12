@@ -57,3 +57,12 @@ https://downloads.sifli.com/silicon/PB0001-SF32LB55x-%E4%BA%A7%E5%93%81%E7%AE%80
 11.8µA/MHz @3.3
 
 1.4MB on‐chip SRAM, QFN68, 合封 4MB PSRAM + 4MB FLASH
+
+
+#### 2. nRF54H20
+
+多个320 MHz Arm Cortex-M33 + RISC-V
+2 MB Flash + 1 MB RAM
+低功耗蓝牙、LE 音频
+高速 USB（480 Mbps）
+
