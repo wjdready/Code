@@ -1,0 +1,7 @@
+
+
+## PCM4222
+DR: 124dB
+THD+N: -108dB
+Power: 305mW@48kHz
+

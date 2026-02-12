@@ -7,8 +7,10 @@
 git config --global user.name "your_username"
 git config --global user.email "your_email"
 
-# pip 临时镜像源
+# pip
+curl http://mirrors.aliyun.com/pypi/get-pip.py
 pip install some-package -i https://pypi.tuna.tsinghua.edu.cn/simple
+pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 
 # 系统时间同步网络时钟, 然后同步到硬件时钟
 sudo ntpdate cn.pool.ntp.org

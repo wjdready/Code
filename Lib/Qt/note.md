@@ -6,6 +6,8 @@ QMAKE_CXXFLAGS += -Wno-unused-function
 
 ## QT API 
 
+下载: https://download.qt.io/archive/qt
+
 https://felgo.com/doc/felgo-qt-overview/
 
 

@@ -15,8 +15,8 @@ bin\openocd  ^
     -c "reset halt"       ^
     -c "flash erase_sector 0 0 last" ^
     -c "flash erase_sector 1 0 5" ^
-    -c "program AWA5920/AWA5920Bootloader.bin 0x08000000 verify" ^
-    -c "program AWA5920/AWA5920.bin 0x08040000 verify" ^
+    -c "program myboot.bin 0x08000000 verify" ^
+    -c "program myapp.bin 0x08040000 verify" ^
     -c "reset" ^
     -c "shutdown"
 ```

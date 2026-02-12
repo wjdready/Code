@@ -83,3 +83,7 @@ ROM 32KB
 ```sh
 apt install exfat-fuse
 ```
+
+JTAG 调试
+https://www.taterli.com/10929
+
