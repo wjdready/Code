@@ -98,3 +98,20 @@ TypeC 口朝上, 右边引脚
 | 38  | IO20 | PA_08                                              |
 | 39  | GND  | GND                                                |
 | 40  | IO21 | PA_02                                              |
+
+## QuickStart
+
+```sh
+cd example\ble\file_transfer\project
+
+# 配置, 另一款是 sf32lb52-lcd_n16r8
+scons --board=sf32lb58-lcd_n16r32n1_qspi --menuconfig
+
+# 编译
+scons --board=sf32lb58-lcd_n16r32n1_qspi -j32
+
+# 下载: 跳线帽短路Mode排针, 复位进入下载模式
+.\build_sf32lb58-lcd_n16r32n1_qspi_hcpu\uart_download.bat
+
+# 调试: 打开串口终端查看调试信息波特率默认 1000000
+```

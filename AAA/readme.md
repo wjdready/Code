@@ -125,6 +125,12 @@ git config --global --unset url.https://gh-proxy.com/github.com.insteadOf
 
 GIT_AUTHOR_DATE="2025-07-21 16:13:23" GIT_COMMITTER_DATE="2025-07-21 16:13:23" git commit
 
+# 自定义log输出格式
+# %h：简短提交哈希, %H：完整提交哈希
+# %an：作者名称, %ae：作者邮箱
+# %s：提交信息标题
+git log --date=format:"%Y-%m-%d %H:%M:%S" --pretty=format:"%ad%n%s%n" 
+
 ```
 
 ## cmake

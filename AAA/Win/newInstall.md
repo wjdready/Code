@@ -66,7 +66,7 @@ Windows 新安装时需要的操作
 
    Trae
 
-   ```
+   ```re
    Windows Registry Editor Version 5.00
 
    ; 打开文件
@@ -96,6 +96,8 @@ Windows 新安装时需要的操作
 
 5. 安装最新 pwsh 并设置终端默认为 pwsh
    ```bat
+   C:\Program Files\WindowsApps\Microsoft.DesktopAppInstaller_1.29.30.0_x64__8wekyb3d8bbwe
+   https://github.com/microsoft/winget-cli/releases
    winget install --id Microsoft.PowerShell --source winget
    ```
 
@@ -116,4 +118,15 @@ Windows 新安装时需要的操作
 10. 常用字体安装
 
 11. 360zip 关联
+
+12. 注册表
+
+```re
+Windows Registry Editor Version 5.00
+
+; 禁用自动文件夹类型检测, 解决打开音频文件夹, 文件夹风格为音乐, 影响查看文件大小和属性
+[HKEY_CURRENT_USER\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\Bags\AllFolders\Shell]
+"FolderType"="NotSpecified"
+```
+
 
