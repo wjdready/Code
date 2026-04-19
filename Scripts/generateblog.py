@@ -11,7 +11,7 @@ def doProcessFile(filepath:str, post_basedir:str, blogindex:int):
         return False
     
     # Windows Python 路径情况
-    if "\_" in filepath or "\." in filepath:
+    if r"\_" in filepath or r"\." in filepath:
         return False
 
     with open(filepath, encoding="UTF-8") as f:
