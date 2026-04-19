@@ -8,6 +8,8 @@ git config --global user.name "your_username"
 git config --global user.email "your_email"
 
 # pip
+# 重新安装 pip
+python -m pip install --upgrade --force-reinstall pip
 curl http://mirrors.aliyun.com/pypi/get-pip.py
 pip install some-package -i https://pypi.tuna.tsinghua.edu.cn/simple
 pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple

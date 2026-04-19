@@ -43,8 +43,17 @@ mise x -- node %*
 
 ```sh
 # 添加自定插件 file
-mise plugin link --force file .
+mise plugin install file https://github.com/wjdready/mise_file_backend_plugin.git
 mise link file:vcpkg@current --force D:\ProgramFiles\Library\vcpkg
 mise ls
 mise use file:vcpkg@current
 ```
+
+## 常用
+
+```sh
+# 自更新
+mise self-update
+
+```
+

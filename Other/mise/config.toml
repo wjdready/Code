@@ -1,0 +1,84 @@
+[tools]
+cmake = "latest"
+docker-cli = "latest"
+"file:flutter_cli" = "current"
+"file:vcpkg" = "current"
+go = "latest"
+java = "21"
+ninja = "latest"
+node = "v22"
+pandoc = "latest"
+python = "3.10"
+rust = "latest"
+upx = "latest"
+uv = "latest"
+
+[settings]
+experimental = true
+
+[env]
+FLUTTER_STORAGE_BASE_URL = "https://mirrors.tuna.tsinghua.edu.cn/flutter"
+PUB_HOSTED_URL = "https://mirrors.tuna.tsinghua.edu.cn/dart-pub"
+MISE_KEEP_VARS = """
+    TEMP=%USERPROFILE%/AppData/Local/Temp
+    TMP=%USERPROFILE%/AppData/Local/Temp
+    MISE_DATA_DIR=D:/ProgramFiles/Library/mise
+    MISE_CONFIG_DIR=D:/ProgramFiles/Library/mise
+"""
+MISE_KEEP_PATHS = """
+    %USERPROFILE%/AppData/Local/Programs/Microsoft VS Code
+    D:/ProgramFiles/Library/mise
+"""
+
+_.path = {
+    path = [
+        "{{ tools.python.path }}/Scripts",
+    ],
+    tools = true
+}
+
+[tasks.test]
+env = { "MY_VAR" = "my variable" }
+run = [
+    # "echo %PATH%,
+    "echo {{ env.MY_VAR }} {{ env.FLUTTER_STORAGE_BASE_URL }}",
+    "echo {{ tools['file:vcpkg'].version }} {{ tools['file:vcpkg'].path }}",
+    "mise bin-paths python",
+]
+
+[tasks.sync]
+env = {
+
+    MISE_ADD_VARS = """
+        PYTHONPATH={{ tools.python.path }}
+    """,
+
+    MISE_ADD_PATHS = """
+        {{ tools.python.path }}
+        D:/ProgramFiles/Library/git/bin
+        D:/ProgramFiles/Library/command
+    """
+}
+run = "mise_env_sync sync"
+
+[tasks.clean]
+run = "mise_env_sync clean"
+
+# 快捷打开
+[tasks.start]
+usage = '''
+arg "<exe>"
+arg "[arg]"
+'''
+run = 'start {{ usage.exe }} {{ usage.arg }}'
+[tasks.cc]
+run = "start code D:/ProgramFiles/Library/mise/config.toml"
+[tasks.aa]
+run = "start code D:/Home/Desktop/note/AAA/readme.md"
+[tasks.dd]
+run = "start explorer D:\\ProgramFiles\\Library\\mise"
+[tasks.pp]
+# function ma { mise activate pwsh | Out-String | Invoke-Expression }
+run = "start code D:/Home/Documents/PowerShell/Microsoft.PowerShell_profile.ps1"
+[tasks.nn]
+run = "start code D:/Home/Desktop/note"
