@@ -26,6 +26,13 @@ sudo bash tools/env_tools/setup/armino_env_setup.sh
 # 编译默认 app 工程
 make bk7258 PROJECT=app
 
+# 对于 windows 下载 Armino-Bash-Setup, 里面已经集成各种工具，安装后只需进入 Armino-Bash 命令行即可编译运行
+
 # 烧录 从 https://dl.bekencorp.com/tools/bkfil 下载, 然后写入 all_app.bin
+# 可以使用 cli 版本
+# 基本烧录命令（需要指定串口）
+./tools/bk_loader.exe download -p COM3 -i build/usbtest/bk7258/all-app.bin
+# 完整烧录命令（带重启和擦除）
+./tools/bk_loader.exe download -p COM3 -b 2000000 -r -e 1 -i build/usbtest/bk7258/all-app.bin
 ```
 

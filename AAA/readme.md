@@ -1,5 +1,3 @@
-
-
 ```sh
 # ssh 免密登录 .ssh/authorized_keys
 
@@ -32,14 +30,18 @@ git clone http://weijundong@192.168.0.244:10101/r/xxxx.git
 # http://bbs.itying.com/topic/638ad9b23fd95910e036af7f
 FLUTTER_STORAGE_BASE_URL=https://storage.flutter-io.cn
 PUB_HOSTED_URL=https://pub.flutter-io.cn
+# 上海交大
+FLUTTER_STORAGE_BASE_URL=https://mirror.sjtu.edu.cn
+PUB_HOSTED_URL=https://mirror.sjtu.edu.cn/dart-pub
 # 清华镜像
 git clone -b master https://mirrors.tuna.tsinghua.edu.cn/git/flutter-sdk.git
 FLUTTER_STORAGE_BASE_URL=https://mirrors.tuna.tsinghua.edu.cn/flutter
 PUB_HOSTED_URL=https://mirrors.tuna.tsinghua.edu.cn/dart-pub
+# 或者直接版本下载
+https://storage.flutter-io.cn/flutter_infra_release/releases/stable/windows/flutter_windows_3.35.5-stable.zip
 # Linux 需要安装的依赖
 apt install git curl unzip cmake pkg-config ninja-build clang  libgtk-3-dev
 ```
-
 
 ## NPM
 
@@ -65,16 +67,16 @@ npm view <package-name> versions
 npm info <package-name>
 ```
 
-## 配置 Gradle 镜像源
+## Android
 
+【注意】把后面的 bin 改成 all 否则还会下载 src 很慢
 gradle 添加下载地址前缀 `mirrors.huaweicloud.com/gradle`
 
-flutter 目前配置
+例如:
 
-distributionUrl=https\://mirrors.huaweicloud.com/gradle/gradle-8.10.2-all.zip
+distributionUrl=<https://mirrors.huaweicloud.com/gradle/gradle-8.10.2-all.zip>
 
-
-```groovy
+```sh
 
 allprojects {
     repositories {
@@ -100,11 +102,9 @@ buildscript {
         // ... 这里的库是就是从buildscript里的仓库找的.
     }
 }
-```
 
-build.gradle.kts
+# build.gradle.kts
 
-```kt
 repositories {
     maven { url = uri("https://maven.aliyun.com/repository/public") }
     maven { url = uri("https://maven.aliyun.com/repository/google") }
@@ -112,11 +112,17 @@ repositories {
     maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
     mavenCentral()
 }
+
+# logcat 过滤 APP
+adb logcat -s LVGL:* --pid=$(adb shell pidof -s com.example.lvglandroid)
 ```
 
 ## git 自动替换
 
 ```sh
+# 撤销最新提交并放回到缓存中
+git reset HEAD^
+
 # 配置git自动替换 https://gh-proxy.com/github.com
 git config --global url.https://gh-proxy.com/github.com.insteadOf https://github.com
 
@@ -149,10 +155,9 @@ endif()
 cmake --build build --config Release
 ```
 
-
 ## mise
 
-```sh
+```bash
 # 激活环境
 mise activate pwsh  | Out-String | Invoke-Expression
 
@@ -175,4 +180,7 @@ chcp 936
 
 # 3. windows 查看文件被哪个进程占用
 # 按 Win 键搜 `资源监视器` 并打开, 切换到 CPU 栏搜索文件名即可
+
+# bash 自定义提示符：路径和命令分两行显示
+PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\n\$ '
 ```
